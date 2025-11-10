@@ -1,0 +1,167 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String   // bcrypt hashed
+  role      Role     @default(TOURIST)
+  name      String
+  phone     String?
+  photo     String?  // URL to Supabase storage
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  tourist   Tourist?
+  guide     Guide?
+}
+
+enum Role {
+  TOURIST
+  GUIDE
+  ADMIN
+}
+
+model Tourist {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  preferredLang String   @default("English")
+
+  // Relations
+  bookings      Booking[]
+  reviews       Review[]
+}
+
+model Guide {
+  id              String      @id @default(uuid())
+  userId          String      @unique
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bio             String
+  languages       String[]    // Array of language codes
+  specialties     String[]    // Array of specialty tags
+  hourlyRate      Float       // In GBP
+  isAvailable     Boolean     @default(false)
+  status          GuideStatus @default(PENDING)
+  verificationDoc String?     // URL to ID document
+  averageRating   Float?      @default(0)
+  totalReviews    Int         @default(0)
+
+  // Relations
+  tours           Tour[]
+  bookings        Booking[]
+  reviews         Review[]
+}
+
+enum GuideStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+model Tour {
+  id          String   @id @default(uuid())
+  guideId     String
+  guide       Guide    @relation(fields: [guideId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+  duration    Int      // In minutes
+  price       Float    // In GBP
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  bookings    Booking[]
+}
+
+model Booking {
+  id              String        @id @default(uuid())
+  touristId       String
+  tourist         Tourist       @relation(fields: [touristId], references: [id], onDelete: Cascade)
+  guideId         String
+  guide           Guide         @relation(fields: [guideId], references: [id], onDelete: Cascade)
+  tourId          String?
+  tour            Tour?         @relation(fields: [tourId], references: [id], onDelete: SetNull)
+
+  type            BookingType
+  status          BookingStatus @default(PENDING)
+
+  scheduledDate   DateTime?     // For scheduled bookings
+  startTime       DateTime?     // Actual start time
+  endTime         DateTime?     // Actual end time
+  duration        Int           // Requested duration in minutes
+
+  meetingPoint    String
+  totalPrice      Float         // In GBP
+  commission      Float         // 15% of totalPrice
+  guideEarnings   Float         // totalPrice - commission
+
+  stripePaymentId String?
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  // Relations
+  review          Review?
+  messages        Message[]
+}
+
+enum BookingType {
+  INSTANT
+  SCHEDULED
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  STARTED
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  bookingId String   @unique
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  touristId String
+  tourist   Tourist  @relation(fields: [touristId], references: [id], onDelete: Cascade)
+  guideId   String
+  guide     Guide    @relation(fields: [guideId], references: [id], onDelete: Cascade)
+
+  rating    Int      // 1-5 stars
+  comment   String?
+  createdAt DateTime @default(now())
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  bookingId String
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  senderId  String
+  content   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model LocationUpdate {
+  id        String   @id @default(uuid())
+  bookingId String
+  latitude  Float
+  longitude Float
+  createdAt DateTime @default(now())
+
+  @@index([bookingId, createdAt])
+}
