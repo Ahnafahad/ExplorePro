@@ -3,25 +3,184 @@
 @tailwind utilities;
 
 @layer base {
+  * {
+    @apply border-neutral-200;
+  }
+
+  html {
+    @apply scroll-smooth antialiased;
+  }
+
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-gradient-to-br from-neutral-50 via-white to-primary-50/30 text-neutral-900 font-sans;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold tracking-tight;
+  }
+
+  h1 {
+    @apply text-5xl lg:text-7xl;
+  }
+
+  h2 {
+    @apply text-4xl lg:text-5xl;
+  }
+
+  h3 {
+    @apply text-3xl lg:text-4xl;
   }
 }
 
 @layer components {
+  /* Premium Button Styles */
   .btn-primary {
-    @apply bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply relative bg-gradient-to-r from-primary-600 to-primary-700 text-white px-6 py-3 rounded-xl
+           font-semibold shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/40
+           hover:scale-105 active:scale-95 transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
+           before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-r
+           before:from-white/20 before:to-transparent before:opacity-0
+           hover:before:opacity-100 before:transition-opacity;
   }
 
   .btn-secondary {
-    @apply bg-gray-200 text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-white text-primary-700 px-6 py-3 rounded-xl font-semibold
+           border-2 border-primary-200 shadow-soft hover:shadow-medium
+           hover:border-primary-300 hover:bg-primary-50 hover:scale-105 active:scale-95
+           transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
+  .btn-outline {
+    @apply bg-transparent text-neutral-700 px-6 py-3 rounded-xl font-medium
+           border-2 border-neutral-300 hover:border-primary-500 hover:text-primary-700
+           hover:bg-primary-50/50 hover:scale-105 active:scale-95 transition-all duration-200;
+  }
+
+  .btn-danger {
+    @apply bg-gradient-to-r from-danger-600 to-danger-700 text-white px-6 py-3 rounded-xl
+           font-semibold shadow-lg shadow-danger-500/30 hover:shadow-xl hover:shadow-danger-500/40
+           hover:scale-105 active:scale-95 transition-all duration-200;
+  }
+
+  /* Premium Input Styles */
   .input-field {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+    @apply w-full px-4 py-3 bg-white border-2 border-neutral-200 rounded-xl
+           text-neutral-900 placeholder:text-neutral-400
+           focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-100
+           transition-all duration-200 shadow-soft hover:shadow-medium
+           disabled:bg-neutral-50 disabled:cursor-not-allowed;
   }
 
+  .input-error {
+    @apply border-danger-500 focus:border-danger-500 focus:ring-danger-100;
+  }
+
+  /* Premium Card Styles */
   .card {
-    @apply bg-white rounded-lg shadow-md p-6;
+    @apply bg-white rounded-2xl shadow-soft hover:shadow-large
+           transition-all duration-300 overflow-hidden
+           border border-neutral-100;
+  }
+
+  .card-hover {
+    @apply hover:scale-[1.02] hover:-translate-y-1;
+  }
+
+  .card-glass {
+    @apply bg-white/80 backdrop-blur-lg border border-white/20 shadow-xl;
+  }
+
+  /* Premium Badge Styles */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .badge-primary {
+    @apply bg-primary-100 text-primary-700 ring-1 ring-primary-200;
+  }
+
+  .badge-success {
+    @apply bg-success-100 text-success-700 ring-1 ring-success-200;
+  }
+
+  .badge-warning {
+    @apply bg-warning-100 text-warning-700 ring-1 ring-warning-200;
+  }
+
+  .badge-danger {
+    @apply bg-danger-100 text-danger-700 ring-1 ring-danger-200;
+  }
+
+  /* Premium Section Styles */
+  .section {
+    @apply py-16 lg:py-24;
+  }
+
+  .section-alt {
+    @apply bg-gradient-to-br from-neutral-50 to-primary-50/20;
+  }
+
+  .container-custom {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+  }
+
+  /* Premium Animation Classes */
+  .animate-on-scroll {
+    @apply opacity-0 translate-y-8 transition-all duration-700;
+  }
+
+  .animate-on-scroll.visible {
+    @apply opacity-100 translate-y-0;
+  }
+
+  /* Premium Gradient Text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-600 via-secondary-600 to-accent-600
+           bg-clip-text text-transparent;
+  }
+
+  /* Premium Divider */
+  .divider {
+    @apply relative h-px bg-gradient-to-r from-transparent via-neutral-300 to-transparent;
+  }
+
+  /* Loading Shimmer Effect */
+  .shimmer {
+    @apply relative overflow-hidden bg-neutral-200;
+  }
+
+  .shimmer::after {
+    content: '';
+    @apply absolute inset-0 bg-shimmer animate-shimmer;
+    background-size: 1000px 100%;
+  }
+
+  /* Floating Labels */
+  .input-group {
+    @apply relative;
+  }
+
+  .input-group input:focus ~ label,
+  .input-group input:not(:placeholder-shown) ~ label {
+    @apply -translate-y-7 text-xs text-primary-600;
+  }
+
+  .input-group label {
+    @apply absolute left-4 top-3 text-neutral-500 transition-all duration-200 pointer-events-none;
+  }
+
+  /* Premium Scrollbar */
+  .scrollbar-custom::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-track {
+    @apply bg-neutral-100 rounded-full;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    @apply bg-neutral-300 rounded-full hover:bg-neutral-400;
   }
 }
