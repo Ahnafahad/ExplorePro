@@ -9,6 +9,10 @@ import dotenv from 'dotenv'
 import authRoutes from './routes/auth.js'
 import guideRoutes from './routes/guides.js'
 import bookingRoutes from './routes/bookings.js'
+import tourRoutes from './routes/tours.js'
+import reviewRoutes from './routes/reviews.js'
+import adminRoutes from './routes/admin.js'
+import webhookRoutes from './routes/webhooks.js'
 import pollingRoutes from './routes/polling.js'
 
 // Load environment variables
@@ -40,12 +44,12 @@ app.get('/api/health', (req: Request, res: Response) => {
 // API Routes
 app.use('/api/auth', authRoutes)
 app.use('/api/guides', guideRoutes)
+app.use('/api/tours', tourRoutes)
 app.use('/api/bookings', bookingRoutes)
+app.use('/api/reviews', reviewRoutes)
+app.use('/api/admin', adminRoutes)
+app.use('/api/webhooks', webhookRoutes)
 app.use('/api/polling', pollingRoutes)
-// Additional routes to be implemented:
-// app.use('/api/tours', tourRoutes)
-// app.use('/api/reviews', reviewRoutes)
-// app.use('/api/admin', adminRoutes)
 
 // Error handling middleware
 interface ApiError extends Error {
