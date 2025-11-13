@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { DollarSign, Calendar, Star, TrendingUp, Users, Settings, Briefcase } from 'lucide-react'
+import { DollarSign, Calendar, Star, TrendingUp, Users, Settings, Briefcase, LogOut, Sparkles, Power, Check, Play, CheckCircle2, ArrowRight } from 'lucide-react'
 import { api } from '../../services/api'
 import { useAuth } from '../../context/AuthContext'
 import { Avatar } from '../../components/common/Avatar'
@@ -34,7 +34,6 @@ export default function GuideDashboard() {
 
   const fetchGuideData = async () => {
     try {
-      // First check if guide profile exists
       const response = await api.get<Guide[]>(`/api/guides?userId=${user?.id}`)
       if (response.success && response.data && response.data.length > 0) {
         setGuide(response.data[0])
@@ -86,6 +85,11 @@ export default function GuideDashboard() {
     }
   }
 
+  const handleLogout = async () => {
+    await logout()
+    navigate('/')
+  }
+
   const totalEarnings = bookings
     .filter((b) => b.status === 'COMPLETED')
     .reduce((sum, b) => sum + b.guideEarnings, 0)
@@ -96,8 +100,8 @@ export default function GuideDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Loading size="lg" text="Loading dashboard..." />
+      <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-secondary-50/20 flex items-center justify-center">
+        <Loading size="lg" text="Loading dashboard..." variant="dots" fullScreen />
       </div>
     )
   }
@@ -105,16 +109,19 @@ export default function GuideDashboard() {
   // If no guide profile exists, redirect to profile setup
   if (!guide) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Card className="max-w-md text-center">
-          <Briefcase className="w-16 h-16 mx-auto text-primary-600 mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+      <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-secondary-50/20 flex items-center justify-center px-4">
+        <Card variant="elevated" padding="lg" className="max-w-md text-center animate-fade-in">
+          <div className="inline-flex p-6 bg-secondary-100 rounded-full mb-6">
+            <Briefcase className="w-12 h-12 text-secondary-600" />
+          </div>
+          <h2 className="text-3xl font-display font-bold text-neutral-900 mb-3">
             Complete Your Guide Profile
           </h2>
-          <p className="text-gray-600 mb-6">
-            Set up your profile to start accepting tour bookings
+          <p className="text-lg text-neutral-600 mb-6">
+            Set up your profile to start accepting tour bookings and earning money
           </p>
-          <Button onClick={() => navigate('/guide/profile-setup')} fullWidth>
+          <Button onClick={() => navigate('/guide/profile-setup')} fullWidth size="lg">
+            <Sparkles className="w-5 h-5" />
             Set Up Profile
           </Button>
         </Card>
@@ -123,50 +130,59 @@ export default function GuideDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-secondary-50/20">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="relative bg-gradient-to-br from-secondary-600 via-secondary-700 to-primary-600 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9Ii4xIi8+PC9nPjwvc3ZnPg==')] opacity-10" />
+
+        <div className="relative container-custom py-8">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Avatar src={guide.user?.photo} name={guide.user?.name} size="lg" />
+            <div className="flex items-center gap-4 animate-fade-in-up">
+              <Avatar src={guide.user?.photo} name={guide.user?.name} size="xl" />
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">{guide.user?.name}</h1>
-                <div className="flex items-center gap-3 mt-1">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-2">
+                  <Sparkles className="w-3 h-3" />
+                  <span className="text-xs font-semibold">Guide Dashboard</span>
+                </div>
+                <h1 className="text-3xl lg:text-4xl font-display font-bold mb-2">
+                  {guide.user?.name}
+                </h1>
+                <div className="flex items-center gap-3">
                   {guide.status === 'PENDING' && (
-                    <Badge variant="warning">Pending Approval</Badge>
+                    <Badge variant="warning" size="md" dot>Pending Approval</Badge>
                   )}
                   {guide.status === 'APPROVED' && (
-                    <Badge variant="success">Approved</Badge>
+                    <Badge variant="success" size="md" icon={<Check className="w-3 h-3" />}>Approved</Badge>
                   )}
                   {guide.status === 'REJECTED' && (
-                    <Badge variant="danger">Rejected</Badge>
+                    <Badge variant="danger" size="md">Rejected</Badge>
                   )}
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
-              <div className="text-right mr-4">
-                <p className="text-sm text-gray-600">Availability</p>
-                <button
-                  onClick={toggleAvailability}
-                  className={`mt-1 px-4 py-2 rounded-lg font-medium transition-colors ${
-                    guide.isAvailable
-                      ? 'bg-green-500 text-white hover:bg-green-600'
-                      : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
-                  }`}
-                >
-                  {guide.isAvailable ? 'Available' : 'Unavailable'}
-                </button>
-              </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={toggleAvailability}
+                className={`
+                  group flex items-center gap-2 px-5 py-3 rounded-xl font-bold shadow-lg transition-all
+                  ${guide.isAvailable
+                    ? 'bg-success-500 hover:bg-success-600 text-white shadow-success-500/30'
+                    : 'bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white border-2 border-white/30'
+                  }
+                `}
+              >
+                <Power className="w-4 h-4" />
+                {guide.isAvailable ? 'Available' : 'Unavailable'}
+              </button>
 
-              <Button onClick={() => navigate('/guide/profile')} variant="secondary">
-                <Settings className="w-4 h-4 mr-2" />
-                Edit Profile
+              <Button onClick={() => navigate('/guide/profile')} variant="secondary" size="md">
+                <Settings className="w-4 h-4" />
+                Settings
               </Button>
 
-              <Button onClick={handleLogout} variant="outline">
+              <Button onClick={handleLogout} variant="outline" size="md">
+                <LogOut className="w-4 h-4" />
                 Logout
               </Button>
             </div>
@@ -174,188 +190,227 @@ export default function GuideDashboard() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="container-custom py-8">
         {/* Quick Stats */}
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-green-100 rounded-lg">
-                <DollarSign className="w-6 h-6 text-green-600" />
-              </div>
+        <div className="grid md:grid-cols-4 gap-6 mb-8 animate-fade-in-up">
+          <Card variant="elevated" padding="lg">
+            <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Earnings</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-sm font-semibold text-neutral-600 mb-2">Total Earnings</p>
+                <div className="text-4xl font-display font-bold text-success-600 mb-1">
                   {formatCurrency(totalEarnings)}
-                </p>
+                </div>
+                <p className="text-xs text-neutral-500">All time</p>
+              </div>
+              <div className="p-3 bg-success-100 rounded-xl">
+                <DollarSign className="w-6 h-6 text-success-600" />
               </div>
             </div>
           </Card>
 
-          <Card>
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-blue-100 rounded-lg">
-                <Calendar className="w-6 h-6 text-blue-600" />
-              </div>
+          <Card variant="elevated" padding="lg">
+            <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-gray-600">Upcoming Tours</p>
-                <p className="text-2xl font-bold text-gray-900">{upcomingBookings.length}</p>
+                <p className="text-sm font-semibold text-neutral-600 mb-2">Upcoming Tours</p>
+                <div className="text-4xl font-display font-bold text-primary-600 mb-1">
+                  {upcomingBookings.length}
+                </div>
+                <p className="text-xs text-neutral-500">Active bookings</p>
+              </div>
+              <div className="p-3 bg-primary-100 rounded-xl">
+                <Calendar className="w-6 h-6 text-primary-600" />
               </div>
             </div>
           </Card>
 
-          <Card>
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-yellow-100 rounded-lg">
-                <Star className="w-6 h-6 text-yellow-600" />
-              </div>
+          <Card variant="elevated" padding="lg">
+            <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-gray-600">Rating</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-sm font-semibold text-neutral-600 mb-2">Rating</p>
+                <div className="text-4xl font-display font-bold text-warning-500 mb-1">
                   {guide.averageRating ? guide.averageRating.toFixed(1) : 'N/A'}
-                </p>
+                </div>
+                <p className="text-xs text-neutral-500">{guide.totalReviews} reviews</p>
+              </div>
+              <div className="p-3 bg-warning-100 rounded-xl">
+                <Star className="w-6 h-6 text-warning-500" />
               </div>
             </div>
           </Card>
 
-          <Card>
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-purple-100 rounded-lg">
-                <Users className="w-6 h-6 text-purple-600" />
-              </div>
+          <Card variant="elevated" padding="lg">
+            <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Tours</p>
-                <p className="text-2xl font-bold text-gray-900">{bookings.length}</p>
+                <p className="text-sm font-semibold text-neutral-600 mb-2">Total Tours</p>
+                <div className="text-4xl font-display font-bold text-neutral-900 mb-1">
+                  {bookings.length}
+                </div>
+                <p className="text-xs text-neutral-500">All time</p>
+              </div>
+              <div className="p-3 bg-neutral-100 rounded-xl">
+                <Users className="w-6 h-6 text-neutral-600" />
               </div>
             </div>
           </Card>
         </div>
 
         {/* Quick Actions */}
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <Card>
-            <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
+        <div className="grid md:grid-cols-2 gap-6 mb-8 animate-fade-in-up" style={{ animationDelay: '50ms' }}>
+          <Card variant="bordered" padding="lg">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="p-2 bg-primary-100 rounded-lg">
+                <Sparkles className="w-5 h-5 text-primary-600" />
+              </div>
+              <h3 className="text-xl font-display font-bold text-neutral-900">Quick Actions</h3>
+            </div>
             <div className="space-y-3">
-              <Button onClick={() => navigate('/guide/tours')} fullWidth variant="secondary">
+              <Button onClick={() => navigate('/guide/tours')} fullWidth variant="secondary" size="lg">
+                <Briefcase className="w-5 h-5" />
                 Manage Tours
               </Button>
-              <Button onClick={() => navigate('/guide/profile')} fullWidth variant="secondary">
+              <Button onClick={() => navigate('/guide/profile')} fullWidth variant="outline" size="lg">
+                <Settings className="w-5 h-5" />
                 Edit Profile
               </Button>
             </div>
           </Card>
 
-          <Card>
-            <h3 className="font-semibold text-gray-900 mb-4">Profile Status</h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Status:</span>
-                <Badge variant={guide.status === 'APPROVED' ? 'success' : 'warning'}>
+          <Card variant="bordered" padding="lg">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="p-2 bg-secondary-100 rounded-lg">
+                <TrendingUp className="w-5 h-5 text-secondary-600" />
+              </div>
+              <h3 className="text-xl font-display font-bold text-neutral-900">Profile Status</h3>
+            </div>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-3 bg-neutral-50 rounded-xl">
+                <span className="text-sm font-medium text-neutral-600">Status:</span>
+                <Badge variant={guide.status === 'APPROVED' ? 'success' : 'warning'} size="md">
                   {guide.status}
                 </Badge>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Hourly Rate:</span>
-                <span className="font-medium">{formatCurrency(guide.hourlyRate)}</span>
+              <div className="flex items-center justify-between p-3 bg-neutral-50 rounded-xl">
+                <span className="text-sm font-medium text-neutral-600">Hourly Rate:</span>
+                <span className="font-bold text-neutral-900">{formatCurrency(guide.hourlyRate)}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Reviews:</span>
-                <span className="font-medium">{guide.totalReviews}</span>
+              <div className="flex items-center justify-between p-3 bg-neutral-50 rounded-xl">
+                <span className="text-sm font-medium text-neutral-600">Reviews:</span>
+                <span className="font-bold text-neutral-900">{guide.totalReviews}</span>
               </div>
             </div>
           </Card>
         </div>
 
         {/* Bookings */}
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Upcoming Bookings</h2>
+        <div className="animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+          <h2 className="text-3xl font-display font-bold text-neutral-900 mb-6">Upcoming Bookings</h2>
 
-        {upcomingBookings.length > 0 ? (
-          <div className="space-y-4">
-            {upcomingBookings.map((booking) => (
-              <Card key={booking.id}>
-                <div className="flex items-start justify-between">
-                  <div className="flex gap-4 flex-1">
-                    <Avatar
-                      src={booking.tourist?.user?.photo}
-                      name={booking.tourist?.user?.name}
-                      size="lg"
-                    />
+          {upcomingBookings.length > 0 ? (
+            <div className="space-y-6">
+              {upcomingBookings.map((booking, index) => (
+                <div
+                  key={booking.id}
+                  className="animate-fade-in-up"
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  <Card variant="bordered" padding="lg" className="group">
+                    <div className="flex flex-col lg:flex-row gap-6">
+                      <div className="flex gap-4 flex-1">
+                        <Avatar
+                          src={booking.tourist?.user?.photo}
+                          name={booking.tourist?.user?.name}
+                          size="xl"
+                        />
 
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <h3 className="text-lg font-semibold text-gray-900">
-                            {booking.tourist?.user?.name}
-                          </h3>
-                          <Badge variant={statusVariants[booking.status as BookingStatus]}>
-                            {booking.status}
-                          </Badge>
-                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between gap-4 mb-3">
+                            <div className="flex-1 min-w-0">
+                              <h3 className="text-xl font-display font-bold text-neutral-900 mb-2">
+                                {booking.tourist?.user?.name}
+                              </h3>
+                              <Badge variant={statusVariants[booking.status as BookingStatus]} size="md" dot>
+                                {booking.status}
+                              </Badge>
+                            </div>
 
-                        <div className="text-right">
-                          <div className="text-2xl font-bold text-primary-600">
-                            {formatCurrency(booking.guideEarnings)}
+                            <div className="text-right">
+                              <div className="text-3xl font-display font-bold text-success-600">
+                                {formatCurrency(booking.guideEarnings)}
+                              </div>
+                              <div className="text-sm text-neutral-500">Your earnings</div>
+                            </div>
                           </div>
-                          <div className="text-xs text-gray-500">Your earnings</div>
+
+                          <div className="space-y-2 text-sm text-neutral-600 mb-4">
+                            <div className="flex items-center gap-2">
+                              <Calendar className="w-4 h-4 flex-shrink-0" />
+                              <span>
+                                {booking.scheduledDate
+                                  ? formatDate(booking.scheduledDate, 'PPpp')
+                                  : 'Instant booking'}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Users className="w-4 h-4 flex-shrink-0" />
+                              <span>{booking.duration} minutes</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Star className="w-4 h-4 flex-shrink-0" />
+                              <span>{booking.meetingPoint}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-wrap gap-2 pt-4 border-t border-neutral-200">
+                            <Button
+                              onClick={() => navigate(`/bookings/${booking.id}`)}
+                              size="sm"
+                              variant="secondary"
+                            >
+                              View Details
+                              <ArrowRight className="w-4 h-4" />
+                            </Button>
+
+                            {booking.status === 'CONFIRMED' && (
+                              <Button onClick={() => handleStartTour(booking.id)} size="sm">
+                                <Play className="w-4 h-4" />
+                                Start Tour
+                              </Button>
+                            )}
+
+                            {booking.status === 'STARTED' && (
+                              <Button onClick={() => handleCompleteTour(booking.id)} size="sm">
+                                <CheckCircle2 className="w-4 h-4" />
+                                Complete Tour
+                              </Button>
+                            )}
+                          </div>
                         </div>
-                      </div>
-
-                      <div className="space-y-1 text-sm text-gray-600 mb-4">
-                        <p>
-                          <strong>When:</strong>{' '}
-                          {booking.scheduledDate
-                            ? formatDate(booking.scheduledDate, 'PPpp')
-                            : 'Instant booking'}
-                        </p>
-                        <p>
-                          <strong>Duration:</strong> {booking.duration} minutes
-                        </p>
-                        <p>
-                          <strong>Meeting Point:</strong> {booking.meetingPoint}
-                        </p>
-                      </div>
-
-                      <div className="flex gap-3">
-                        <Button
-                          onClick={() => navigate(`/bookings/${booking.id}`)}
-                          size="sm"
-                          variant="secondary"
-                        >
-                          View Details
-                        </Button>
-
-                        {booking.status === 'CONFIRMED' && (
-                          <Button onClick={() => handleStartTour(booking.id)} size="sm">
-                            Start Tour
-                          </Button>
-                        )}
-
-                        {booking.status === 'STARTED' && (
-                          <Button
-                            onClick={() => handleCompleteTour(booking.id)}
-                            size="sm"
-                            variant="primary"
-                          >
-                            Complete Tour
-                          </Button>
-                        )}
                       </div>
                     </div>
-                  </div>
+                  </Card>
                 </div>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <Card>
-            <div className="text-center py-8">
-              <Calendar className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-              <p className="text-gray-600">No upcoming bookings</p>
-              <p className="text-sm text-gray-500 mt-2">
-                Toggle your availability to start receiving bookings
-              </p>
+              ))}
             </div>
-          </Card>
-        )}
+          ) : (
+            <Card variant="bordered" padding="lg">
+              <div className="text-center py-16 animate-fade-in">
+                <div className="inline-flex p-6 bg-neutral-100 rounded-full mb-6">
+                  <Calendar className="w-12 h-12 text-neutral-400" />
+                </div>
+                <h3 className="text-2xl font-display font-bold text-neutral-900 mb-3">
+                  No upcoming bookings
+                </h3>
+                <p className="text-neutral-600 text-lg mb-6 max-w-md mx-auto">
+                  Toggle your availability to start receiving bookings from tourists
+                </p>
+                <Button onClick={toggleAvailability} size="lg">
+                  <Power className="w-5 h-5" />
+                  {guide.isAvailable ? 'You are available' : 'Set as Available'}
+                </Button>
+              </div>
+            </Card>
+          )}
+        </div>
       </div>
     </div>
   )
