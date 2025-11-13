@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { MapPin, Star, Clock, Calendar, Languages, Award, ChevronLeft } from 'lucide-react'
+import { MapPin, Star, Clock, Calendar, Languages, Award, ChevronLeft, Sparkles, Check, Zap } from 'lucide-react'
 import { api } from '../../services/api'
 import { Avatar } from '../../components/common/Avatar'
 import { Badge } from '../../components/common/Badge'
@@ -8,7 +8,7 @@ import { Button } from '../../components/common/Button'
 import { Card } from '../../components/common/Card'
 import { StarRating } from '../../components/common/StarRating'
 import { Loading } from '../../components/common/Loading'
-import { formatCurrency } from '../../utils/helpers'
+import { formatCurrency, formatRelativeTime } from '../../utils/helpers'
 import { useAuth } from '../../context/AuthContext'
 import type { Guide, Tour, Review } from '../../types'
 
@@ -46,88 +46,113 @@ export default function GuideDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Loading size="lg" text="Loading guide details..." />
+      <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-primary-50/20 flex items-center justify-center">
+        <Loading size="lg" text="Loading guide details..." variant="dots" fullScreen />
       </div>
     )
   }
 
   if (!guide) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-gray-600 text-lg mb-4">Guide not found</p>
-          <Button onClick={() => navigate('/browse-guides')}>Browse Guides</Button>
+      <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-primary-50/20 flex items-center justify-center px-4">
+        <div className="text-center animate-fade-in">
+          <div className="inline-flex p-6 bg-neutral-100 rounded-full mb-6">
+            <MapPin className="w-12 h-12 text-neutral-400" />
+          </div>
+          <h3 className="text-2xl font-display font-bold text-neutral-900 mb-3">
+            Guide not found
+          </h3>
+          <p className="text-neutral-600 text-lg mb-6">
+            The guide you're looking for doesn't exist or has been removed.
+          </p>
+          <Button onClick={() => navigate('/browse-guides')} size="lg">
+            Browse Guides
+          </Button>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-primary-50/20">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="bg-white border-b-2 border-neutral-100 shadow-soft">
+        <div className="container-custom py-4">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4"
+            className="flex items-center gap-2 text-neutral-600 hover:text-primary-600 font-semibold transition-colors group"
           >
-            <ChevronLeft className="w-5 h-5" />
-            Back
+            <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+            Back to guides
           </button>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="container-custom py-8">
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-6 animate-fade-in-up">
             {/* Guide Profile */}
-            <Card>
-              <div className="flex items-start gap-6">
-                <Avatar src={guide.user?.photo} name={guide.user?.name} size="xl" />
+            <Card variant="elevated" padding="lg">
+              <div className="flex flex-col sm:flex-row items-start gap-6">
+                <div className="relative flex-shrink-0">
+                  <Avatar src={guide.user?.photo} name={guide.user?.name} size="2xl" />
+                  {guide.isAvailable && (
+                    <div className="absolute -bottom-2 -right-2 flex items-center gap-1 px-3 py-1.5 bg-success-500 text-white rounded-full text-xs font-semibold shadow-lg">
+                      <Zap className="w-3 h-3 fill-current" />
+                      <span>Available</span>
+                    </div>
+                  )}
+                </div>
 
-                <div className="flex-1">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-4 mb-4">
+                    <div className="flex-1 min-w-0">
+                      <h1 className="text-4xl font-display font-bold text-neutral-900 mb-3">
                         {guide.user?.name}
                       </h1>
                       {guide.averageRating && guide.averageRating > 0 ? (
                         <div className="flex items-center gap-3">
                           <StarRating rating={guide.averageRating} showNumber />
-                          <span className="text-gray-600">
+                          <span className="text-neutral-600 font-medium">
                             ({guide.totalReviews} review{guide.totalReviews !== 1 ? 's' : ''})
                           </span>
                         </div>
                       ) : (
-                        <p className="text-gray-500">New guide - No reviews yet</p>
+                        <Badge variant="info" size="lg" dot>
+                          New Guide - No reviews yet
+                        </Badge>
                       )}
                     </div>
-
-                    {guide.isAvailable && <Badge variant="success">Available Now</Badge>}
                   </div>
 
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2 text-gray-700">
-                      <Languages className="w-5 h-5" />
-                      <span>
-                        <strong>Languages:</strong> {guide.languages?.join(', ')}
-                      </span>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="flex items-start gap-3 p-3 bg-primary-50 rounded-xl">
+                      <div className="p-2 bg-primary-100 rounded-lg">
+                        <Languages className="w-5 h-5 text-primary-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs font-semibold text-primary-600 uppercase tracking-wide mb-1">
+                          Languages
+                        </div>
+                        <div className="font-medium text-neutral-900">
+                          {guide.languages?.join(', ')}
+                        </div>
+                      </div>
                     </div>
 
-                    <div className="flex items-center gap-2 text-gray-700">
-                      <Award className="w-5 h-5" />
-                      <span>
-                        <strong>Specialties:</strong> {guide.specialties?.join(', ')}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2 text-gray-700">
-                      <Clock className="w-5 h-5" />
-                      <span>
-                        <strong>Rate:</strong> {formatCurrency(guide.hourlyRate)}/hour
-                      </span>
+                    <div className="flex items-start gap-3 p-3 bg-secondary-50 rounded-xl">
+                      <div className="p-2 bg-secondary-100 rounded-lg">
+                        <Award className="w-5 h-5 text-secondary-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs font-semibold text-secondary-600 uppercase tracking-wide mb-1">
+                          Specialties
+                        </div>
+                        <div className="font-medium text-neutral-900">
+                          {guide.specialties?.join(', ')}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -135,28 +160,43 @@ export default function GuideDetail() {
             </Card>
 
             {/* About */}
-            <Card>
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">About Me</h2>
-              <p className="text-gray-700 whitespace-pre-wrap">{guide.bio}</p>
+            <Card variant="bordered" padding="lg">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="p-2 bg-primary-100 rounded-lg">
+                  <Sparkles className="w-5 h-5 text-primary-600" />
+                </div>
+                <h2 className="text-2xl font-display font-bold text-neutral-900">About Me</h2>
+              </div>
+              <p className="text-neutral-700 leading-relaxed whitespace-pre-wrap">{guide.bio}</p>
             </Card>
 
             {/* Tours Offered */}
             {guide.tours && guide.tours.length > 0 && (
-              <Card>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Tours Offered</h2>
+              <Card variant="bordered" padding="lg">
+                <div className="flex items-center gap-2 mb-6">
+                  <div className="p-2 bg-primary-100 rounded-lg">
+                    <MapPin className="w-5 h-5 text-primary-600" />
+                  </div>
+                  <h2 className="text-2xl font-display font-bold text-neutral-900">Tours Offered</h2>
+                </div>
                 <div className="space-y-4">
-                  {guide.tours.map((tour: Tour) => (
-                    <div key={tour.id} className="border-l-4 border-primary-500 pl-4">
-                      <h3 className="font-semibold text-gray-900">{tour.title}</h3>
-                      <p className="text-sm text-gray-600 mt-1">{tour.description}</p>
-                      <div className="flex items-center gap-4 mt-2 text-sm text-gray-700">
-                        <span>
-                          <Clock className="w-4 h-4 inline mr-1" />
-                          {tour.duration} min
-                        </span>
-                        <span className="font-semibold text-primary-600">
+                  {guide.tours.map((tour: Tour, index) => (
+                    <div
+                      key={tour.id}
+                      className="relative p-5 border-2 border-neutral-200 rounded-xl hover:border-primary-300 hover:shadow-medium transition-all animate-fade-in-up"
+                      style={{ animationDelay: `${index * 50}ms` }}
+                    >
+                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary-600 to-secondary-600 rounded-l-xl" />
+                      <div className="flex items-start justify-between gap-4 mb-3">
+                        <h3 className="text-xl font-display font-bold text-neutral-900">{tour.title}</h3>
+                        <div className="text-2xl font-display font-bold text-primary-600 flex-shrink-0">
                           {formatCurrency(tour.price)}
-                        </span>
+                        </div>
+                      </div>
+                      <p className="text-neutral-600 leading-relaxed mb-4">{tour.description}</p>
+                      <div className="flex items-center gap-2 text-sm text-neutral-600">
+                        <Clock className="w-4 h-4" />
+                        <span className="font-medium">{tour.duration} minutes</span>
                       </div>
                     </div>
                   ))}
@@ -166,26 +206,40 @@ export default function GuideDetail() {
 
             {/* Reviews */}
             {guide.reviews && guide.reviews.length > 0 && (
-              <Card>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Reviews</h2>
-                <div className="space-y-4">
-                  {guide.reviews.map((review: Review) => (
-                    <div key={review.id} className="border-b border-gray-200 last:border-0 pb-4 last:pb-0">
-                      <div className="flex items-center gap-3 mb-2">
+              <Card variant="bordered" padding="lg">
+                <div className="flex items-center gap-2 mb-6">
+                  <div className="p-2 bg-warning-100 rounded-lg">
+                    <Star className="w-5 h-5 text-warning-500" />
+                  </div>
+                  <h2 className="text-2xl font-display font-bold text-neutral-900">Reviews</h2>
+                </div>
+                <div className="space-y-6">
+                  {guide.reviews.map((review: Review, index) => (
+                    <div
+                      key={review.id}
+                      className="border-b-2 border-neutral-100 last:border-0 pb-6 last:pb-0 animate-fade-in-up"
+                      style={{ animationDelay: `${index * 50}ms` }}
+                    >
+                      <div className="flex items-start gap-4 mb-3">
                         <Avatar
                           src={review.tourist?.user?.photo}
                           name={review.tourist?.user?.name}
-                          size="sm"
+                          size="md"
                         />
-                        <div>
-                          <p className="font-medium text-gray-900">
-                            {review.tourist?.user?.name}
-                          </p>
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-2">
+                            <p className="font-semibold text-neutral-900">
+                              {review.tourist?.user?.name}
+                            </p>
+                            <span className="text-sm text-neutral-500">
+                              {formatRelativeTime(review.createdAt)}
+                            </span>
+                          </div>
                           <StarRating rating={review.rating} size="sm" />
                         </div>
                       </div>
                       {review.comment && (
-                        <p className="text-gray-700 ml-11">{review.comment}</p>
+                        <p className="text-neutral-700 leading-relaxed ml-14">{review.comment}</p>
                       )}
                     </div>
                   ))}
@@ -196,39 +250,65 @@ export default function GuideDetail() {
 
           {/* Sidebar - Booking Card */}
           <div className="lg:col-span-1">
-            <Card className="sticky top-4">
-              <div className="text-center mb-6">
-                <div className="text-4xl font-bold text-primary-600 mb-2">
-                  {formatCurrency(guide.hourlyRate)}
+            <div className="sticky top-4 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+              <Card variant="elevated" padding="lg" className="border-2 border-primary-200">
+                {/* Price */}
+                <div className="text-center mb-6 pb-6 border-b-2 border-neutral-100">
+                  <div className="inline-flex items-baseline gap-2">
+                    <div className="text-5xl font-display font-bold text-primary-600">
+                      {formatCurrency(guide.hourlyRate)}
+                    </div>
+                    <div className="text-lg text-neutral-600 font-semibold">/hour</div>
+                  </div>
                 </div>
-                <p className="text-gray-600">per hour</p>
-              </div>
 
-              <Button onClick={handleBookNow} fullWidth size="lg" className="mb-4">
-                {guide.isAvailable ? 'Book Now' : 'Schedule Tour'}
-              </Button>
+                {/* CTA Button */}
+                <Button onClick={handleBookNow} fullWidth size="lg" className="mb-6">
+                  {guide.isAvailable ? (
+                    <>
+                      <Zap className="w-5 h-5" />
+                      Book Now
+                    </>
+                  ) : (
+                    <>
+                      <Calendar className="w-5 h-5" />
+                      Schedule Tour
+                    </>
+                  )}
+                </Button>
 
-              <div className="border-t border-gray-200 pt-4 mt-4 space-y-3 text-sm text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  <span>Flexible scheduling</span>
+                {/* Features */}
+                <div className="space-y-3 text-sm">
+                  <div className="flex items-center gap-3 text-neutral-700">
+                    <div className="flex items-center justify-center w-8 h-8 bg-success-100 rounded-lg flex-shrink-0">
+                      <Check className="w-4 h-4 text-success-600" />
+                    </div>
+                    <span className="font-medium">Flexible scheduling</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-neutral-700">
+                    <div className="flex items-center justify-center w-8 h-8 bg-success-100 rounded-lg flex-shrink-0">
+                      <Check className="w-4 h-4 text-success-600" />
+                    </div>
+                    <span className="font-medium">Oxford & Cambridge</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-neutral-700">
+                    <div className="flex items-center justify-center w-8 h-8 bg-success-100 rounded-lg flex-shrink-0">
+                      <Check className="w-4 h-4 text-success-600" />
+                    </div>
+                    <span className="font-medium">Minimum 30 minutes</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4" />
-                  <span>Oxford & Cambridge</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  <span>Minimum 30 minutes</span>
-                </div>
-              </div>
 
-              <div className="border-t border-gray-200 pt-4 mt-4">
-                <p className="text-xs text-gray-500 text-center">
-                  You won't be charged yet. Payment is processed after tour completion.
-                </p>
-              </div>
-            </Card>
+                {/* Trust Message */}
+                <div className="mt-6 pt-6 border-t-2 border-neutral-100">
+                  <div className="p-4 bg-primary-50 rounded-xl">
+                    <p className="text-sm text-primary-700 font-medium text-center leading-relaxed">
+                      🔒 Secure booking. Payment processed after tour completion.
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            </div>
           </div>
         </div>
       </div>

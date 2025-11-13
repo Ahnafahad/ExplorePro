@@ -42,19 +42,28 @@ export function StarRating({
             type="button"
             onClick={() => handleClick(starValue)}
             disabled={!interactive}
-            className={`${interactive ? 'cursor-pointer hover:scale-110' : 'cursor-default'} transition-transform`}
+            className={`
+              ${interactive ? 'cursor-pointer hover:scale-110 active:scale-95' : 'cursor-default'}
+              transition-transform duration-150
+              focus:outline-none focus:ring-2 focus:ring-warning-400 focus:ring-offset-1 rounded-sm
+            `}
           >
             <Star
-              className={`${sizeClasses[size]} ${
-                isFilled ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
+              className={`${sizeClasses[size]} transition-colors ${
+                isFilled
+                  ? 'fill-warning-400 text-warning-400'
+                  : interactive
+                    ? 'text-neutral-300 hover:text-warning-200'
+                    : 'text-neutral-300'
               }`}
             />
           </button>
         )
       })}
       {showNumber && (
-        <span className="ml-2 text-sm text-gray-600">
-          {rating.toFixed(1)} / {maxRating}
+        <span className="ml-2 text-sm font-bold text-neutral-900">
+          {rating.toFixed(1)}
+          <span className="text-neutral-500 font-normal"> / {maxRating}</span>
         </span>
       )}
     </div>
