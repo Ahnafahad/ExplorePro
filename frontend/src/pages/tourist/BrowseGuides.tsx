@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Search, Filter } from 'lucide-react'
+import { Search, Filter, MapPin, Sparkles, SlidersHorizontal, X } from 'lucide-react'
 import { api } from '../../services/api'
 import { GuideCard } from '../../components/tourist/GuideCard'
 import { Input } from '../../components/common/Input'
@@ -12,6 +12,7 @@ import type { Guide } from '../../types'
 export default function BrowseGuides() {
   const [guides, setGuides] = useState<Guide[]>([])
   const [loading, setLoading] = useState(true)
+  const [showFilters, setShowFilters] = useState(true)
   const [filters, setFilters] = useState({
     language: '',
     specialty: '',
@@ -65,108 +66,166 @@ export default function BrowseGuides() {
     setTimeout(() => fetchGuides(), 0)
   }
 
+  const activeFilterCount = Object.values(filters).filter(Boolean).length
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-primary-50/20">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold text-gray-900">Find Your Perfect Guide</h1>
-          <p className="text-gray-600 mt-2">
-            Browse our verified local guides in Oxford & Cambridge
-          </p>
+      <div className="relative bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-600 text-white overflow-hidden">
+        {/* Background pattern */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9Ii4xIi8+PC9nPjwvc3ZnPg==')] opacity-10" />
+
+        <div className="relative container-custom py-12 lg:py-16">
+          <div className="max-w-3xl animate-fade-in-up">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-6">
+              <Sparkles className="w-4 h-4" />
+              <span className="text-sm font-semibold">500+ Expert Guides Available</span>
+            </div>
+
+            <h1 className="text-5xl lg:text-6xl font-display font-bold mb-4 tracking-tight">
+              Find Your Perfect Guide
+            </h1>
+            <p className="text-xl text-white/90 leading-relaxed">
+              Browse our verified local guides in Oxford & Cambridge. Book instantly or schedule ahead.
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="container-custom py-8">
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <Filter className="w-5 h-5 text-gray-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
-          </div>
+        <div className="mb-8 animate-fade-in-up">
+          <div className="card p-6">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-primary-100 rounded-xl">
+                  <SlidersHorizontal className="w-5 h-5 text-primary-600" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-display font-bold text-neutral-900">Filters</h2>
+                  {activeFilterCount > 0 && (
+                    <p className="text-sm text-neutral-600">{activeFilterCount} active filter{activeFilterCount !== 1 ? 's' : ''}</p>
+                  )}
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowFilters(!showFilters)}
+                className="lg:hidden"
+              >
+                {showFilters ? 'Hide' : 'Show'}
+              </Button>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            <Select
-              label="Language"
-              options={[
-                { value: '', label: 'All Languages' },
-                ...LANGUAGES.map((lang) => ({ value: lang, label: lang })),
-              ]}
-              value={filters.language}
-              onChange={(e) => handleFilterChange('language', e.target.value)}
-            />
+            <div className={`space-y-6 ${!showFilters ? 'hidden lg:block' : ''}`}>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <Select
+                  label="Language"
+                  options={[
+                    { value: '', label: 'All Languages' },
+                    ...LANGUAGES.map((lang) => ({ value: lang, label: lang })),
+                  ]}
+                  value={filters.language}
+                  onChange={(e) => handleFilterChange('language', e.target.value)}
+                />
 
-            <Select
-              label="Specialty"
-              options={[
-                { value: '', label: 'All Specialties' },
-                ...SPECIALTIES.map((spec) => ({ value: spec, label: spec })),
-              ]}
-              value={filters.specialty}
-              onChange={(e) => handleFilterChange('specialty', e.target.value)}
-            />
+                <Select
+                  label="Specialty"
+                  options={[
+                    { value: '', label: 'All Specialties' },
+                    ...SPECIALTIES.map((spec) => ({ value: spec, label: spec })),
+                  ]}
+                  value={filters.specialty}
+                  onChange={(e) => handleFilterChange('specialty', e.target.value)}
+                />
 
-            <Select
-              label="Availability"
-              options={[
-                { value: '', label: 'All' },
-                { value: 'true', label: 'Available Now' },
-                { value: 'false', label: 'Schedule Later' },
-              ]}
-              value={filters.isAvailable}
-              onChange={(e) => handleFilterChange('isAvailable', e.target.value)}
-            />
+                <Select
+                  label="Availability"
+                  options={[
+                    { value: '', label: 'All' },
+                    { value: 'true', label: 'Available Now' },
+                    { value: 'false', label: 'Schedule Later' },
+                  ]}
+                  value={filters.isAvailable}
+                  onChange={(e) => handleFilterChange('isAvailable', e.target.value)}
+                />
 
-            <Input
-              label="Min Rate (£)"
-              type="number"
-              placeholder="10"
-              value={filters.minRate}
-              onChange={(e) => handleFilterChange('minRate', e.target.value)}
-            />
+                <Input
+                  label="Min Rate (£)"
+                  type="number"
+                  placeholder="10"
+                  value={filters.minRate}
+                  onChange={(e) => handleFilterChange('minRate', e.target.value)}
+                />
 
-            <Input
-              label="Max Rate (£)"
-              type="number"
-              placeholder="100"
-              value={filters.maxRate}
-              onChange={(e) => handleFilterChange('maxRate', e.target.value)}
-            />
-          </div>
+                <Input
+                  label="Max Rate (£)"
+                  type="number"
+                  placeholder="100"
+                  value={filters.maxRate}
+                  onChange={(e) => handleFilterChange('maxRate', e.target.value)}
+                />
+              </div>
 
-          <div className="flex gap-4 mt-6">
-            <Button onClick={handleSearch} className="flex items-center gap-2">
-              <Search className="w-4 h-4" />
-              Search
-            </Button>
-            <Button onClick={handleClearFilters} variant="secondary">
-              Clear Filters
-            </Button>
+              <div className="flex flex-wrap gap-3 pt-2">
+                <Button onClick={handleSearch} className="flex items-center gap-2">
+                  <Search className="w-4 h-4" />
+                  Search Guides
+                </Button>
+                {activeFilterCount > 0 && (
+                  <Button onClick={handleClearFilters} variant="outline" className="flex items-center gap-2">
+                    <X className="w-4 h-4" />
+                    Clear All Filters
+                  </Button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Results */}
         {loading ? (
-          <div className="flex justify-center py-12">
-            <Loading size="lg" text="Finding guides..." />
+          <div className="flex justify-center py-16">
+            <Loading size="lg" text="Finding the best guides for you..." variant="dots" />
           </div>
         ) : guides.length > 0 ? (
-          <>
-            <div className="mb-4 text-gray-600">
-              Found {guides.length} guide{guides.length !== 1 ? 's' : ''}
+          <div className="space-y-6 animate-fade-in">
+            <div className="flex items-center justify-between">
+              <p className="text-neutral-600 font-medium">
+                Found <span className="text-primary-600 font-bold">{guides.length}</span> guide{guides.length !== 1 ? 's' : ''}
+              </p>
             </div>
+
             <div className="grid gap-6">
-              {guides.map((guide) => (
-                <GuideCard key={guide.id} guide={guide} />
+              {guides.map((guide, index) => (
+                <div
+                  key={guide.id}
+                  className="animate-fade-in-up"
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  <GuideCard guide={guide} />
+                </div>
               ))}
             </div>
-          </>
+          </div>
         ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-600 text-lg">No guides found matching your criteria</p>
-            <Button onClick={handleClearFilters} variant="secondary" className="mt-4">
-              Clear filters and try again
-            </Button>
+          <div className="text-center py-16 animate-fade-in">
+            <div className="inline-flex p-6 bg-neutral-100 rounded-full mb-6">
+              <MapPin className="w-12 h-12 text-neutral-400" />
+            </div>
+            <h3 className="text-2xl font-display font-bold text-neutral-900 mb-3">
+              No guides found
+            </h3>
+            <p className="text-neutral-600 text-lg mb-6 max-w-md mx-auto">
+              We couldn't find any guides matching your criteria. Try adjusting your filters.
+            </p>
+            {activeFilterCount > 0 && (
+              <Button onClick={handleClearFilters} variant="secondary" size="lg" className="flex items-center gap-2 mx-auto">
+                <X className="w-5 h-5" />
+                Clear All Filters
+              </Button>
+            )}
           </div>
         )}
       </div>
