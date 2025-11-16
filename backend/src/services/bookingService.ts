@@ -1,8 +1,7 @@
-import { PrismaClient, BookingType, BookingStatus } from '@prisma/client'
+import { BookingType, BookingStatus } from '@prisma/client'
 import { pollingService } from '../polling/pollingService.js'
 import { differenceInHours } from 'date-fns'
-
-const prisma = new PrismaClient()
+import prisma from '../utils/prisma.js'
 
 const COMMISSION_RATE = 0.15
 

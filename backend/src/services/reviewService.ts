@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client'
 import { guideService } from './guideService.js'
-
-const prisma = new PrismaClient()
+import prisma from '../utils/prisma.js'
 
 interface CreateReviewData {
   bookingId: string
