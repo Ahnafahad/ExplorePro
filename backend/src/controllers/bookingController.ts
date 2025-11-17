@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { bookingService } from '../services/bookingService.js'
 import { stripeService } from '../services/stripeService.js'
 import { z } from 'zod'
+import prisma from '../utils/prisma.js'
 
 const createBookingSchema = z.object({
   guideId: z.string().uuid(),
@@ -32,8 +33,6 @@ export class BookingController {
       const validatedData = createBookingSchema.parse(req.body)
 
       // Get tourist ID
-      const { PrismaClient } = await import('@prisma/client')
-      const prisma = new PrismaClient()
       const tourist = await prisma.tourist.findUnique({
         where: { userId },
       })

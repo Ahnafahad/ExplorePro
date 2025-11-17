@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { reviewService } from '../services/reviewService.js'
 import { z } from 'zod'
+import prisma from '../utils/prisma.js'
 
 const createReviewSchema = z.object({
   bookingId: z.string().uuid(),
@@ -18,8 +19,6 @@ export class ReviewController {
       const validatedData = createReviewSchema.parse(req.body)
 
       // Get tourist ID
-      const { PrismaClient } = await import('@prisma/client')
-      const prisma = new PrismaClient()
       const tourist = await prisma.tourist.findUnique({
         where: { userId },
       })

@@ -38,7 +38,8 @@ coverage/
 .nyc_output/
 
 # Prisma
-backend/prisma/migrations/
+# Note: Migrations should be committed for Vercel deployment
+# backend/prisma/migrations/ - REMOVED to allow migration commits
 
 # Temp files
 *.tmp

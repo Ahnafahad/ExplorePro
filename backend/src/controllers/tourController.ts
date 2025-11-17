@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { tourService } from '../services/tourService.js'
 import { z } from 'zod'
+import prisma from '../utils/prisma.js'
 
 const createTourSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters'),
@@ -27,8 +28,6 @@ export class TourController {
       const validatedData = createTourSchema.parse(req.body)
 
       // Get guide ID
-      const { PrismaClient } = await import('@prisma/client')
-      const prisma = new PrismaClient()
       const guide = await prisma.guide.findUnique({
         where: { userId },
       })
