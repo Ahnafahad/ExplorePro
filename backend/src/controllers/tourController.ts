@@ -21,7 +21,7 @@ export class TourController {
   /**
    * Create a new tour
    */
-  async createTour(req: Request, res: Response) {
+  async createTour(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user!.userId
       const validatedData = createTourSchema.parse(req.body)
@@ -34,13 +34,14 @@ export class TourController {
       })
 
       if (!guide) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
           error: {
             code: 'NOT_FOUND',
             message: 'Guide profile not found',
           },
         })
+        return
       }
 
       const tour = await tourService.createTour({
@@ -57,7 +58,7 @@ export class TourController {
       console.error('Create tour error:', error)
 
       if (error instanceof z.ZodError) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: {
             code: 'VALIDATION_ERROR',
@@ -65,6 +66,7 @@ export class TourController {
             details: error.errors,
           },
         })
+        return
       }
 
       res.status(400).json({
@@ -103,7 +105,7 @@ export class TourController {
   /**
    * Update tour
    */
-  async updateTour(req: Request, res: Response) {
+  async updateTour(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params
       const userId = req.user!.userId
@@ -112,7 +114,7 @@ export class TourController {
       // Verify tour belongs to user's guide profile
       const tour = await tourService.getTourById(id)
       if (tour.guide.userId !== userId) {
-        return res.status(403).json({
+        res.status(403).json({
           success: false,
           error: {
             code: 'FORBIDDEN',
@@ -132,7 +134,7 @@ export class TourController {
       console.error('Update tour error:', error)
 
       if (error instanceof z.ZodError) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: {
             code: 'VALIDATION_ERROR',
@@ -140,6 +142,7 @@ export class TourController {
             details: error.errors,
           },
         })
+        return
       }
 
       res.status(400).json({
@@ -155,7 +158,7 @@ export class TourController {
   /**
    * Delete tour (soft delete)
    */
-  async deleteTour(req: Request, res: Response) {
+  async deleteTour(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params
       const userId = req.user!.userId
@@ -163,7 +166,7 @@ export class TourController {
       // Verify tour belongs to user's guide profile
       const tour = await tourService.getTourById(id)
       if (tour.guide.userId !== userId) {
-        return res.status(403).json({
+        res.status(403).json({
           success: false,
           error: {
             code: 'FORBIDDEN',

@@ -12,7 +12,7 @@ export class ReviewController {
   /**
    * Create a review
    */
-  async createReview(req: Request, res: Response) {
+  async createReview(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user!.userId
       const validatedData = createReviewSchema.parse(req.body)
@@ -25,13 +25,14 @@ export class ReviewController {
       })
 
       if (!tourist) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
           error: {
             code: 'NOT_FOUND',
             message: 'Tourist profile not found',
           },
         })
+        return
       }
 
       // Verify booking belongs to tourist and get guide ID
@@ -40,23 +41,25 @@ export class ReviewController {
       })
 
       if (!booking) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
           error: {
             code: 'NOT_FOUND',
             message: 'Booking not found',
           },
         })
+        return
       }
 
       if (booking.touristId !== tourist.id) {
-        return res.status(403).json({
+        res.status(403).json({
           success: false,
           error: {
             code: 'FORBIDDEN',
             message: 'You can only review your own bookings',
           },
         })
+        return
       }
 
       const review = await reviewService.createReview({
@@ -74,7 +77,7 @@ export class ReviewController {
       console.error('Create review error:', error)
 
       if (error instanceof z.ZodError) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: {
             code: 'VALIDATION_ERROR',
@@ -82,6 +85,7 @@ export class ReviewController {
             details: error.errors,
           },
         })
+        return
       }
 
       res.status(400).json({
@@ -124,13 +128,13 @@ export class ReviewController {
   /**
    * Get review for a booking
    */
-  async getBookingReview(req: Request, res: Response) {
+  async getBookingReview(req: Request, res: Response): Promise<void> {
     try {
       const { bookingId } = req.params
       const review = await reviewService.getReviewForBooking(bookingId)
 
       if (!review) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
           error: {
             code: 'NOT_FOUND',

@@ -26,7 +26,7 @@ export class BookingController {
   /**
    * Create a new booking
    */
-  async createBooking(req: Request, res: Response) {
+  async createBooking(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user!.userId
       const validatedData = createBookingSchema.parse(req.body)
@@ -39,13 +39,14 @@ export class BookingController {
       })
 
       if (!tourist) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
           error: {
             code: 'NOT_FOUND',
             message: 'Tourist profile not found',
           },
         })
+        return
       }
 
       // Create booking
@@ -73,7 +74,7 @@ export class BookingController {
       console.error('Create booking error:', error)
 
       if (error instanceof z.ZodError) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: {
             code: 'VALIDATION_ERROR',
@@ -81,6 +82,7 @@ export class BookingController {
             details: error.errors,
           },
         })
+        return
       }
 
       res.status(400).json({
@@ -96,7 +98,7 @@ export class BookingController {
   /**
    * Get bookings for current user
    */
-  async getBookings(req: Request, res: Response) {
+  async getBookings(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user!.userId
       const role = req.user!.role
@@ -121,7 +123,7 @@ export class BookingController {
   /**
    * Get booking details
    */
-  async getBooking(req: Request, res: Response) {
+  async getBooking(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params
       const booking = await bookingService.getBookingById(id)
@@ -129,7 +131,7 @@ export class BookingController {
       // Verify user has access to this booking
       const userId = req.user!.userId
       if (booking.tourist.userId !== userId && booking.guide.userId !== userId) {
-        return res.status(403).json({
+        res.status(403).json({
           success: false,
           error: {
             code: 'FORBIDDEN',
@@ -156,14 +158,14 @@ export class BookingController {
   /**
    * Start tour (guide only)
    */
-  async startTour(req: Request, res: Response) {
+  async startTour(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params
       const userId = req.user!.userId
 
       const booking = await bookingService.getBookingById(id)
       if (booking.guide.userId !== userId) {
-        return res.status(403).json({
+        res.status(403).json({
           success: false,
           error: {
             code: 'FORBIDDEN',
@@ -193,14 +195,14 @@ export class BookingController {
   /**
    * Complete tour (guide only)
    */
-  async completeTour(req: Request, res: Response) {
+  async completeTour(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params
       const userId = req.user!.userId
 
       const booking = await bookingService.getBookingById(id)
       if (booking.guide.userId !== userId) {
-        return res.status(403).json({
+        res.status(403).json({
           success: false,
           error: {
             code: 'FORBIDDEN',
@@ -230,14 +232,14 @@ export class BookingController {
   /**
    * Cancel booking
    */
-  async cancelBooking(req: Request, res: Response) {
+  async cancelBooking(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params
       const userId = req.user!.userId
 
       const booking = await bookingService.getBookingById(id)
       if (booking.tourist.userId !== userId && booking.guide.userId !== userId) {
-        return res.status(403).json({
+        res.status(403).json({
           success: false,
           error: {
             code: 'FORBIDDEN',
@@ -272,14 +274,14 @@ export class BookingController {
   /**
    * Get messages for booking
    */
-  async getMessages(req: Request, res: Response) {
+  async getMessages(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params
       const userId = req.user!.userId
 
       const booking = await bookingService.getBookingById(id)
       if (booking.tourist.userId !== userId && booking.guide.userId !== userId) {
-        return res.status(403).json({
+        res.status(403).json({
           success: false,
           error: {
             code: 'FORBIDDEN',
@@ -311,7 +313,7 @@ export class BookingController {
   /**
    * Send message
    */
-  async sendMessage(req: Request, res: Response) {
+  async sendMessage(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params
       const userId = req.user!.userId
@@ -319,7 +321,7 @@ export class BookingController {
 
       const booking = await bookingService.getBookingById(id)
       if (booking.tourist.userId !== userId && booking.guide.userId !== userId) {
-        return res.status(403).json({
+        res.status(403).json({
           success: false,
           error: {
             code: 'FORBIDDEN',
@@ -339,7 +341,7 @@ export class BookingController {
       console.error('Send message error:', error)
 
       if (error instanceof z.ZodError) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: {
             code: 'VALIDATION_ERROR',
@@ -347,6 +349,7 @@ export class BookingController {
             details: error.errors,
           },
         })
+        return
       }
 
       res.status(400).json({
@@ -362,7 +365,7 @@ export class BookingController {
   /**
    * Update location (guide only)
    */
-  async updateLocation(req: Request, res: Response) {
+  async updateLocation(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params
       const userId = req.user!.userId
@@ -370,7 +373,7 @@ export class BookingController {
 
       const booking = await bookingService.getBookingById(id)
       if (booking.guide.userId !== userId) {
-        return res.status(403).json({
+        res.status(403).json({
           success: false,
           error: {
             code: 'FORBIDDEN',
@@ -389,7 +392,7 @@ export class BookingController {
       console.error('Update location error:', error)
 
       if (error instanceof z.ZodError) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: {
             code: 'VALIDATION_ERROR',
@@ -397,6 +400,7 @@ export class BookingController {
             details: error.errors,
           },
         })
+        return
       }
 
       res.status(400).json({
@@ -412,14 +416,14 @@ export class BookingController {
   /**
    * Get location history
    */
-  async getLocationHistory(req: Request, res: Response) {
+  async getLocationHistory(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params
       const userId = req.user!.userId
 
       const booking = await bookingService.getBookingById(id)
       if (booking.tourist.userId !== userId && booking.guide.userId !== userId) {
-        return res.status(403).json({
+        res.status(403).json({
           success: false,
           error: {
             code: 'FORBIDDEN',

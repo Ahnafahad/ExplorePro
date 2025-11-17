@@ -23,7 +23,7 @@ export class GuideController {
   /**
    * Create or update guide profile
    */
-  async createGuideProfile(req: Request, res: Response) {
+  async createGuideProfile(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user!.userId
       const validatedData = createGuideSchema.parse(req.body)
@@ -42,7 +42,7 @@ export class GuideController {
       console.error('Create guide error:', error)
 
       if (error instanceof z.ZodError) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: {
             code: 'VALIDATION_ERROR',
@@ -50,6 +50,7 @@ export class GuideController {
             details: error.errors,
           },
         })
+        return
       }
 
       res.status(400).json({
@@ -133,7 +134,7 @@ export class GuideController {
   /**
    * Update guide profile
    */
-  async updateGuide(req: Request, res: Response) {
+  async updateGuide(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params
       const userId = req.user!.userId
@@ -141,7 +142,7 @@ export class GuideController {
       // Verify the guide belongs to the user
       const guide = await guideService.getGuideById(id)
       if (guide.userId !== userId) {
-        return res.status(403).json({
+        res.status(403).json({
           success: false,
           error: {
             code: 'FORBIDDEN',
@@ -162,7 +163,7 @@ export class GuideController {
       console.error('Update guide error:', error)
 
       if (error instanceof z.ZodError) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: {
             code: 'VALIDATION_ERROR',
@@ -170,6 +171,7 @@ export class GuideController {
             details: error.errors,
           },
         })
+        return
       }
 
       res.status(400).json({
@@ -185,7 +187,7 @@ export class GuideController {
   /**
    * Toggle guide availability
    */
-  async toggleAvailability(req: Request, res: Response) {
+  async toggleAvailability(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params
       const userId = req.user!.userId
@@ -193,7 +195,7 @@ export class GuideController {
       // Verify the guide belongs to the user
       const guide = await guideService.getGuideById(id)
       if (guide.userId !== userId) {
-        return res.status(403).json({
+        res.status(403).json({
           success: false,
           error: {
             code: 'FORBIDDEN',
