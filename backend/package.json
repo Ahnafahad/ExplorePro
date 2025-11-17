@@ -12,7 +12,7 @@
     "prisma:deploy": "prisma migrate deploy",
     "seed": "tsx src/utils/seed.ts",
     "seed:demo": "tsx src/utils/seedDemo.ts",
-    "vercel-build": "prisma generate && prisma migrate deploy && npm run build"
+    "vercel-build": "prisma generate && npm run build"
   },
   "dependencies": {
     "express": "^4.18.2",
