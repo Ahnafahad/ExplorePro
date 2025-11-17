@@ -1,0 +1,105 @@
+{
+  "platform": {
+    "users": {
+      "total": 168,
+      "tourists": 150,
+      "guides": 15,
+      "admins": 3,
+      "growthRate": 23
+    },
+    "bookings": {
+      "today": {
+        "count": 3,
+        "revenue": 285
+      },
+      "thisWeek": {
+        "count": 12,
+        "revenue": 960
+      },
+      "thisMonth": {
+        "count": 45,
+        "revenue": 3600
+      },
+      "total": {
+        "count": 150,
+        "revenue": 12000
+      },
+      "growthRate": 18
+    },
+    "revenue": {
+      "gmv": 12000,
+      "commission": 1800,
+      "guidePay": 10200,
+      "averageBookingValue": 80,
+      "commissionRate": 15
+    },
+    "performance": {
+      "averageRating": 4.6,
+      "cancellationRate": 8,
+      "repeatBookingRate": 35,
+      "averageResponseTime": 14
+    }
+  },
+  "bookingsByDay": [
+    { "date": "2025-11-11", "bookings": 2, "revenue": 180 },
+    { "date": "2025-11-12", "bookings": 1, "revenue": 100 },
+    { "date": "2025-11-13", "bookings": 3, "revenue": 270 },
+    { "date": "2025-11-14", "bookings": 2, "revenue": 160 },
+    { "date": "2025-11-15", "bookings": 4, "revenue": 350 },
+    { "date": "2025-11-16", "bookings": 5, "revenue": 420 },
+    { "date": "2025-11-17", "bookings": 3, "revenue": 285 }
+  ],
+  "bookingsByWeekday": [
+    { "day": "Monday", "bookings": 18, "percentage": 40 },
+    { "day": "Tuesday", "bookings": 27, "percentage": 60 },
+    { "day": "Wednesday", "bookings": 32, "percentage": 70 },
+    { "day": "Thursday", "bookings": 36, "percentage": 80 },
+    { "day": "Friday", "bookings": 45, "percentage": 100 },
+    { "day": "Saturday", "bookings": 38, "percentage": 85 },
+    { "day": "Sunday", "bookings": 25, "percentage": 55 }
+  ],
+  "bookingsByHour": [
+    { "hour": "9-10", "bookings": 8 },
+    { "hour": "10-11", "bookings": 12 },
+    { "hour": "11-12", "bookings": 15 },
+    { "hour": "12-13", "bookings": 10 },
+    { "hour": "13-14", "bookings": 18 },
+    { "hour": "14-15", "bookings": 25 },
+    { "hour": "15-16", "bookings": 22 },
+    { "hour": "16-17", "bookings": 20 },
+    { "hour": "17-18", "bookings": 12 },
+    { "hour": "18-19", "bookings": 8 }
+  ],
+  "bookingsByCategory": [
+    { "category": "History", "bookings": 53, "revenue": 4200, "percentage": 35 },
+    { "category": "Food & Drink", "bookings": 45, "revenue": 3600, "percentage": 30 },
+    { "category": "Architecture", "bookings": 30, "revenue": 2400, "percentage": 20 },
+    { "category": "Photography", "bookings": 15, "revenue": 1200, "percentage": 10 },
+    { "category": "Nature", "bookings": 7, "revenue": 600, "percentage": 5 }
+  ],
+  "bookingsByLocation": [
+    { "location": "Oxford", "bookings": 98, "percentage": 65 },
+    { "location": "Cambridge", "bookings": 45, "percentage": 30 },
+    { "location": "Other", "bookings": 7, "percentage": 5 }
+  ],
+  "topGuides": [
+    { "id": "guide-1", "name": "Emma Thompson", "tours": 28, "rating": 4.9, "earnings": 2380 },
+    { "id": "guide-2", "name": "James Wilson", "tours": 24, "rating": 4.8, "earnings": 2160 },
+    { "id": "guide-3", "name": "Sarah Martinez", "tours": 22, "rating": 4.7, "earnings": 1980 },
+    { "id": "guide-12", "name": "Henry Clarke", "tours": 20, "rating": 4.9, "earnings": 2800 },
+    { "id": "guide-4", "name": "David Chen", "tours": 19, "rating": 4.9, "earnings": 2090 }
+  ],
+  "userAcquisitionFunnel": [
+    { "stage": "Visitors", "count": 1000, "percentage": 100 },
+    { "stage": "Signups", "count": 450, "percentage": 45 },
+    { "stage": "Profile Completed", "count": 158, "percentage": 35 },
+    { "stage": "First Booking", "count": 95, "percentage": 60 },
+    { "stage": "Second Booking", "count": 38, "percentage": 40 }
+  ],
+  "revenueByMonth": [
+    { "month": "Aug", "revenue": 3200 },
+    { "month": "Sep", "revenue": 3800 },
+    { "month": "Oct", "revenue": 4400 },
+    { "month": "Nov", "revenue": 3600 }
+  ]
+}

@@ -1,0 +1,222 @@
+[
+  {
+    "id": "notif-1",
+    "userId": "tourist-demo",
+    "type": "BOOKING_REMINDER",
+    "title": "Tour starting in 2 days!",
+    "message": "Your 'Historic Oxford Walking Tour' with Emma Thompson starts on Tuesday, Nov 19 at 2:00 PM",
+    "link": "/bookings/booking-1",
+    "read": false,
+    "createdAt": "2025-11-17T14:00:00Z",
+    "icon": "calendar"
+  },
+  {
+    "id": "notif-2",
+    "userId": "tourist-demo",
+    "type": "NEW_MESSAGE",
+    "title": "New message from Priya Patel",
+    "message": "Hello! I've confirmed your booking for Monday. I'll arrange special access...",
+    "link": "/messages/booking-5",
+    "read": false,
+    "createdAt": "2025-11-17T09:00:00Z",
+    "icon": "message"
+  },
+  {
+    "id": "notif-3",
+    "userId": "tourist-demo",
+    "type": "BOOKING_CONFIRMED",
+    "title": "Booking confirmed!",
+    "message": "Your booking for 'Museum Insider Tour' has been confirmed by Priya Patel",
+    "link": "/bookings/booking-5",
+    "read": false,
+    "createdAt": "2025-11-17T08:30:00Z",
+    "icon": "check-circle"
+  },
+  {
+    "id": "notif-4",
+    "userId": "tourist-demo",
+    "type": "PAYMENT_RECEIPT",
+    "title": "Payment receipt",
+    "message": "Payment of £130.00 received for Museum Insider Tour. Receipt available.",
+    "link": "/payments/receipt-12349",
+    "read": true,
+    "createdAt": "2025-11-17T08:01:00Z",
+    "icon": "receipt"
+  },
+  {
+    "id": "notif-5",
+    "userId": "tourist-demo",
+    "type": "REVIEW_REMINDER",
+    "title": "How was your tour?",
+    "message": "Share your experience from 'Oxford United Stadium Tour' with Marcus Thompson",
+    "link": "/bookings/booking-18/review",
+    "read": true,
+    "createdAt": "2025-11-16T10:00:00Z",
+    "icon": "star"
+  },
+  {
+    "id": "notif-6",
+    "userId": "tourist-demo",
+    "type": "GUIDE_RESPONSE",
+    "title": "Emma responded to your review",
+    "message": "\"Thank you so much! It was a pleasure showing you around Oxford...\"",
+    "link": "/reviews/review-1",
+    "read": true,
+    "createdAt": "2025-11-10T15:30:00Z",
+    "icon": "message-square"
+  },
+  {
+    "id": "notif-7",
+    "userId": "tourist-demo",
+    "type": "PROMO_CODE",
+    "title": "Special offer just for you!",
+    "message": "Get 15% off your next booking with code LOYAL15. Valid for 7 days.",
+    "link": "/promos",
+    "read": true,
+    "createdAt": "2025-11-15T09:00:00Z",
+    "icon": "gift"
+  },
+  {
+    "id": "notif-8",
+    "userId": "tourist-demo",
+    "type": "LOYALTY_MILESTONE",
+    "title": "Achievement unlocked! 🎉",
+    "message": "You've completed 10 tours! You're now a Silver Member with 5% off all bookings",
+    "link": "/loyalty",
+    "read": true,
+    "createdAt": "2025-11-10T12:15:00Z",
+    "icon": "award"
+  },
+  {
+    "id": "notif-9",
+    "userId": "guide-demo",
+    "type": "NEW_BOOKING",
+    "title": "New booking request!",
+    "message": "Michael Brown wants to book 'Cambridge Food & Drink Tour' for Nov 21",
+    "link": "/bookings/booking-22",
+    "read": false,
+    "createdAt": "2025-11-17T07:00:00Z",
+    "icon": "calendar-plus"
+  },
+  {
+    "id": "notif-10",
+    "userId": "guide-demo",
+    "type": "BOOKING_STARTED",
+    "title": "Tour started",
+    "message": "Tour with John Smith has been marked as started. Don't forget to share your location!",
+    "link": "/bookings/booking-6",
+    "read": true,
+    "createdAt": "2025-11-17T13:30:00Z",
+    "icon": "play-circle"
+  },
+  {
+    "id": "notif-11",
+    "userId": "guide-demo",
+    "type": "NEW_MESSAGE",
+    "title": "New message from Michael Brown",
+    "message": "Looking forward to the Cambridge food tour! Are there any vegetarian options?",
+    "link": "/messages/booking-22",
+    "read": false,
+    "createdAt": "2025-11-17T08:00:00Z",
+    "icon": "message"
+  },
+  {
+    "id": "notif-12",
+    "userId": "guide-demo",
+    "type": "EARNINGS_UPDATE",
+    "title": "Earnings update",
+    "message": "You earned £85.00 from today's tour with John Smith. Total this week: £450.00",
+    "link": "/earnings",
+    "read": true,
+    "createdAt": "2025-11-17T15:40:00Z",
+    "icon": "pound-sterling"
+  },
+  {
+    "id": "notif-13",
+    "userId": "guide-demo",
+    "type": "TOUR_REMINDER",
+    "title": "Upcoming tour in 1 hour",
+    "message": "Tour with Sarah Johnson starts at 2:00 PM at Radcliffe Square",
+    "link": "/bookings/booking-7",
+    "read": true,
+    "createdAt": "2025-11-17T13:00:00Z",
+    "icon": "clock"
+  },
+  {
+    "id": "notif-14",
+    "userId": "guide-demo",
+    "type": "NEW_REVIEW",
+    "title": "New 5-star review!",
+    "message": "Great review from your recent tour! \"Amazing experience, highly recommend!\"",
+    "link": "/reviews",
+    "read": true,
+    "createdAt": "2025-11-16T14:00:00Z",
+    "icon": "star"
+  },
+  {
+    "id": "notif-15",
+    "userId": "guide-demo",
+    "type": "ACHIEVEMENT_UNLOCKED",
+    "title": "Milestone reached! 🏆",
+    "message": "You've completed 100 tours! Bonus: £100 added to your earnings",
+    "link": "/achievements",
+    "read": true,
+    "createdAt": "2025-11-15T16:00:00Z",
+    "icon": "trophy"
+  },
+  {
+    "id": "notif-16",
+    "userId": "guide-demo",
+    "type": "PAYOUT_SCHEDULED",
+    "title": "Payout scheduled",
+    "message": "Your payout of £450.00 will be processed on Nov 24, 2025",
+    "link": "/payouts",
+    "read": true,
+    "createdAt": "2025-11-17T00:00:00Z",
+    "icon": "bank"
+  },
+  {
+    "id": "notif-17",
+    "userId": "admin-demo",
+    "type": "PENDING_APPROVAL",
+    "title": "5 guides pending approval",
+    "message": "Review new guide applications and verification documents",
+    "link": "/admin/guides/pending",
+    "read": false,
+    "createdAt": "2025-11-17T08:00:00Z",
+    "icon": "user-check"
+  },
+  {
+    "id": "notif-18",
+    "userId": "admin-demo",
+    "type": "DISPUTE_RAISED",
+    "title": "New dispute reported",
+    "message": "Tourist reported an issue with booking #12345. Requires admin review.",
+    "link": "/admin/disputes",
+    "read": false,
+    "createdAt": "2025-11-16T15:00:00Z",
+    "icon": "alert-triangle"
+  },
+  {
+    "id": "notif-19",
+    "userId": "admin-demo",
+    "type": "PLATFORM_MILESTONE",
+    "title": "Platform milestone! 🎉",
+    "message": "ExplorePro just reached 150 total bookings this month!",
+    "link": "/admin/analytics",
+    "read": true,
+    "createdAt": "2025-11-15T12:00:00Z",
+    "icon": "trending-up"
+  },
+  {
+    "id": "notif-20",
+    "userId": "admin-demo",
+    "type": "FLAGGED_CONTENT",
+    "title": "Review flagged for moderation",
+    "message": "A review has been reported by a guide. Review content for policy violations.",
+    "link": "/admin/moderation",
+    "read": true,
+    "createdAt": "2025-11-14T10:00:00Z",
+    "icon": "flag"
+  }
+]

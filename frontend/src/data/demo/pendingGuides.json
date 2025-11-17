@@ -1,0 +1,72 @@
+[
+  {
+    "id": "pending-1",
+    "userId": "user-pending-1",
+    "name": "Laura Bennett",
+    "email": "laura.bennett@example.com",
+    "photo": "https://i.pravatar.cc/300?img=16",
+    "bio": "Passionate art historian with 5 years experience guiding in London galleries. Moving to Oxford and excited to share my knowledge of Renaissance art and modern British artists.",
+    "languages": ["English", "French", "Spanish"],
+    "specialties": ["Art", "History", "Museums"],
+    "hourlyRate": 58,
+    "verificationDoc": "https://example.com/docs/laura-id.pdf",
+    "appliedAt": "2025-11-15T10:00:00Z",
+    "status": "PENDING"
+  },
+  {
+    "id": "pending-2",
+    "userId": "user-pending-2",
+    "name": "Raj Patel",
+    "email": "raj.patel@example.com",
+    "photo": "https://i.pravatar.cc/300?img=52",
+    "bio": "Cambridge graduate and technology enthusiast. I offer unique tours focusing on Cambridge's contribution to computing and science, from Newton to the modern tech scene.",
+    "languages": ["English", "Hindi"],
+    "specialties": ["Science", "Technology", "University Life"],
+    "hourlyRate": 45,
+    "verificationDoc": "https://example.com/docs/raj-id.pdf",
+    "appliedAt": "2025-11-14T14:30:00Z",
+    "status": "PENDING"
+  },
+  {
+    "id": "pending-3",
+    "userId": "user-pending-3",
+    "name": "Claire Morrison",
+    "email": "claire.morrison@example.com",
+    "photo": "https://i.pravatar.cc/300?img=32",
+    "bio": "Professional actor and theater director. I specialize in Oxford's theatrical heritage, including backstage tours and stories from famous productions. Dramatic flair guaranteed!",
+    "languages": ["English"],
+    "specialties": ["Theater", "Entertainment", "History"],
+    "hourlyRate": 52,
+    "verificationDoc": "https://example.com/docs/claire-id.pdf",
+    "appliedAt": "2025-11-13T09:15:00Z",
+    "status": "PENDING"
+  },
+  {
+    "id": "pending-4",
+    "userId": "user-pending-4",
+    "name": "Mohammed Al-Farsi",
+    "email": "mohammed.alfarsi@example.com",
+    "photo": "https://i.pravatar.cc/300?img=68",
+    "bio": "Islamic art specialist and Middle Eastern history expert. I offer tours focusing on Oxford's Oriental collections and the influence of Middle Eastern scholarship on Western academia.",
+    "languages": ["English", "Arabic", "French"],
+    "specialties": ["History", "Museums", "Culture"],
+    "hourlyRate": 55,
+    "verificationDoc": "https://example.com/docs/mohammed-id.pdf",
+    "appliedAt": "2025-11-12T16:45:00Z",
+    "status": "PENDING"
+  },
+  {
+    "id": "pending-5",
+    "userId": "user-pending-5",
+    "name": "Hannah O'Connor",
+    "email": "hannah.oconnor@example.com",
+    "photo": "https://i.pravatar.cc/300?img=25",
+    "bio": "Wildlife biologist and birdwatching expert. I lead nature tours through Oxford's parks and countryside, teaching identification skills and conservation awareness.",
+    "languages": ["English", "Irish"],
+    "specialties": ["Nature", "Wildlife", "Outdoor Activities"],
+    "hourlyRate": 42,
+    "verificationDoc": "https://example.com/docs/hannah-id.pdf",
+    "appliedAt": "2025-11-11T11:00:00Z",
+    "status": "PENDING"
+  }
+]

@@ -1,0 +1,487 @@
+[
+  {
+    "id": "review-1",
+    "bookingId": "booking-8",
+    "touristId": "tourist-demo",
+    "touristName": "Demo Tourist",
+    "guideId": "guide-1",
+    "guideName": "Emma Thompson",
+    "rating": 5,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 5,
+      "punctuality": 5,
+      "value": 5,
+      "entertainment": 5
+    },
+    "comment": "Emma was absolutely fantastic! Her photography tips were invaluable and she knew all the best spots. Learned so much and got amazing photos. Highly recommend!",
+    "likedMost": ["Great storytelling", "Hidden gems", "Photography tips", "Flexible pace"],
+    "photos": ["https://picsum.photos/seed/review1a/400/300", "https://picsum.photos/seed/review1b/400/300"],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-11-10T13:00:00Z",
+    "guideResponse": {
+      "comment": "Thank you so much! It was a pleasure showing you around Oxford. Your enthusiasm for photography made the tour even more enjoyable. Hope to see you again!",
+      "respondedAt": "2025-11-10T15:30:00Z"
+    }
+  },
+  {
+    "id": "review-2",
+    "bookingId": "booking-9",
+    "touristId": "tourist-demo",
+    "touristName": "Demo Tourist",
+    "guideId": "guide-3",
+    "guideName": "Sarah Martinez",
+    "rating": 5,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 5,
+      "punctuality": 4,
+      "value": 5,
+      "entertainment": 4
+    },
+    "comment": "Sarah's expertise in architecture is incredible. She explained complex concepts in an accessible way and pointed out details I would have never noticed. A must for architecture enthusiasts!",
+    "likedMost": ["Great storytelling", "Photography tips", "Flexible pace"],
+    "photos": ["https://picsum.photos/seed/review2a/400/300"],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-11-08T17:00:00Z",
+    "guideResponse": {
+      "comment": "So glad you enjoyed the tour! It's always wonderful to share my passion for architecture with interested visitors. Thank you for the kind words!",
+      "respondedAt": "2025-11-09T09:00:00Z"
+    }
+  },
+  {
+    "id": "review-3",
+    "bookingId": "booking-10",
+    "touristId": "tourist-demo",
+    "touristName": "Demo Tourist",
+    "guideId": "guide-8",
+    "guideName": "Thomas Baker",
+    "rating": 5,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 5,
+      "punctuality": 5,
+      "value": 5,
+      "entertainment": 5
+    },
+    "comment": "Perfect Halloween tour! Thomas is a brilliant storyteller with a theatrical flair. Got genuinely spooked a few times! The ghost stories were fascinating and well-researched. Highly entertaining!",
+    "likedMost": ["Great storytelling", "Local recommendations"],
+    "photos": [],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-10-31T22:00:00Z",
+    "guideResponse": {
+      "comment": "Delighted to hear you enjoyed the spooky tales! Oxford has such a rich and sometimes dark history. Thanks for joining me on Halloween - the best night for ghost stories!",
+      "respondedAt": "2025-11-01T10:00:00Z"
+    }
+  },
+  {
+    "id": "review-4",
+    "bookingId": "booking-11",
+    "touristId": "tourist-demo",
+    "touristName": "Demo Tourist",
+    "guideId": "guide-6",
+    "guideName": "Michael O'Brien",
+    "rating": 4,
+    "categoryRatings": {
+      "knowledge": 4,
+      "communication": 5,
+      "punctuality": 5,
+      "value": 4,
+      "entertainment": 4
+    },
+    "comment": "Great cycling tour! Michael was friendly and knew excellent cycling routes. Got to see parts of Oxford I wouldn't have reached on foot. Good exercise too! Would have loved a bit more historical commentary.",
+    "likedMost": ["Flexible pace", "Local recommendations"],
+    "photos": ["https://picsum.photos/seed/review4a/400/300", "https://picsum.photos/seed/review4b/400/300"],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-10-28T13:00:00Z",
+    "guideResponse": {
+      "comment": "Thanks for the feedback! I appreciate the suggestion about adding more historical context. I'll work on incorporating that into future tours. Glad you enjoyed the cycling!",
+      "respondedAt": "2025-10-28T16:00:00Z"
+    }
+  },
+  {
+    "id": "review-5",
+    "bookingId": "booking-12",
+    "touristId": "tourist-demo",
+    "touristName": "Demo Tourist",
+    "guideId": "guide-10",
+    "guideName": "Oliver Wright",
+    "rating": 5,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 5,
+      "punctuality": 5,
+      "value": 5,
+      "entertainment": 5
+    },
+    "comment": "The punting experience was magical! Oliver is a skilled punter and shared fascinating stories about Cambridge colleges. Perfect way to see the city from a different perspective. Absolutely loved it!",
+    "likedMost": ["Great storytelling", "Hidden gems", "Flexible pace"],
+    "photos": ["https://picsum.photos/seed/review5a/400/300", "https://picsum.photos/seed/review5b/400/300", "https://picsum.photos/seed/review5c/400/300"],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-10-20T17:00:00Z",
+    "guideResponse": null
+  },
+  {
+    "id": "review-6",
+    "bookingId": "booking-13",
+    "touristId": "tourist-demo",
+    "touristName": "Demo Tourist",
+    "guideId": "guide-12",
+    "guideName": "Henry Clarke",
+    "rating": 5,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 5,
+      "punctuality": 5,
+      "value": 5,
+      "entertainment": 4
+    },
+    "comment": "Professor Clarke is a treasure trove of knowledge! His deep understanding of Oxford's academic history is unparalleled. This tour is perfect for anyone interested in serious intellectual discourse. Fascinating experience!",
+    "likedMost": ["Great storytelling", "Hidden gems"],
+    "photos": [],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-10-15T14:00:00Z",
+    "guideResponse": {
+      "comment": "What a pleasure it was to share Oxford's scholarly heritage with such an engaged visitor. Your questions were thought-provoking. Do come back anytime!",
+      "respondedAt": "2025-10-15T18:00:00Z"
+    }
+  },
+  {
+    "id": "review-7",
+    "bookingId": "booking-14",
+    "touristId": "tourist-demo",
+    "touristName": "Demo Tourist",
+    "guideId": "guide-9",
+    "guideName": "Isabella Rossi",
+    "rating": 5,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 5,
+      "punctuality": 5,
+      "value": 4,
+      "entertainment": 5
+    },
+    "comment": "Isabella's wine expertise is impressive! Each wine was perfectly selected and her explanations were educational yet accessible. The cheese pairings were exquisite. A sophisticated and delightful experience!",
+    "likedMost": ["Great storytelling", "Local recommendations"],
+    "photos": ["https://picsum.photos/seed/review7a/400/300"],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-10-05T20:00:00Z",
+    "guideResponse": {
+      "comment": "Grazie mille! It was wonderful to share my passion for wine with you. Your palate is refined! I hope you enjoy the wine recommendations I gave you.",
+      "respondedAt": "2025-10-06T09:00:00Z"
+    }
+  },
+  {
+    "id": "review-8",
+    "bookingId": "booking-15",
+    "touristId": "tourist-demo",
+    "touristName": "Demo Tourist",
+    "guideId": "guide-11",
+    "guideName": "Amara Johnson",
+    "rating": 4,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 4,
+      "punctuality": 5,
+      "value": 4,
+      "entertainment": 4
+    },
+    "comment": "Loved discovering Oxford's street art scene! Amara knows all the artists and their stories. It's a side of Oxford I never knew existed. Great for Instagram content too!",
+    "likedMost": ["Hidden gems", "Photography tips", "Local recommendations"],
+    "photos": ["https://picsum.photos/seed/review8a/400/300", "https://picsum.photos/seed/review8b/400/300"],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-09-28T17:00:00Z",
+    "guideResponse": {
+      "comment": "So happy you enjoyed exploring Oxford's urban art! It's a passion of mine to share these hidden treasures. Tag me in your Instagram posts - I'd love to see your photos!",
+      "respondedAt": "2025-09-29T10:00:00Z"
+    }
+  },
+  {
+    "id": "review-9",
+    "bookingId": "booking-16",
+    "touristId": "tourist-demo",
+    "touristName": "Demo Tourist",
+    "guideId": "guide-13",
+    "guideName": "Lily Zhang",
+    "rating": 5,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 5,
+      "punctuality": 5,
+      "value": 5,
+      "entertainment": 4
+    },
+    "comment": "Lily's botanical knowledge is extraordinary! She identified plants by their Latin names and shared fascinating facts about each species. The gardens are beautiful and her enthusiasm is contagious!",
+    "likedMost": ["Great storytelling", "Flexible pace"],
+    "photos": ["https://picsum.photos/seed/review9a/400/300", "https://picsum.photos/seed/review9b/400/300", "https://picsum.photos/seed/review9c/400/300"],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-09-15T14:00:00Z",
+    "guideResponse": null
+  },
+  {
+    "id": "review-10",
+    "bookingId": "booking-17",
+    "touristId": "tourist-demo",
+    "touristName": "Demo Tourist",
+    "guideId": "guide-15",
+    "guideName": "Elena Popov",
+    "rating": 5,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 5,
+      "punctuality": 5,
+      "value": 5,
+      "entertainment": 5
+    },
+    "comment": "Elena's tour was a symphony of information and culture! Her musical knowledge and storytelling brought Oxford's concert halls to life. As a music lover, this was perfect for me. Highly recommend!",
+    "likedMost": ["Great storytelling", "Hidden gems", "Local recommendations"],
+    "photos": [],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-09-05T19:00:00Z",
+    "guideResponse": {
+      "comment": "Thank you for your kind words! It's always a joy to share Oxford's musical heritage with fellow music enthusiasts. I hope you attend some of the concerts I recommended!",
+      "respondedAt": "2025-09-06T10:00:00Z"
+    }
+  },
+  {
+    "id": "review-11",
+    "guideId": "guide-1",
+    "guideName": "Emma Thompson",
+    "touristName": "Alice Cooper",
+    "rating": 5,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 5,
+      "punctuality": 5,
+      "value": 5,
+      "entertainment": 5
+    },
+    "comment": "Emma is simply the best! Her knowledge of Oxford history is encyclopedic, and she makes every moment engaging. We felt like VIPs with exclusive access to hidden spots!",
+    "likedMost": ["Great storytelling", "Hidden gems"],
+    "photos": [],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-09-01T12:00:00Z",
+    "guideResponse": {
+      "comment": "Thank you so much Alice! It was wonderful showing you and your family around Oxford. I hope you come back to explore more!",
+      "respondedAt": "2025-09-01T18:00:00Z"
+    }
+  },
+  {
+    "id": "review-12",
+    "guideId": "guide-1",
+    "guideName": "Emma Thompson",
+    "touristName": "Robert Chen",
+    "rating": 5,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 5,
+      "punctuality": 5,
+      "value": 4,
+      "entertainment": 5
+    },
+    "comment": "Outstanding tour! Emma's passion for Oxford shines through every word. The photography tips were invaluable, and I got shots I'll treasure forever.",
+    "likedMost": ["Photography tips", "Flexible pace"],
+    "photos": ["https://picsum.photos/seed/review12/400/300"],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-08-20T15:00:00Z",
+    "guideResponse": null
+  },
+  {
+    "id": "review-13",
+    "guideId": "guide-1",
+    "guideName": "Emma Thompson",
+    "touristName": "Maria Garcia",
+    "rating": 4,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 4,
+      "punctuality": 5,
+      "value": 4,
+      "entertainment": 4
+    },
+    "comment": "Very knowledgeable guide! Emma knows Oxford inside out. The tour was informative and well-paced. Would have loved a bit more time at each location.",
+    "likedMost": ["Great storytelling"],
+    "photos": [],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-08-05T11:00:00Z",
+    "guideResponse": {
+      "comment": "Thank you Maria! I appreciate the feedback about timing. I'll consider offering extended tours for guests who want to spend more time at each spot.",
+      "respondedAt": "2025-08-05T16:00:00Z"
+    }
+  },
+  {
+    "id": "review-14",
+    "guideId": "guide-2",
+    "guideName": "James Wilson",
+    "touristName": "Sophie Laurent",
+    "rating": 5,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 5,
+      "punctuality": 5,
+      "value": 5,
+      "entertainment": 5
+    },
+    "comment": "James made our Cambridge food tour unforgettable! Every bite was delicious, and his stories about each pub were fascinating. A must-do for food lovers!",
+    "likedMost": ["Great storytelling", "Local recommendations", "Flexible pace"],
+    "photos": ["https://picsum.photos/seed/review14a/400/300", "https://picsum.photos/seed/review14b/400/300"],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-10-01T16:00:00Z",
+    "guideResponse": {
+      "comment": "Merci Sophie! It was a pleasure sharing Cambridge's culinary delights with you. Hope you visit that Italian restaurant I recommended!",
+      "respondedAt": "2025-10-01T20:00:00Z"
+    }
+  },
+  {
+    "id": "review-15",
+    "guideId": "guide-2",
+    "guideName": "James Wilson",
+    "touristName": "Thomas Anderson",
+    "rating": 5,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 5,
+      "punctuality": 4,
+      "value": 5,
+      "entertainment": 5
+    },
+    "comment": "Best pub crawl ever! James knows the history of every pub and the best ales to try. Entertaining, educational, and delicious!",
+    "likedMost": ["Great storytelling", "Local recommendations"],
+    "photos": [],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-09-12T20:00:00Z",
+    "guideResponse": null
+  },
+  {
+    "id": "review-16",
+    "guideId": "guide-3",
+    "guideName": "Sarah Martinez",
+    "touristName": "Emily Watson",
+    "rating": 5,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 5,
+      "punctuality": 5,
+      "value": 5,
+      "entertainment": 4
+    },
+    "comment": "As an architecture student, this tour exceeded my expectations! Sarah's technical knowledge is impressive and she explained everything clearly. Learned so much!",
+    "likedMost": ["Great storytelling", "Hidden gems"],
+    "photos": ["https://picsum.photos/seed/review16/400/300"],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-08-15T17:00:00Z",
+    "guideResponse": {
+      "comment": "Thank you Emily! It's always rewarding to guide fellow architecture enthusiasts. Best of luck with your studies!",
+      "respondedAt": "2025-08-16T09:00:00Z"
+    }
+  },
+  {
+    "id": "review-17",
+    "guideId": "guide-4",
+    "guideName": "David Chen",
+    "touristName": "Jessica Park",
+    "rating": 5,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 5,
+      "punctuality": 5,
+      "value": 5,
+      "entertainment": 5
+    },
+    "comment": "David is a photography genius! Not only did he take us to stunning locations, but he taught us how to capture them perfectly. My Instagram has never looked better!",
+    "likedMost": ["Photography tips", "Hidden gems", "Local recommendations"],
+    "photos": ["https://picsum.photos/seed/review17a/400/300", "https://picsum.photos/seed/review17b/400/300"],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-09-25T13:00:00Z",
+    "guideResponse": {
+      "comment": "Thanks Jessica! Your photography skills were already great - I just helped you find the best spots. Keep shooting!",
+      "respondedAt": "2025-09-25T18:00:00Z"
+    }
+  },
+  {
+    "id": "review-18",
+    "guideId": "guide-5",
+    "guideName": "Sophie Anderson",
+    "touristName": "Mark Robinson",
+    "rating": 5,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 5,
+      "punctuality": 5,
+      "value": 5,
+      "entertainment": 5
+    },
+    "comment": "As a huge Tolkien fan, this tour was a dream come true! Sophie's knowledge is incredible and her passion for literature is infectious. Visited places I'd only read about!",
+    "likedMost": ["Great storytelling", "Hidden gems"],
+    "photos": [],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-08-28T16:00:00Z",
+    "guideResponse": {
+      "comment": "Thank you Mark! It's always wonderful to meet fellow Tolkien enthusiasts. I hope you enjoyed the book recommendations!",
+      "respondedAt": "2025-08-29T10:00:00Z"
+    }
+  },
+  {
+    "id": "review-19",
+    "guideId": "guide-7",
+    "guideName": "Priya Patel",
+    "touristName": "David Kim",
+    "rating": 5,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 5,
+      "punctuality": 5,
+      "value": 4,
+      "entertainment": 5
+    },
+    "comment": "Priya's museum tour was absolutely fascinating! Her curator insights gave us a completely different perspective. Saw artifacts we would have walked past otherwise!",
+    "likedMost": ["Great storytelling", "Hidden gems"],
+    "photos": ["https://picsum.photos/seed/review19/400/300"],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-09-18T15:00:00Z",
+    "guideResponse": null
+  },
+  {
+    "id": "review-20",
+    "guideId": "guide-8",
+    "guideName": "Thomas Baker",
+    "touristName": "Lisa Martinez",
+    "rating": 4,
+    "categoryRatings": {
+      "knowledge": 5,
+      "communication": 5,
+      "punctuality": 4,
+      "value": 4,
+      "entertainment": 5
+    },
+    "comment": "Thomas is a natural storyteller! The ghost tour was thrilling and informative. Some stories genuinely gave me chills. Perfect for Halloween season!",
+    "likedMost": ["Great storytelling"],
+    "photos": [],
+    "wouldRecommend": true,
+    "isAnonymous": false,
+    "createdAt": "2025-10-15T21:00:00Z",
+    "guideResponse": {
+      "comment": "Glad I could give you some chills! Oxford's dark history is endlessly fascinating. Thanks for joining the tour!",
+      "respondedAt": "2025-10-16T09:00:00Z"
+    }
+  }
+]

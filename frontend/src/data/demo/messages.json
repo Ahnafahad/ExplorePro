@@ -1,0 +1,212 @@
+[
+  {
+    "id": "msg-1",
+    "bookingId": "booking-1",
+    "senderId": "tourist-demo",
+    "senderName": "Demo Tourist",
+    "senderRole": "TOURIST",
+    "content": "Hi Emma! Really looking forward to the tour on Tuesday. Is there anything I should bring?",
+    "createdAt": "2025-11-11T10:00:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-2",
+    "bookingId": "booking-1",
+    "senderId": "guide-1",
+    "senderName": "Emma Thompson",
+    "senderRole": "GUIDE",
+    "content": "Hello! So excited to show you around Oxford! Just comfortable walking shoes and a camera. Weather looks good for Tuesday!",
+    "createdAt": "2025-11-11T10:15:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-3",
+    "bookingId": "booking-1",
+    "senderId": "tourist-demo",
+    "senderName": "Demo Tourist",
+    "senderRole": "TOURIST",
+    "content": "Perfect! Should I bring an umbrella just in case?",
+    "createdAt": "2025-11-11T10:20:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-4",
+    "bookingId": "booking-1",
+    "senderId": "guide-1",
+    "senderName": "Emma Thompson",
+    "senderRole": "GUIDE",
+    "content": "Always a good idea in England! 😊 I'll bring a spare umbrella too. See you at Radcliffe Square at 2 PM!",
+    "createdAt": "2025-11-11T10:25:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-5",
+    "bookingId": "booking-2",
+    "senderId": "guide-4",
+    "senderName": "David Chen",
+    "senderRole": "GUIDE",
+    "content": "Hi! I see you're bringing a DSLR. Excellent! We'll focus on manual settings and composition. What's your experience level with photography?",
+    "createdAt": "2025-11-12T09:00:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-6",
+    "bookingId": "booking-2",
+    "senderId": "tourist-demo",
+    "senderName": "Demo Tourist",
+    "senderRole": "TOURIST",
+    "content": "I'm intermediate - know the basics but want to improve my composition and understand how to shoot in different lighting conditions.",
+    "createdAt": "2025-11-12T09:30:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-7",
+    "bookingId": "booking-2",
+    "senderId": "guide-4",
+    "senderName": "David Chen",
+    "senderRole": "GUIDE",
+    "content": "Perfect! We'll work on those exact skills. Bring a variety of lenses if you have them. Looking forward to Wednesday!",
+    "createdAt": "2025-11-12T09:45:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-8",
+    "bookingId": "booking-3",
+    "senderId": "tourist-demo",
+    "senderName": "Demo Tourist",
+    "senderRole": "TOURIST",
+    "content": "Hi James! Any dietary restrictions I should be aware of for the food tour?",
+    "createdAt": "2025-11-13T10:00:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-9",
+    "bookingId": "booking-3",
+    "senderId": "guide-2",
+    "senderName": "James Wilson",
+    "senderRole": "GUIDE",
+    "content": "Great question! All tastings can be adjusted for most dietary needs. Any allergies or preferences I should know about?",
+    "createdAt": "2025-11-13T10:20:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-10",
+    "bookingId": "booking-3",
+    "senderId": "tourist-demo",
+    "senderName": "Demo Tourist",
+    "senderRole": "TOURIST",
+    "content": "No allergies! I eat everything. Can't wait to try authentic Cambridge food!",
+    "createdAt": "2025-11-13T10:30:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-11",
+    "bookingId": "booking-3",
+    "senderId": "guide-2",
+    "senderName": "James Wilson",
+    "senderRole": "GUIDE",
+    "content": "Excellent! Come hungry - we have 5 delicious stops planned. See you at the Market Square at 1 PM on Friday!",
+    "createdAt": "2025-11-13T10:45:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-12",
+    "bookingId": "booking-4",
+    "senderId": "tourist-demo",
+    "senderName": "Demo Tourist",
+    "senderRole": "TOURIST",
+    "content": "Sophie, I'm a huge Tolkien fan! Will we visit The Eagle and Child where the Inklings met?",
+    "createdAt": "2025-11-14T09:00:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-13",
+    "bookingId": "booking-4",
+    "senderId": "guide-5",
+    "senderName": "Sophie Anderson",
+    "senderRole": "GUIDE",
+    "content": "Absolutely! That's actually our starting point! We'll also visit Tolkien's homes, Merton College, and other Inklings haunts. You're going to love this!",
+    "createdAt": "2025-11-14T09:20:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-14",
+    "bookingId": "booking-4",
+    "senderId": "tourist-demo",
+    "senderName": "Demo Tourist",
+    "senderRole": "TOURIST",
+    "content": "That sounds perfect! I've read all his works multiple times. This is going to be amazing!",
+    "createdAt": "2025-11-14T09:30:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-15",
+    "bookingId": "booking-6",
+    "senderId": "guide-demo",
+    "senderName": "Demo Guide",
+    "senderRole": "GUIDE",
+    "content": "On my way! I'm about 5 minutes away from Radcliffe Square.",
+    "createdAt": "2025-11-17T13:25:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-16",
+    "bookingId": "booking-6",
+    "senderId": "tourist-1",
+    "senderName": "John Smith",
+    "senderRole": "TOURIST",
+    "content": "Great! I'm here at the square. Wearing a red jacket.",
+    "createdAt": "2025-11-17T13:27:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-17",
+    "bookingId": "booking-6",
+    "senderId": "guide-demo",
+    "senderName": "Demo Guide",
+    "senderRole": "GUIDE",
+    "content": "I see you! Walking over now. Blue ExplorePro badge.",
+    "createdAt": "2025-11-17T13:29:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-18",
+    "bookingId": "booking-7",
+    "senderId": "guide-demo",
+    "senderName": "Demo Guide",
+    "senderRole": "GUIDE",
+    "content": "We're at the perfect spot for golden hour photography! The light is stunning right now.",
+    "createdAt": "2025-11-17T14:45:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-19",
+    "bookingId": "booking-7",
+    "senderId": "tourist-2",
+    "senderName": "Sarah Johnson",
+    "senderRole": "TOURIST",
+    "content": "These shots are amazing! Thank you for the composition tips!",
+    "createdAt": "2025-11-17T14:50:00Z",
+    "read": true
+  },
+  {
+    "id": "msg-20",
+    "bookingId": "booking-5",
+    "senderId": "guide-7",
+    "senderName": "Priya Patel",
+    "senderRole": "GUIDE",
+    "content": "Hello! I've confirmed your booking for Monday. I'll arrange special access to some museum storage areas - you'll love it!",
+    "createdAt": "2025-11-17T09:00:00Z",
+    "read": false
+  },
+  {
+    "id": "msg-21",
+    "bookingId": "booking-22",
+    "senderId": "tourist-3",
+    "senderName": "Michael Brown",
+    "senderRole": "TOURIST",
+    "content": "Looking forward to the Cambridge food tour! Are there any vegetarian options?",
+    "createdAt": "2025-11-17T08:00:00Z",
+    "read": false
+  }
+]

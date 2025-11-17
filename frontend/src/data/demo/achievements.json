@@ -1,0 +1,263 @@
+[
+  {
+    "id": "achieve-1",
+    "name": "First Tour",
+    "description": "Complete your first tour",
+    "icon": "compass",
+    "unlocked": true,
+    "unlockedAt": "2025-08-22T14:05:00Z",
+    "category": "tourist",
+    "reward": "10 loyalty points"
+  },
+  {
+    "id": "achieve-2",
+    "name": "Leave First Review",
+    "description": "Share your experience with a review",
+    "icon": "star",
+    "unlocked": true,
+    "unlockedAt": "2025-08-22T15:00:00Z",
+    "category": "tourist",
+    "reward": "5 loyalty points"
+  },
+  {
+    "id": "achieve-3",
+    "name": "Upload First Photo",
+    "description": "Share a photo from your tour",
+    "icon": "camera",
+    "unlocked": true,
+    "unlockedAt": "2025-08-22T15:30:00Z",
+    "category": "tourist",
+    "reward": "5 loyalty points"
+  },
+  {
+    "id": "achieve-4",
+    "name": "City Explorer",
+    "description": "Visit 3 different cities",
+    "icon": "map",
+    "unlocked": false,
+    "progress": 2,
+    "total": 3,
+    "category": "tourist",
+    "reward": "25 loyalty points + £5 credit"
+  },
+  {
+    "id": "achieve-5",
+    "name": "History Buff",
+    "description": "Complete a history tour",
+    "icon": "book",
+    "unlocked": true,
+    "unlockedAt": "2025-09-05T13:05:00Z",
+    "category": "tourist",
+    "reward": "10 loyalty points"
+  },
+  {
+    "id": "achieve-6",
+    "name": "Foodie",
+    "description": "Complete a food & drink tour",
+    "icon": "utensils",
+    "unlocked": true,
+    "unlockedAt": "2025-10-05T19:35:00Z",
+    "category": "tourist",
+    "reward": "10 loyalty points"
+  },
+  {
+    "id": "achieve-7",
+    "name": "Tour Enthusiast",
+    "description": "Complete 10 tours",
+    "icon": "award",
+    "unlocked": false,
+    "progress": 7,
+    "total": 10,
+    "category": "tourist",
+    "reward": "100 loyalty points + Silver Status"
+  },
+  {
+    "id": "achieve-8",
+    "name": "Silver Member",
+    "description": "Reach Silver loyalty tier",
+    "icon": "medal",
+    "unlocked": false,
+    "progress": 7,
+    "total": 10,
+    "category": "tourist",
+    "reward": "5% discount on all bookings"
+  },
+  {
+    "id": "achieve-9",
+    "name": "Early Bird",
+    "description": "Book a tour before 9 AM",
+    "icon": "sunrise",
+    "unlocked": true,
+    "unlockedAt": "2025-09-15T11:00:00Z",
+    "category": "tourist",
+    "reward": "10 loyalty points"
+  },
+  {
+    "id": "achieve-10",
+    "name": "Weekend Warrior",
+    "description": "Complete 3 weekend tours",
+    "icon": "calendar",
+    "unlocked": false,
+    "progress": 1,
+    "total": 3,
+    "category": "tourist",
+    "reward": "25 loyalty points"
+  },
+  {
+    "id": "achieve-11",
+    "name": "Social Butterfly",
+    "description": "Share 3 tour experiences on social media",
+    "icon": "share-2",
+    "unlocked": false,
+    "progress": 0,
+    "total": 3,
+    "category": "tourist",
+    "reward": "15 loyalty points"
+  },
+  {
+    "id": "achieve-12",
+    "name": "First Booking",
+    "description": "Receive your first booking as a guide",
+    "icon": "calendar-check",
+    "unlocked": true,
+    "unlockedAt": "2025-01-20T10:00:00Z",
+    "category": "guide",
+    "reward": "Congratulations!"
+  },
+  {
+    "id": "achieve-13",
+    "name": "First Five-Star",
+    "description": "Receive your first 5-star review",
+    "icon": "star",
+    "unlocked": true,
+    "unlockedAt": "2025-01-22T16:00:00Z",
+    "category": "guide",
+    "reward": "Guide badge"
+  },
+  {
+    "id": "achieve-14",
+    "name": "50 Tours",
+    "description": "Complete 50 tours",
+    "icon": "target",
+    "unlocked": true,
+    "unlockedAt": "2025-06-15T18:00:00Z",
+    "category": "guide",
+    "reward": "£50 bonus"
+  },
+  {
+    "id": "achieve-15",
+    "name": "100 Tours",
+    "description": "Complete 100 tours",
+    "icon": "trophy",
+    "unlocked": false,
+    "progress": 89,
+    "total": 100,
+    "category": "guide",
+    "reward": "£100 bonus + Super Guide badge"
+  },
+  {
+    "id": "achieve-16",
+    "name": "50 Five-Star Reviews",
+    "description": "Receive 50 five-star reviews",
+    "icon": "award",
+    "unlocked": true,
+    "unlockedAt": "2025-09-01T12:00:00Z",
+    "category": "guide",
+    "reward": "Featured Guide status"
+  },
+  {
+    "id": "achieve-17",
+    "name": "Speed Demon",
+    "description": "Complete 10 tours in one week",
+    "icon": "zap",
+    "unlocked": true,
+    "unlockedAt": "2025-08-15T20:00:00Z",
+    "category": "guide",
+    "reward": "£25 bonus + Badge"
+  },
+  {
+    "id": "achieve-18",
+    "name": "Perfect Month",
+    "description": "Maintain 5.0 rating for a full month",
+    "icon": "heart",
+    "unlocked": true,
+    "unlockedAt": "2025-07-31T23:59:00Z",
+    "category": "guide",
+    "reward": "£50 bonus"
+  },
+  {
+    "id": "achieve-19",
+    "name": "Quick Responder",
+    "description": "Maintain under 5-minute response time",
+    "icon": "message-circle",
+    "unlocked": false,
+    "progress": 12,
+    "total": 1,
+    "category": "guide",
+    "reward": "Quick Response badge"
+  },
+  {
+    "id": "achieve-20",
+    "name": "Loyal Following",
+    "description": "Have 10 repeat customers",
+    "icon": "users",
+    "unlocked": false,
+    "progress": 6,
+    "total": 10,
+    "category": "guide",
+    "reward": "£75 bonus"
+  },
+  {
+    "id": "achieve-21",
+    "name": "Early Riser",
+    "description": "Complete 5 sunrise tours",
+    "icon": "sun",
+    "unlocked": false,
+    "progress": 2,
+    "total": 5,
+    "category": "guide",
+    "reward": "Early Bird badge"
+  },
+  {
+    "id": "achieve-22",
+    "name": "Night Owl",
+    "description": "Complete 5 evening tours",
+    "icon": "moon",
+    "unlocked": true,
+    "unlockedAt": "2025-10-31T21:05:00Z",
+    "category": "guide",
+    "reward": "Night Owl badge"
+  },
+  {
+    "id": "achieve-23",
+    "name": "Multilingual Master",
+    "description": "Conduct tours in 3+ languages",
+    "icon": "globe",
+    "unlocked": true,
+    "unlockedAt": "2025-05-12T15:00:00Z",
+    "category": "guide",
+    "reward": "Language Expert badge"
+  },
+  {
+    "id": "achieve-24",
+    "name": "Revenue Milestone",
+    "description": "Earn £10,000 total",
+    "icon": "pound-sterling",
+    "unlocked": false,
+    "progress": 8900,
+    "total": 10000,
+    "category": "guide",
+    "reward": "£200 bonus"
+  },
+  {
+    "id": "achieve-25",
+    "name": "Platform Ambassador",
+    "description": "Refer 5 new guides to the platform",
+    "icon": "user-plus",
+    "unlocked": false,
+    "progress": 2,
+    "total": 5,
+    "category": "guide",
+    "reward": "£150 bonus"
+  }
+]

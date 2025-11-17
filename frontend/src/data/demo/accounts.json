@@ -1,0 +1,82 @@
+[
+  {
+    "id": "tourist-demo",
+    "email": "demo-tourist@explorepro.com",
+    "password": "demo123",
+    "role": "TOURIST",
+    "name": "Demo Tourist",
+    "phone": "+44 7700 900123",
+    "photo": "https://i.pravatar.cc/300?img=65",
+    "createdAt": "2025-08-01T10:00:00Z",
+    "tourist": {
+      "id": "tourist-demo",
+      "userId": "tourist-demo",
+      "preferredLang": "English",
+      "interests": ["History", "Food & Drink", "Photography", "Architecture"],
+      "travelStyle": "Cultural Explorer",
+      "budgetRange": "£50-£150",
+      "accessibility": null,
+      "loyaltyTier": "Bronze",
+      "loyaltyPoints": 120,
+      "totalBookings": 10,
+      "totalSpent": 1165.50,
+      "favoriteGuides": ["guide-1", "guide-4", "guide-5"],
+      "wishlistTours": ["tour-27", "tour-21", "tour-40"],
+      "citiesVisited": ["Oxford", "Cambridge"],
+      "profileCompleteness": 85
+    }
+  },
+  {
+    "id": "guide-demo",
+    "email": "demo-guide@explorepro.com",
+    "password": "demo123",
+    "role": "GUIDE",
+    "name": "Demo Guide",
+    "phone": "+44 7700 900456",
+    "photo": "https://i.pravatar.cc/300?img=50",
+    "createdAt": "2025-01-15T09:00:00Z",
+    "guide": {
+      "id": "guide-demo",
+      "userId": "guide-demo",
+      "bio": "Experienced Oxford guide specializing in history and culture. I love sharing the hidden stories of this magnificent city with visitors from around the world!",
+      "languages": ["English", "Spanish"],
+      "specialties": ["History", "Culture", "Walking Tours"],
+      "hourlyRate": 50,
+      "isAvailable": true,
+      "status": "APPROVED",
+      "verificationDoc": "verified",
+      "rating": 4.7,
+      "reviewCount": 89,
+      "tourCount": 105,
+      "responseTime": 15,
+      "responseRate": 96,
+      "acceptanceRate": 92,
+      "yearsExperience": 3,
+      "badges": ["Verified Pro", "Local Legend"],
+      "certifications": ["Tour Guide License", "First Aid"],
+      "joinedDate": "2025-01-15",
+      "totalEarnings": 5250,
+      "pendingEarnings": 450,
+      "repeatCustomerRate": 35,
+      "profileCompleteness": 92,
+      "nextPayoutDate": "2025-11-24",
+      "nextPayoutAmount": 450
+    }
+  },
+  {
+    "id": "admin-demo",
+    "email": "demo-admin@explorepro.com",
+    "password": "demo123",
+    "role": "ADMIN",
+    "name": "Demo Admin",
+    "phone": "+44 7700 900789",
+    "photo": "https://i.pravatar.cc/300?img=58",
+    "createdAt": "2025-01-01T00:00:00Z",
+    "admin": {
+      "id": "admin-demo",
+      "userId": "admin-demo",
+      "permissions": ["all"],
+      "department": "Platform Management"
+    }
+  }
+]
