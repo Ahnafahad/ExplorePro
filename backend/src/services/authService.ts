@@ -15,6 +15,62 @@ interface LoginData {
   password: string
 }
 
+// Demo accounts that work without database (for testing/demos)
+const DEMO_ACCOUNTS = {
+  'demo.tourist@explorepro.com': {
+    id: 'demo-tourist-001',
+    email: 'demo.tourist@explorepro.com',
+    name: 'Demo Tourist',
+    role: 'TOURIST' as const,
+    phone: '+44 7700 900001',
+    photo: null,
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date('2024-01-01'),
+    tourist: {
+      id: 'demo-tourist-profile-001',
+      userId: 'demo-tourist-001',
+      preferredLang: 'English',
+    },
+    guide: null,
+  },
+  'demo.guide@explorepro.com': {
+    id: 'demo-guide-001',
+    email: 'demo.guide@explorepro.com',
+    name: 'Demo Guide',
+    role: 'GUIDE' as const,
+    phone: '+44 7700 900002',
+    photo: null,
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date('2024-01-01'),
+    tourist: null,
+    guide: {
+      id: 'demo-guide-profile-001',
+      userId: 'demo-guide-001',
+      bio: 'Experienced local guide showcasing the best of Oxford',
+      languages: ['English', 'Spanish'],
+      specialties: ['History', 'Architecture', 'Food'],
+      hourlyRate: 50,
+      isAvailable: true,
+      status: 'APPROVED' as const,
+      verificationDoc: null,
+    },
+  },
+  'demo.admin@explorepro.com': {
+    id: 'demo-admin-001',
+    email: 'demo.admin@explorepro.com',
+    name: 'Demo Admin',
+    role: 'ADMIN' as const,
+    phone: '+44 7700 900003',
+    photo: null,
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date('2024-01-01'),
+    tourist: null,
+    guide: null,
+  },
+}
+
+const DEMO_PASSWORD = 'Demo123!'
+
 export class AuthService {
   /**
    * Register a new user
@@ -83,35 +139,58 @@ export class AuthService {
   async login(data: LoginData) {
     const { email, password } = data
 
-    // Find user
-    const user = await prisma.user.findUnique({
-      where: { email },
-      include: {
-        tourist: true,
-        guide: true,
-      },
-    })
+    // Check if this is a demo account (works without database)
+    if (email in DEMO_ACCOUNTS) {
+      if (password !== DEMO_PASSWORD) {
+        throw new Error('Invalid email or password')
+      }
 
-    if (!user) {
-      throw new Error('Invalid email or password')
+      const demoUser = DEMO_ACCOUNTS[email as keyof typeof DEMO_ACCOUNTS]
+      const token = this.generateToken(demoUser.id, demoUser.email, demoUser.role)
+
+      return {
+        user: demoUser,
+        token,
+      }
     }
 
-    // Check password
-    const isPasswordValid = await bcrypt.compare(password, user.password)
+    // Regular login flow (requires database)
+    try {
+      const user = await prisma.user.findUnique({
+        where: { email },
+        include: {
+          tourist: true,
+          guide: true,
+        },
+      })
 
-    if (!isPasswordValid) {
-      throw new Error('Invalid email or password')
-    }
+      if (!user) {
+        throw new Error('Invalid email or password')
+      }
 
-    // Generate JWT token
-    const token = this.generateToken(user.id, user.email, user.role)
+      // Check password
+      const isPasswordValid = await bcrypt.compare(password, user.password)
 
-    // Return user without password
-    const { password: _, ...userWithoutPassword } = user
+      if (!isPasswordValid) {
+        throw new Error('Invalid email or password')
+      }
 
-    return {
-      user: userWithoutPassword,
-      token,
+      // Generate JWT token
+      const token = this.generateToken(user.id, user.email, user.role)
+
+      // Return user without password
+      const { password: _, ...userWithoutPassword } = user
+
+      return {
+        user: userWithoutPassword,
+        token,
+      }
+    } catch (error: any) {
+      // If database is unavailable, provide helpful error
+      if (error.message?.includes('database') || error.message?.includes('connection')) {
+        throw new Error('Service temporarily unavailable. Please try demo accounts.')
+      }
+      throw error
     }
   }
 
@@ -119,6 +198,13 @@ export class AuthService {
    * Get user by ID
    */
   async getUserById(userId: string) {
+    // Check if this is a demo account ID
+    const demoUser = Object.values(DEMO_ACCOUNTS).find(user => user.id === userId)
+    if (demoUser) {
+      return demoUser
+    }
+
+    // Regular database lookup
     const user = await prisma.user.findUnique({
       where: { id: userId },
       include: {
