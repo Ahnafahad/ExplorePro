@@ -23,6 +23,39 @@ const DEMO_ACCOUNTS = {
 
 const DEMO_PASSWORD = 'demo123';
 
+/**
+ * Type Transformers - Convert JSON data to match TypeScript interfaces
+ */
+
+// Transform flat guide JSON to proper Guide interface with nested user
+const transformGuide = (guideData: any): any => {
+  const { name, email, photo, rating, reviewCount, ...rest } = guideData;
+
+  return {
+    ...rest,
+    user: {
+      id: guideData.userId,
+      email: email || '',
+      role: 'GUIDE' as const,
+      name: name || '',
+      phone: '',
+      photo: photo || '',
+      createdAt: guideData.joinedDate || new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    averageRating: rating,
+    totalReviews: reviewCount || 0,
+  };
+};
+
+// Transform booking JSON to include updatedAt
+const transformBooking = (bookingData: any): any => {
+  return {
+    ...bookingData,
+    updatedAt: bookingData.updatedAt || bookingData.createdAt || new Date().toISOString(),
+  };
+};
+
 // Storage keys
 const STORAGE_KEYS = {
   CURRENT_USER: 'demo_current_user',
@@ -170,11 +203,14 @@ export const demoGuidesService = {
         guides = guides.filter(g => g.isAvailable === filters.isAvailable);
       }
       if (filters.minRating) {
-        guides = guides.filter(g => g.rating >= filters.minRating);
+        const rating = filters.minRating;
+        guides = guides.filter(g => (g.rating || g.averageRating || 0) >= rating);
       }
     }
 
-    return { success: true, data: guides };
+    // Transform guides to match TypeScript interface
+    const transformedGuides = guides.map(transformGuide);
+    return { success: true, data: transformedGuides };
   },
 
   getById: async (id: string) => {
@@ -186,7 +222,8 @@ export const demoGuidesService = {
       throw new Error('Guide not found');
     }
 
-    return { success: true, data: guide };
+    // Transform guide to match TypeScript interface
+    return { success: true, data: transformGuide(guide) };
   },
 
   update: async (id: string, data: any) => {
@@ -285,7 +322,9 @@ export const demoBookingsService = {
       }
     }
 
-    return { success: true, data: bookings };
+    // Transform bookings to match TypeScript interface
+    const transformedBookings = bookings.map(transformBooking);
+    return { success: true, data: transformedBookings };
   },
 
   getById: async (id: string) => {
@@ -297,7 +336,8 @@ export const demoBookingsService = {
       throw new Error('Booking not found');
     }
 
-    return { success: true, data: booking };
+    // Transform booking to match TypeScript interface
+    return { success: true, data: transformBooking(booking) };
   },
 
   create: async (bookingData: any) => {
@@ -310,9 +350,10 @@ export const demoBookingsService = {
       touristId: user.id,
       touristName: user.name,
       ...bookingData,
-      status: 'PENDING',
+      status: 'CONFIRMED',
       stripePaymentId: `pi_demo_${Date.now()}`,
       createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
     bookings.push(newBooking);
@@ -511,8 +552,26 @@ export const demoAdminService = {
       throw new Error('Guide application not found');
     }
 
-    // Move from pending to approved
-    const approvedGuide = { ...pendingGuides[index], status: 'APPROVED' };
+    // Move from pending to approved - add missing fields for guide structure
+    const pendingGuide = pendingGuides[index];
+    const approvedGuide = {
+      ...pendingGuide,
+      status: 'APPROVED',
+      isAvailable: false,
+      rating: 0,
+      reviewCount: 0,
+      tourCount: 0,
+      responseTime: 0,
+      responseRate: 0,
+      acceptanceRate: 0,
+      yearsExperience: 0,
+      badges: [],
+      certifications: [],
+      joinedDate: new Date().toISOString(),
+      funFacts: [],
+      askMeAbout: [],
+    };
+
     guides.push(approvedGuide);
     pendingGuides.splice(index, 1);
 
@@ -560,7 +619,8 @@ export const demoAchievementsService = {
 export const demoGPSService = {
   getRoute: async (bookingId: string) => {
     await delay();
-    const route = gpsRoutesData[bookingId];
+    const routes = gpsRoutesData as Record<string, any>;
+    const route = routes[bookingId];
 
     if (!route) {
       throw new Error('Route not found');
@@ -571,7 +631,8 @@ export const demoGPSService = {
 
   getCurrentLocation: async (bookingId: string) => {
     await delay();
-    const route = gpsRoutesData[bookingId];
+    const routes = gpsRoutesData as Record<string, any>;
+    const route = routes[bookingId];
 
     if (!route) {
       throw new Error('Route not found');
@@ -582,7 +643,8 @@ export const demoGPSService = {
   },
 
   simulateMovement: (bookingId: string, callback: (location: any) => void) => {
-    const route = gpsRoutesData[bookingId];
+    const routes = gpsRoutesData as Record<string, any>;
+    const route = routes[bookingId];
 
     if (!route) {
       return;
