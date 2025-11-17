@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { api } from '../services/api'
 import { pollingService } from '../services/pollingService'
+import demoService from '../services/demoService'
 import type { User, Role } from '../types'
 
 interface AuthContextType {
@@ -21,6 +22,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Check if user is already logged in on mount
   useEffect(() => {
     const checkAuth = async () => {
+      // Check for demo user first
+      const demoUser = demoService.getCurrentDemoUser()
+      if (demoUser) {
+        console.log('🎭 Restored demo session:', demoUser.role)
+        setUser(demoUser)
+        setLoading(false)
+        return
+      }
+
+      // Check regular auth
       const token = api.getToken()
       if (token) {
         try {
@@ -48,6 +59,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
+      // Check if this is a demo account
+      if (demoService.isDemoAccount(email)) {
+        console.log('🎭 Demo mode login detected')
+        const response = await demoService.auth.login(email, password)
+
+        if (response.success && response.data) {
+          const { user, token } = response.data
+          api.setToken(token)
+          setUser(user)
+          console.log('✅ Demo user logged in:', user.role)
+          // No polling service for demo mode
+        }
+        return
+      }
+
+      // Regular API login
       const response = await api.post<{ user: User; token: string }>('/api/auth/login', {
         email,
         password,
@@ -90,6 +117,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     try {
+      // Check if demo mode
+      if (demoService.isDemoMode()) {
+        console.log('🎭 Demo logout')
+        await demoService.auth.logout()
+        setUser(null)
+        api.clearToken()
+        return
+      }
+
+      // Regular logout
       await api.post('/api/auth/logout')
     } catch (error) {
       console.error('Logout error:', error)

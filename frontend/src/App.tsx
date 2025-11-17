@@ -1,7 +1,9 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './context/AuthContext'
 import { AuthProvider } from './context/AuthContext'
+import { DemoProvider } from './context/DemoContext'
 import { ProtectedRoute } from './components/common/ProtectedRoute'
+import DemoBanner from './components/common/DemoBanner'
 
 // Public pages
 import Home from './pages/Home'
@@ -45,8 +47,10 @@ function DashboardRouter() {
 function App() {
   return (
     <AuthProvider>
-      <div className="min-h-screen">
-        <Routes>
+      <DemoProvider>
+        <DemoBanner />
+        <div className="min-h-screen">
+          <Routes>
           {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -162,6 +166,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
+      </DemoProvider>
     </AuthProvider>
   )
 }

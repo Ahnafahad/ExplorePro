@@ -44,9 +44,9 @@ export default function Login() {
 
   const handleDemoLogin = async (role: 'tourist' | 'guide' | 'admin') => {
     const demoAccounts = {
-      tourist: { email: 'demo.tourist@explorepro.com', password: 'Demo123!' },
-      guide: { email: 'demo.guide@explorepro.com', password: 'Demo123!' },
-      admin: { email: 'demo.admin@explorepro.com', password: 'Demo123!' },
+      tourist: { email: 'demo-tourist@explorepro.com', password: 'demo123' },
+      guide: { email: 'demo-guide@explorepro.com', password: 'demo123' },
+      admin: { email: 'demo-admin@explorepro.com', password: 'demo123' },
     }
 
     try {
