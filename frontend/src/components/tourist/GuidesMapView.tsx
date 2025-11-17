@@ -1,14 +1,15 @@
 /**
- * Guides Map View - Shows tourist spots and available guides on a map
+ * Guides Map View - Shows tourist spots, tours, and available guides on a map
  * Default location: Cambridge, UK
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api';
-import { MapPin, Star, Clock, Navigation, Landmark } from 'lucide-react';
+import { MapPin, Star, Clock, Navigation, Landmark, Calendar } from 'lucide-react';
 import { Button } from '../common/Button';
 import type { Guide } from '../../types';
 import touristSpotsData from '../../data/demo/touristSpots.json';
+import demoService from '../../services/demoService';
 
 interface GuidesMapViewProps {
   guides: Guide[];
@@ -46,13 +47,30 @@ export function GuidesMapView({ guides, onGuideClick }: GuidesMapViewProps) {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [selectedGuide, setSelectedGuide] = useState<Guide | null>(null);
   const [selectedSpot, setSelectedSpot] = useState<any>(null);
+  const [selectedTour, setSelectedTour] = useState<any>(null);
   const [showSpots, setShowSpots] = useState(true);
   const [showGuides, setShowGuides] = useState(true);
+  const [showTours, setShowTours] = useState(true);
+  const [tours, setTours] = useState<any[]>([]);
 
-  const { isLoaded } = useJsApiLoader({
+  const { isLoaded, loadError } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '',
   });
+
+  // Load tours data
+  useEffect(() => {
+    const fetchTours = async () => {
+      if (demoService.isDemoMode()) {
+        const response = await demoService.tours.getAll();
+        if (response.success && response.data) {
+          // Get first 10 tours for map view
+          setTours(response.data.slice(0, 10));
+        }
+      }
+    };
+    fetchTours();
+  }, []);
 
   const onLoad = useCallback((map: google.maps.Map) => {
     setMap(map);
@@ -75,12 +93,93 @@ export function GuidesMapView({ guides, onGuideClick }: GuidesMapViewProps) {
     };
   };
 
+  // Generate location for tours - place them near tourist spots
+  const getTourLocation = (_tour: any, index: number) => {
+    // Create a slightly larger circle for tours
+    const radius = 0.006; // approximately 600 meters
+    const angle = (index * 2 * Math.PI) / tours.length;
+
+    return {
+      lat: CAMBRIDGE_CENTER.lat + radius * Math.cos(angle),
+      lng: CAMBRIDGE_CENTER.lng + radius * Math.sin(angle),
+    };
+  };
+
   const recenterMap = () => {
     if (map) {
       map.panTo(CAMBRIDGE_CENTER);
       map.setZoom(14);
     }
   };
+
+  // Handle API loading error (missing key or billing not enabled)
+  if (loadError) {
+    return (
+      <div className="w-full rounded-xl border-2 border-dashed border-neutral-300 bg-neutral-50 p-8">
+        <div className="text-center max-w-2xl mx-auto">
+          <div className="inline-flex p-4 bg-yellow-100 rounded-full mb-4">
+            <MapPin className="w-8 h-8 text-yellow-600" />
+          </div>
+          <h3 className="text-xl font-bold text-neutral-900 mb-2">
+            Map Unavailable (API Key Required)
+          </h3>
+          <p className="text-neutral-600 mb-6">
+            The interactive map requires a valid Google Maps API key with billing enabled.
+            For demo purposes, you can still browse guides and tourist spots below.
+          </p>
+
+          {/* Fallback: List view of spots and guides */}
+          <div className="grid md:grid-cols-2 gap-6 text-left">
+            {/* Tourist Spots */}
+            <div className="bg-white rounded-lg p-6 border border-neutral-200">
+              <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
+                <Landmark className="w-5 h-5 text-red-600" />
+                {touristSpotsData.length} Tourist Spots
+              </h4>
+              <div className="space-y-3 max-h-64 overflow-y-auto">
+                {touristSpotsData.slice(0, 6).map((spot) => (
+                  <div key={spot.id} className="border-b border-neutral-100 pb-2">
+                    <p className="font-semibold text-sm">{spot.name}</p>
+                    <p className="text-xs text-neutral-600">{spot.category}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
+                      <span className="text-xs">{spot.rating}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Available Guides */}
+            <div className="bg-white rounded-lg p-6 border border-neutral-200">
+              <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-green-600" />
+                {guides.filter(g => g.isAvailable).length} Available Guides
+              </h4>
+              <div className="space-y-3 max-h-64 overflow-y-auto">
+                {guides.filter(g => g.isAvailable).slice(0, 6).map((guide) => (
+                  <div key={guide.id} className="border-b border-neutral-100 pb-2">
+                    <p className="font-semibold text-sm">{guide.user?.name}</p>
+                    <p className="text-xs text-neutral-600">£{guide.hourlyRate}/hr</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
+                      <span className="text-xs">{guide.averageRating}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <p className="text-sm text-blue-800">
+              <strong>For Developers:</strong> Add <code className="bg-blue-100 px-2 py-1 rounded">VITE_GOOGLE_MAPS_API_KEY</code> to your <code className="bg-blue-100 px-2 py-1 rounded">.env</code> file and enable billing in Google Cloud Console.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!isLoaded) {
     return (
@@ -104,9 +203,11 @@ export function GuidesMapView({ guides, onGuideClick }: GuidesMapViewProps) {
           <div>
             <h3 className="font-semibold text-neutral-900">Cambridge Explorer</h3>
             <p className="text-sm text-neutral-600">
-              {showGuides && showSpots && `${guides.length} guides • ${touristSpotsData.length} spots`}
-              {showGuides && !showSpots && `${guides.length} guides`}
-              {!showGuides && showSpots && `${touristSpotsData.length} tourist spots`}
+              {[
+                showGuides && `${guides.length} guides`,
+                showTours && `${tours.length} tours`,
+                showSpots && `${touristSpotsData.length} spots`,
+              ].filter(Boolean).join(' • ') || 'No items visible'}
             </p>
           </div>
         </div>
@@ -120,6 +221,15 @@ export function GuidesMapView({ guides, onGuideClick }: GuidesMapViewProps) {
           >
             <div className={`w-3 h-3 rounded-full ${showGuides ? 'bg-white' : 'bg-green-500'}`} />
             Guides
+          </Button>
+          <Button
+            variant={showTours ? 'primary' : 'outline'}
+            size="sm"
+            onClick={() => setShowTours(!showTours)}
+            className="flex items-center gap-2"
+          >
+            <div className={`w-3 h-3 rounded-full ${showTours ? 'bg-white' : 'bg-blue-500'}`} />
+            Tours
           </Button>
           <Button
             variant={showSpots ? 'secondary' : 'outline'}
@@ -184,6 +294,24 @@ export function GuidesMapView({ guides, onGuideClick }: GuidesMapViewProps) {
                   strokeColor: '#FFFFFF',
                   strokeWeight: 3,
                   scale: 10,
+                }}
+              />
+            ))}
+
+          {/* Tour Markers */}
+          {showTours &&
+            tours.map((tour, index) => (
+              <Marker
+                key={tour.id}
+                position={getTourLocation(tour, index)}
+                onClick={() => setSelectedTour(tour)}
+                icon={{
+                  path: google.maps.SymbolPath.CIRCLE,
+                  fillColor: '#3B82F6',
+                  fillOpacity: 0.85,
+                  strokeColor: '#FFFFFF',
+                  strokeWeight: 2,
+                  scale: 9,
                 }}
               />
             ))}
@@ -285,6 +413,52 @@ export function GuidesMapView({ guides, onGuideClick }: GuidesMapViewProps) {
               </div>
             </InfoWindow>
           )}
+
+          {/* Tour Info Window */}
+          {selectedTour && (
+            <InfoWindow
+              position={getTourLocation(
+                selectedTour,
+                tours.findIndex((t) => t.id === selectedTour.id)
+              )}
+              onCloseClick={() => setSelectedTour(null)}
+            >
+              <div className="p-2 max-w-xs">
+                <div className="flex items-start gap-2 mb-2">
+                  <Calendar className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-bold text-neutral-900">{selectedTour.title}</h4>
+                    <p className="text-xs text-neutral-600">{selectedTour.category}</p>
+                  </div>
+                </div>
+                <p className="text-sm text-neutral-700 mb-3 line-clamp-2">{selectedTour.description}</p>
+                <div className="flex items-center gap-3 text-xs text-neutral-600 mb-3">
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    <span>{selectedTour.duration} min</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <MapPin className="w-3 h-3" />
+                    <span className="line-clamp-1">{selectedTour.meetingPoint}</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between pt-2 border-t border-neutral-200">
+                  <span className="text-sm font-semibold text-blue-600">
+                    £{selectedTour.price}
+                  </span>
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      setSelectedTour(null);
+                      // Tour booking could navigate to booking page
+                    }}
+                  >
+                    Book Tour
+                  </Button>
+                </div>
+              </div>
+            </InfoWindow>
+          )}
         </GoogleMap>
       </div>
 
@@ -297,6 +471,10 @@ export function GuidesMapView({ guides, onGuideClick }: GuidesMapViewProps) {
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 rounded-full bg-neutral-400 border-2 border-white shadow" />
           <span className="text-sm text-neutral-700">Unavailable Guides</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 rounded-full bg-blue-500 border-2 border-white shadow" />
+          <span className="text-sm text-neutral-700">Tours</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 rounded-full bg-red-600 border-2 border-white shadow" />
