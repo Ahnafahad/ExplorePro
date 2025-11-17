@@ -1,6 +1,7 @@
 {
   "name": "explorepro",
   "version": "1.0.0",
+  "type": "module",
   "description": "ExplorePro - Uber for Tour Guides",
   "private": true,
   "scripts": {
