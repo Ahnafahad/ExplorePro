@@ -8,6 +8,14 @@ pnpm-lock.yaml
 .env
 .env.local
 .env.*.local
+.env.production
+.vercel-env-variables.local
+backend/.env
+backend/.env.local
+backend/.env.production
+frontend/.env
+frontend/.env.local
+frontend/.env.production
 
 # Build outputs
 dist/
