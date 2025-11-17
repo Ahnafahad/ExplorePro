@@ -5,7 +5,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api';
-import { MapPin, Star, Clock, Navigation, Landmark, Calendar } from 'lucide-react';
+import { MapPin, Star, Clock, Navigation, Landmark } from 'lucide-react';
 import { Button } from '../common/Button';
 import type { Guide } from '../../types';
 import touristSpotsData from '../../data/demo/touristSpots.json';
