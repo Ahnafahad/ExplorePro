@@ -100,10 +100,10 @@ export default function ProfileSetup() {
                 </div>
                 <h3 className="text-lg font-display font-bold text-neutral-900">Profile Photo</h3>
               </div>
-              {user?.userId && (
+              {user?.id && (
                 <FileUpload
                   fileType="profile"
-                  userId={user.userId}
+                  userId={user.id}
                   onUploadSuccess={setProfilePhotoUrl}
                   label="Upload your profile photo"
                 />
@@ -193,10 +193,10 @@ export default function ProfileSetup() {
                 </div>
                 <h3 className="text-lg font-display font-bold text-neutral-900">Verification (Optional)</h3>
               </div>
-              {user?.userId && (
+              {user?.id && (
                 <FileUpload
                   fileType="verification"
-                  userId={user.userId}
+                  userId={user.id}
                   onUploadSuccess={setVerificationDocUrl}
                   label="Upload verification document (ID, certification, etc.)"
                 />

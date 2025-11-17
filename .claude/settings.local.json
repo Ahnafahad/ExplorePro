@@ -19,7 +19,8 @@
       "Bash(npm run dev:*)",
       "Bash(curl:*)",
       "Bash(cat:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "Bash(npm run seed:demo:*)"
     ],
     "deny": [],
     "ask": []

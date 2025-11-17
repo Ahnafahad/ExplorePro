@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { useAuth } from '../../context/AuthContext'
 import { Button } from '../../components/common/Button'
 import { Input } from '../../components/common/Input'
-import { MapPin, Mail, Lock, ArrowRight, Sparkles } from 'lucide-react'
+import { MapPin, Mail, Lock, ArrowRight, Sparkles, User, Compass, Shield, Zap } from 'lucide-react'
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -37,6 +37,26 @@ export default function Login() {
       navigate('/dashboard')
     } catch (err: any) {
       setError(err.message || 'Failed to login')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDemoLogin = async (role: 'tourist' | 'guide' | 'admin') => {
+    const demoAccounts = {
+      tourist: { email: 'demo.tourist@explorepro.com', password: 'Demo123!' },
+      guide: { email: 'demo.guide@explorepro.com', password: 'Demo123!' },
+      admin: { email: 'demo.admin@explorepro.com', password: 'Demo123!' },
+    }
+
+    try {
+      setError('')
+      setLoading(true)
+      const account = demoAccounts[role]
+      await login(account.email, account.password)
+      navigate('/dashboard')
+    } catch (err: any) {
+      setError(err.message || 'Failed to login with demo account')
     } finally {
       setLoading(false)
     }
@@ -137,8 +157,80 @@ export default function Login() {
           </div>
         </div>
 
+        {/* Demo Mode */}
+        <div className="mt-8 card p-6 bg-gradient-to-br from-primary-50 to-secondary-50 border-2 border-primary-200">
+          <div className="text-center mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/80 rounded-full mb-2">
+              <Zap className="w-4 h-4 text-primary-600" />
+              <span className="text-xs font-bold text-primary-700">DEMO MODE</span>
+            </div>
+            <h3 className="text-sm font-bold text-neutral-900 mb-1">
+              Try ExplorePro Instantly
+            </h3>
+            <p className="text-xs text-neutral-600">
+              Explore all features with pre-loaded demo accounts
+            </p>
+          </div>
+
+          <div className="grid grid-cols-3 gap-3">
+            {/* Tourist Demo */}
+            <button
+              onClick={() => handleDemoLogin('tourist')}
+              disabled={loading}
+              className="group relative p-4 bg-white hover:bg-primary-50 rounded-xl border-2 border-neutral-200 hover:border-primary-400 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-primary-500/0 to-primary-500/0 group-hover:from-primary-500/5 group-hover:to-primary-500/10 rounded-xl transition-all" />
+              <div className="relative">
+                <div className="w-10 h-10 mx-auto mb-2 bg-primary-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <User className="w-5 h-5 text-primary-600" />
+                </div>
+                <p className="text-xs font-bold text-neutral-900 mb-0.5">Tourist</p>
+                <p className="text-[10px] text-neutral-500">Browse & Book</p>
+              </div>
+            </button>
+
+            {/* Guide Demo */}
+            <button
+              onClick={() => handleDemoLogin('guide')}
+              disabled={loading}
+              className="group relative p-4 bg-white hover:bg-success-50 rounded-xl border-2 border-neutral-200 hover:border-success-400 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-success-500/0 to-success-500/0 group-hover:from-success-500/5 group-hover:to-success-500/10 rounded-xl transition-all" />
+              <div className="relative">
+                <div className="w-10 h-10 mx-auto mb-2 bg-success-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Compass className="w-5 h-5 text-success-600" />
+                </div>
+                <p className="text-xs font-bold text-neutral-900 mb-0.5">Guide</p>
+                <p className="text-[10px] text-neutral-500">Manage Tours</p>
+              </div>
+            </button>
+
+            {/* Admin Demo */}
+            <button
+              onClick={() => handleDemoLogin('admin')}
+              disabled={loading}
+              className="group relative p-4 bg-white hover:bg-warning-50 rounded-xl border-2 border-neutral-200 hover:border-warning-400 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-warning-500/0 to-warning-500/0 group-hover:from-warning-500/5 group-hover:to-warning-500/10 rounded-xl transition-all" />
+              <div className="relative">
+                <div className="w-10 h-10 mx-auto mb-2 bg-warning-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Shield className="w-5 h-5 text-warning-600" />
+                </div>
+                <p className="text-xs font-bold text-neutral-900 mb-0.5">Admin</p>
+                <p className="text-[10px] text-neutral-500">Dashboard</p>
+              </div>
+            </button>
+          </div>
+
+          <div className="mt-4 pt-4 border-t border-primary-200">
+            <p className="text-[10px] text-center text-neutral-500">
+              Each demo account has pre-loaded data including bookings, reviews, and messages
+            </p>
+          </div>
+        </div>
+
         {/* Trust badges */}
-        <div className="mt-8 text-center">
+        <div className="mt-6 text-center">
           <p className="text-sm text-neutral-500 mb-4">Trusted by thousands of travelers</p>
           <div className="flex items-center justify-center gap-6 text-xs text-neutral-400">
             <span className="flex items-center gap-1">

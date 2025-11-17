@@ -1,0 +1,146 @@
+# =============================================================================
+# VERCEL ENVIRONMENT VARIABLES FOR EXPLOREPRO
+# =============================================================================
+# THIS FILE IS GITIGNORED - Safe to store sensitive keys locally
+# Copy these values to Vercel Dashboard → Project Settings → Environment Variables
+# =============================================================================
+
+# =============================================================================
+# BACKEND ENVIRONMENT VARIABLES (Serverless Functions)
+# =============================================================================
+
+# Server Configuration
+NODE_ENV=production
+FRONTEND_URL=https://your-app.vercel.app
+# ^ UPDATE THIS after first Vercel deployment
+
+# Database (Supabase PostgreSQL)
+DATABASE_URL=postgresql://postgres.aqmvbydjvacfislizjub:qD5J%219aw7GBEJF%2F@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres
+
+# JWT Authentication
+JWT_SECRET=explorepro_super_secret_jwt_key_change_in_production_12345
+# ^ IMPORTANT: Generate a new strong secret for production!
+# Example: openssl rand -base64 32
+JWT_EXPIRES_IN=7d
+
+# Stripe (Test Mode for MVP)
+STRIPE_SECRET_KEY=sk_test_placeholder_add_your_key_here
+# ^ Get from: https://dashboard.stripe.com/test/apikeys
+STRIPE_WEBHOOK_SECRET=whsec_placeholder_add_your_key_here
+# ^ Get from: https://dashboard.stripe.com/test/webhooks (after creating webhook)
+
+# Google Maps API
+GOOGLE_MAPS_API_KEY=AIzaSyA38JeaL-YNKvv4sgSrBr1--lwxBadPD5I
+
+# SendGrid (Email - Optional for MVP)
+SENDGRID_API_KEY=placeholder_add_your_sendgrid_key_here
+# ^ Get from: https://app.sendgrid.com/settings/api_keys
+SENDGRID_FROM_EMAIL=noreply@explorepro.com
+
+# Supabase Storage
+SUPABASE_URL=https://aqmvbydjvacfislizjub.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxbXZieWRqdmFjZmlzbGl6anViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwMjQ3NDksImV4cCI6MjA3ODYwMDc0OX0.JWOPsfSIlyMCzuCTe-wTlHBhlL3ZdCXsmEIQm8Hd6e8
+
+# =============================================================================
+# FRONTEND ENVIRONMENT VARIABLES (Build Time)
+# =============================================================================
+# NOTE: Vite requires VITE_ prefix for all frontend variables
+
+# API Backend URL
+VITE_API_URL=https://your-app.vercel.app/api
+# ^ UPDATE THIS after first Vercel deployment (same as FRONTEND_URL + /api)
+
+# Google Maps API (same key as backend)
+VITE_GOOGLE_MAPS_API_KEY=AIzaSyA38JeaL-YNKvv4sgSrBr1--lwxBadPD5I
+
+# Stripe Publishable Key (Test Mode)
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_placeholder_add_your_key_here
+# ^ Get from: https://dashboard.stripe.com/test/apikeys
+
+# Supabase Storage (same as backend)
+VITE_SUPABASE_URL=https://aqmvbydjvacfislizjub.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxbXZieWRqdmFjZmlzbGl6anViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwMjQ3NDksImV4cCI6MjA3ODYwMDc0OX0.JWOPsfSIlyMCzuCTe-wTlHBhlL3ZdCXsmEIQm8Hd6e8
+
+# =============================================================================
+# VERCEL-SPECIFIC SETTINGS
+# =============================================================================
+
+# These are automatically set by Vercel (DO NOT add manually):
+# - VERCEL=1
+# - VERCEL_ENV (production/preview/development)
+# - VERCEL_URL (auto-generated preview URL)
+# - VERCEL_GIT_COMMIT_SHA
+# - VERCEL_GIT_COMMIT_MESSAGE
+
+# =============================================================================
+# DEPLOYMENT CHECKLIST
+# =============================================================================
+
+# BEFORE FIRST DEPLOY:
+# 1. [ ] Run: npm run build (in both frontend and backend)
+# 2. [ ] Fix any TypeScript errors
+# 3. [ ] Test locally with production env vars
+# 4. [ ] Generate new JWT_SECRET for production
+# 5. [ ] Get real Stripe keys (test mode is OK for MVP)
+# 6. [ ] Update vercel.json with correct paths
+
+# AFTER FIRST DEPLOY:
+# 1. [ ] Copy Vercel production URL (e.g., https://explorepro.vercel.app)
+# 2. [ ] Update FRONTEND_URL to production URL
+# 3. [ ] Update VITE_API_URL to https://your-app.vercel.app/api
+# 4. [ ] Redeploy with updated URLs
+# 5. [ ] Create Stripe webhook pointing to: https://your-app.vercel.app/api/webhooks/stripe
+# 6. [ ] Update STRIPE_WEBHOOK_SECRET with new webhook secret
+# 7. [ ] Test entire flow end-to-end
+
+# =============================================================================
+# QUICK COPY COMMANDS FOR VERCEL CLI
+# =============================================================================
+
+# If using Vercel CLI:
+# vercel env add VARIABLE_NAME
+# Then paste the value when prompted
+
+# Or import from file:
+# vercel env pull .env.production
+
+# =============================================================================
+# SECURITY NOTES
+# =============================================================================
+
+# DO NOT COMMIT:
+# - This file (.vercel-env-variables.local) - already in .gitignore
+# - Any .env files
+# - API keys or secrets
+
+# DO COMMIT:
+# - .env.example files (with placeholder values)
+# - vercel.json configuration
+# - Documentation about required env vars
+
+# =============================================================================
+# TROUBLESHOOTING
+# =============================================================================
+
+# If Vercel build fails:
+# 1. Check build logs in Vercel dashboard
+# 2. Ensure all env vars are set
+# 3. Check TypeScript errors: npm run build
+# 4. Verify DATABASE_URL is accessible from Vercel
+# 5. Check Supabase firewall allows Vercel IPs
+
+# If API calls fail:
+# 1. Check CORS settings (FRONTEND_URL must match)
+# 2. Verify VITE_API_URL points to correct backend
+# 3. Check browser console for errors
+# 4. Test API endpoints directly
+
+# If database connection fails:
+# 1. Use connection pooler URL (not direct connection)
+# 2. Check Supabase quotas
+# 3. Verify DATABASE_URL format
+# 4. Check Prisma client generation
+
+# =============================================================================
+# END OF FILE
+# =============================================================================
