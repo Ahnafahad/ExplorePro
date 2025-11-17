@@ -56,6 +56,8 @@ export interface Guide {
   verificationDoc?: string
   averageRating?: number
   totalReviews: number
+  tours?: Tour[]
+  reviews?: Review[]
 }
 
 export interface Tour {
@@ -92,6 +94,7 @@ export interface Booking {
   stripePaymentId?: string
   createdAt: string
   updatedAt: string
+  review?: Review
 }
 
 export interface Review {

@@ -6,11 +6,6 @@ import { PollingUpdate } from '../types/index.js'
  * This is suitable for Vercel serverless functions
  */
 
-interface PendingUpdate {
-  userId: string
-  updates: PollingUpdate[]
-}
-
 class PollingService {
   private pendingUpdates: Map<string, PollingUpdate[]> = new Map()
 

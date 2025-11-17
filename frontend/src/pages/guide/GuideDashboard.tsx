@@ -8,7 +8,7 @@ import { Badge } from '../../components/common/Badge'
 import { Button } from '../../components/common/Button'
 import { Card } from '../../components/common/Card'
 import { Loading } from '../../components/common/Loading'
-import { formatCurrency, formatDate, formatRelativeTime } from '../../utils/helpers'
+import { formatCurrency, formatDate } from '../../utils/helpers'
 import type { Guide, Booking, BookingStatus } from '../../types'
 
 const statusVariants: Record<BookingStatus, 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'gray'> = {

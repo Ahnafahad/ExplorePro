@@ -52,7 +52,7 @@ export class AdminService {
   /**
    * Reject guide
    */
-  async rejectGuide(guideId: string, reason?: string) {
+  async rejectGuide(guideId: string, _reason?: string) {
     const guide = await prisma.guide.update({
       where: { id: guideId },
       data: {

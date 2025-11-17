@@ -34,7 +34,6 @@ export function StarRating({
       {Array.from({ length: maxRating }, (_, i) => {
         const starValue = i + 1
         const isFilled = starValue <= rating
-        const isPartial = starValue > rating && starValue - 1 < rating
 
         return (
           <button

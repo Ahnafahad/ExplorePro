@@ -4,13 +4,13 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { api } from '../../services/api'
+import { useAuth } from '../../context/AuthContext'
 import { Button } from '../../components/common/Button'
 import { Input } from '../../components/common/Input'
 import { TextArea } from '../../components/common/TextArea'
-import { Select } from '../../components/common/Select'
 import { Card } from '../../components/common/Card'
-import { LANGUAGES, SPECIALTIES } from '../../constants'
-import { Sparkles, User, DollarSign, Languages, Award, FileCheck, ArrowRight, Shield } from 'lucide-react'
+import { FileUpload } from '../../components/common/FileUpload'
+import { Sparkles, User, DollarSign, Languages, Award, FileCheck, ArrowRight, Shield, Camera } from 'lucide-react'
 
 const profileSchema = z.object({
   bio: z.string().min(50, 'Bio must be at least 50 characters'),
@@ -24,8 +24,11 @@ type ProfileFormData = z.infer<typeof profileSchema>
 
 export default function ProfileSetup() {
   const navigate = useNavigate()
+  const { user } = useAuth()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState<string>('')
+  const [verificationDocUrl, setVerificationDocUrl] = useState<string>('')
 
   const {
     register,
@@ -45,10 +48,16 @@ export default function ProfileSetup() {
         hourlyRate: data.hourlyRate,
         languages: data.languages.split(',').map((s) => s.trim()),
         specialties: data.specialties.split(',').map((s) => s.trim()),
-        verificationDoc: data.verificationDoc,
+        verificationDoc: verificationDocUrl || undefined,
       }
 
       await api.post('/api/guides', payload)
+
+      // Update user profile photo if uploaded
+      if (profilePhotoUrl) {
+        await api.put('/api/auth/profile', { photo: profilePhotoUrl })
+      }
+
       navigate('/dashboard')
     } catch (err: any) {
       setError(err.message || 'Failed to create profile')
@@ -75,7 +84,7 @@ export default function ProfileSetup() {
         </div>
 
         {/* Form Card */}
-        <Card variant="elevated" padding="lg" className="animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+        <Card variant="elevated" padding="lg" className="animate-fade-in-up">
           {error && (
             <div className="mb-6 p-4 bg-danger-50 border-2 border-danger-200 rounded-xl animate-fade-in">
               <p className="text-sm font-medium text-danger-700">{error}</p>
@@ -83,6 +92,24 @@ export default function ProfileSetup() {
           )}
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Profile Photo */}
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="p-2 bg-primary-100 rounded-lg">
+                  <Camera className="w-5 h-5 text-primary-600" />
+                </div>
+                <h3 className="text-lg font-display font-bold text-neutral-900">Profile Photo</h3>
+              </div>
+              {user?.userId && (
+                <FileUpload
+                  fileType="profile"
+                  userId={user.userId}
+                  onUploadSuccess={setProfilePhotoUrl}
+                  label="Upload your profile photo"
+                />
+              )}
+            </div>
+
             {/* Bio */}
             <div>
               <div className="flex items-center gap-2 mb-4">
@@ -166,15 +193,14 @@ export default function ProfileSetup() {
                 </div>
                 <h3 className="text-lg font-display font-bold text-neutral-900">Verification (Optional)</h3>
               </div>
-              <Input
-                label="Verification Document URL"
-                type="text"
-                placeholder="https://..."
-                icon={<FileCheck className="w-5 h-5" />}
-                {...register('verificationDoc')}
-                error={errors.verificationDoc?.message}
-                helperText="Upload your ID to a service like Imgur and paste the link here"
-              />
+              {user?.userId && (
+                <FileUpload
+                  fileType="verification"
+                  userId={user.userId}
+                  onUploadSuccess={setVerificationDocUrl}
+                  label="Upload verification document (ID, certification, etc.)"
+                />
+              )}
             </div>
 
             {/* Info Box */}
@@ -210,7 +236,7 @@ export default function ProfileSetup() {
         </Card>
 
         {/* Help Text */}
-        <div className="mt-8 text-center animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+        <div className="mt-8 text-center animate-fade-in-up">
           <p className="text-sm text-neutral-500">
             Need help? Check our{' '}
             <a href="#" className="text-primary-600 hover:underline font-medium">

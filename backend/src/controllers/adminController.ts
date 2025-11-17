@@ -6,7 +6,7 @@ export class AdminController {
   /**
    * Get pending guide applications
    */
-  async getPendingGuides(req: Request, res: Response) {
+  async getPendingGuides(_req: Request, res: Response): Promise<void> {
     try {
       const guides = await adminService.getPendingGuides()
 
@@ -102,7 +102,7 @@ export class AdminController {
   /**
    * Get platform statistics
    */
-  async getStatistics(req: Request, res: Response) {
+  async getStatistics(_req: Request, res: Response): Promise<void> {
     try {
       const stats = await adminService.getStatistics()
 

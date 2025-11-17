@@ -147,10 +147,12 @@ export class AuthService {
       throw new Error('JWT_SECRET not configured')
     }
 
+    const expiresIn = process.env.JWT_EXPIRES_IN || '7d'
+
     return jwt.sign(
       { userId, email, role },
       secret,
-      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+      { expiresIn } as jwt.SignOptions
     )
   }
 }

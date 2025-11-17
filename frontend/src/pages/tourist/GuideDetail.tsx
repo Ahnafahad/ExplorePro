@@ -180,7 +180,7 @@ export default function GuideDetail() {
                   <h2 className="text-2xl font-display font-bold text-neutral-900">Tours Offered</h2>
                 </div>
                 <div className="space-y-4">
-                  {guide.tours.map((tour: Tour, index) => (
+                  {guide.tours.map((tour: Tour, index: number) => (
                     <div
                       key={tour.id}
                       className="relative p-5 border-2 border-neutral-200 rounded-xl hover:border-primary-300 hover:shadow-medium transition-all animate-fade-in-up"
@@ -214,7 +214,7 @@ export default function GuideDetail() {
                   <h2 className="text-2xl font-display font-bold text-neutral-900">Reviews</h2>
                 </div>
                 <div className="space-y-6">
-                  {guide.reviews.map((review: Review, index) => (
+                  {guide.reviews.map((review: Review, index: number) => (
                     <div
                       key={review.id}
                       className="border-b-2 border-neutral-100 last:border-0 pb-6 last:pb-0 animate-fade-in-up"

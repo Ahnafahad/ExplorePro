@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Search, Filter, MapPin, Sparkles, SlidersHorizontal, X } from 'lucide-react'
+import { Search, MapPin, Sparkles, SlidersHorizontal, X } from 'lucide-react'
 import { api } from '../../services/api'
 import { GuideCard } from '../../components/tourist/GuideCard'
 import { Input } from '../../components/common/Input'

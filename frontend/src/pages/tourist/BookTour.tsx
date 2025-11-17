@@ -29,10 +29,8 @@ const bookingSchema = z.object({
 type BookingFormData = z.infer<typeof bookingSchema>
 
 function CheckoutForm({
-  clientSecret,
   onSuccess,
 }: {
-  clientSecret: string
   onSuccess: () => void
 }) {
   const stripe = useStripe()
@@ -100,7 +98,6 @@ export default function BookTour() {
   const [loading, setLoading] = useState(true)
   const [step, setStep] = useState<'details' | 'payment'>('details')
   const [clientSecret, setClientSecret] = useState('')
-  const [bookingData, setBookingData] = useState<any>(null)
 
   const {
     register,
@@ -136,7 +133,7 @@ export default function BookTour() {
   }, [guideId])
 
   const totalPrice = guide ? calculateTotalPrice(guide.hourlyRate, duration || 60) : 0
-  const { commission, guideEarnings } = calculateEarnings(totalPrice)
+  const { commission } = calculateEarnings(totalPrice)
 
   const onSubmit = async (data: BookingFormData) => {
     if (!guide) return
@@ -153,10 +150,12 @@ export default function BookTour() {
         totalPrice,
       }
 
-      const response = await api.post('/api/bookings', bookingPayload)
+      const response = await api.post<{
+        booking: any
+        paymentIntent: { clientSecret: string }
+      }>('/api/bookings', bookingPayload)
 
       if (response.success && response.data) {
-        setBookingData(response.data.booking)
         setClientSecret(response.data.paymentIntent.clientSecret)
         setStep('payment')
       }
@@ -231,7 +230,7 @@ export default function BookTour() {
         </div>
 
         {/* Progress Steps */}
-        <div className="mb-8 animate-fade-in-up" style={{ animationDelay: '50ms' }}>
+        <div className="mb-8 animate-fade-in-up">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3 flex-1">
               <div className={`
@@ -265,7 +264,7 @@ export default function BookTour() {
           {/* Booking Form */}
           <div className="lg:col-span-2">
             {step === 'details' ? (
-              <Card variant="elevated" padding="lg" className="animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+              <Card variant="elevated" padding="lg" className="animate-fade-in-up">
                 <div className="flex items-center gap-2 mb-6">
                   <div className="p-2 bg-primary-100 rounded-lg">
                     <Calendar className="w-5 h-5 text-primary-600" />
@@ -346,7 +345,7 @@ export default function BookTour() {
 
                 {clientSecret && (
                   <Elements stripe={stripePromise} options={{ clientSecret }}>
-                    <CheckoutForm clientSecret={clientSecret} onSuccess={handlePaymentSuccess} />
+                    <CheckoutForm onSuccess={handlePaymentSuccess} />
                   </Elements>
                 )}
               </Card>
@@ -355,7 +354,7 @@ export default function BookTour() {
 
           {/* Summary Sidebar */}
           <div className="lg:col-span-1">
-            <div className="sticky top-4 animate-fade-in-up" style={{ animationDelay: '150ms' }}>
+            <div className="sticky top-4 animate-fade-in-up">
               <Card variant="elevated" padding="lg" className="border-2 border-primary-200">
                 <h3 className="text-xl font-display font-bold text-neutral-900 mb-6">Booking Summary</h3>
 

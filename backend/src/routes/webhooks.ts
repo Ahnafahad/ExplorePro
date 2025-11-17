@@ -11,18 +11,19 @@ const router = express.Router()
 router.post(
   '/stripe',
   express.raw({ type: 'application/json' }),
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response): Promise<void> => {
     try {
       const signature = req.headers['stripe-signature'] as string
 
       if (!signature) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: {
             code: 'MISSING_SIGNATURE',
             message: 'Stripe signature missing',
           },
         })
+        return
       }
 
       await stripeService.handleWebhook(req.body, signature)

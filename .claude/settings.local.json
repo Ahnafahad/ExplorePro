@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git init:*)",
+      "Bash(git remote add:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git fetch:*)",
+      "Bash(git merge:*)",
+      "Bash(npm install:*)",
+      "Bash(npx prisma:*)",
+      "Bash(ping:*)",
+      "Bash(powershell -Command \"Test-NetConnection -ComputerName db.aqmvbydjvacfislizjub.supabase.co -Port 5432\")",
+      "Bash(powershell -Command \"Test-NetConnection -ComputerName aws-0-us-east-1.pooler.supabase.com -Port 6543\")",
+      "Bash(npx tsc --noEmit)",
+      "Bash(npm run build:*)",
+      "Bash(find:*)",
+      "Bash(npm run dev:*)",
+      "Bash(curl:*)",
+      "Bash(cat:*)",
+      "Bash(git stash:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

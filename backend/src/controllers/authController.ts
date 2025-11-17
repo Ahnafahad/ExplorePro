@@ -20,7 +20,7 @@ export class AuthController {
   /**
    * Register a new user
    */
-  async register(req: Request, res: Response) {
+  async register(req: Request, res: Response): Promise<void> {
     try {
       // Validate request body
       const validatedData = registerSchema.parse(req.body)
@@ -37,7 +37,7 @@ export class AuthController {
       console.error('Registration error:', error)
 
       if (error instanceof z.ZodError) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: {
             code: 'VALIDATION_ERROR',
@@ -45,6 +45,7 @@ export class AuthController {
             details: error.errors,
           },
         })
+        return
       }
 
       res.status(400).json({
@@ -60,7 +61,7 @@ export class AuthController {
   /**
    * Login user
    */
-  async login(req: Request, res: Response) {
+  async login(req: Request, res: Response): Promise<void> {
     try {
       // Validate request body
       const validatedData = loginSchema.parse(req.body)
@@ -77,7 +78,7 @@ export class AuthController {
       console.error('Login error:', error)
 
       if (error instanceof z.ZodError) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: {
             code: 'VALIDATION_ERROR',
@@ -85,6 +86,7 @@ export class AuthController {
             details: error.errors,
           },
         })
+        return
       }
 
       res.status(401).json({
@@ -100,7 +102,7 @@ export class AuthController {
   /**
    * Get current user
    */
-  async getCurrentUser(req: Request, res: Response) {
+  async getCurrentUser(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user!.userId
 
@@ -126,7 +128,7 @@ export class AuthController {
   /**
    * Logout user
    */
-  async logout(req: Request, res: Response) {
+  async logout(_req: Request, res: Response): Promise<void> {
     // For JWT-based auth, logout is handled client-side by removing the token
     // Here we can add token blacklisting or other logout logic if needed
     res.json({

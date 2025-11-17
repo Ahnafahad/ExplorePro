@@ -33,7 +33,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // Health check endpoint
-app.get('/api/health', (req: Request, res: Response) => {
+app.get('/api/health', (_req: Request, res: Response) => {
   res.json({
     success: true,
     message: 'ExplorePro API is running',
@@ -57,7 +57,7 @@ interface ApiError extends Error {
   code?: string
 }
 
-app.use((err: ApiError, req: Request, res: Response, next: NextFunction) => {
+app.use((err: ApiError, _req: Request, res: Response, _next: NextFunction) => {
   console.error('Error:', err)
 
   const statusCode = err.statusCode || 500
@@ -74,7 +74,7 @@ app.use((err: ApiError, req: Request, res: Response, next: NextFunction) => {
 })
 
 // 404 handler
-app.use((req: Request, res: Response) => {
+app.use((_req: Request, res: Response) => {
   res.status(404).json({
     success: false,
     error: {
