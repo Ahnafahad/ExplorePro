@@ -1,10 +1,35 @@
-import { MapPin, Clock, Shield, Star, Users, TrendingUp, Check, Sparkles, Globe, Award } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { MapPin, Clock, Shield, Star, Users, TrendingUp, Check, Sparkles, Globe, Award, Calendar, DollarSign, Users as UsersIcon } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import demoService from '../services/demoService'
+import { Loading } from '../components/common/Loading'
 
 function Home() {
   const navigate = useNavigate()
   const { user } = useAuth()
+  const [featuredTours, setFeaturedTours] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchFeaturedTours = async () => {
+      try {
+        if (demoService.isDemoMode()) {
+          const response = await demoService.tours.getAll()
+          if (response.success && response.data) {
+            // Get first 3 tours as featured
+            setFeaturedTours(response.data.slice(0, 3))
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching featured tours:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchFeaturedTours()
+  }, [])
 
   const handleFindGuide = () => {
     if (user) {
@@ -203,8 +228,118 @@ function Home() {
         </div>
       </section>
 
-      {/* How It Works Section */}
+      {/* Featured Tours Section */}
       <section className="section section-alt">
+        <div className="container-custom">
+          <div className="text-center mb-16">
+            <h2 className="font-display font-bold text-4xl lg:text-5xl text-neutral-900 mb-4">
+              Popular Tours
+            </h2>
+            <p className="text-xl text-neutral-600 max-w-2xl mx-auto">
+              Discover our most loved experiences in Oxford & Cambridge
+            </p>
+          </div>
+
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <Loading size="lg" text="Loading tours..." />
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-8">
+              {featuredTours.map((tour, index) => (
+                <div
+                  key={tour.id}
+                  className="card card-hover overflow-hidden group animate-fade-in-up"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  {/* Tour Image Placeholder */}
+                  <div className="relative h-48 bg-gradient-to-br from-primary-400 to-secondary-500 overflow-hidden">
+                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9Ii4zIi8+PC9nPjwvc3ZnPg==')] opacity-20" />
+                    <div className="absolute top-4 right-4 flex gap-2">
+                      <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-semibold text-neutral-900">
+                        {tour.category}
+                      </span>
+                    </div>
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <h3 className="text-white font-display font-bold text-xl line-clamp-2">
+                        {tour.title}
+                      </h3>
+                    </div>
+                  </div>
+
+                  {/* Tour Details */}
+                  <div className="p-6">
+                    <p className="text-neutral-600 mb-4 line-clamp-2">
+                      {tour.description}
+                    </p>
+
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center gap-2 text-sm text-neutral-600">
+                        <Clock className="w-4 h-4 text-primary-600" />
+                        <span>{tour.duration} minutes</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-neutral-600">
+                        <UsersIcon className="w-4 h-4 text-primary-600" />
+                        <span>Max {tour.maxGroupSize} people</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-neutral-600">
+                        <MapPin className="w-4 h-4 text-primary-600" />
+                        <span className="line-clamp-1">{tour.meetingPoint}</span>
+                      </div>
+                    </div>
+
+                    {tour.highlights && tour.highlights.length > 0 && (
+                      <div className="mb-4">
+                        <p className="text-xs font-semibold text-neutral-700 mb-2">Highlights:</p>
+                        <div className="flex flex-wrap gap-1">
+                          {tour.highlights.slice(0, 3).map((highlight: string, idx: number) => (
+                            <span
+                              key={idx}
+                              className="px-2 py-1 bg-primary-50 text-primary-700 rounded text-xs"
+                            >
+                              {highlight}
+                            </span>
+                          ))}
+                          {tour.highlights.length > 3 && (
+                            <span className="px-2 py-1 bg-neutral-100 text-neutral-600 rounded text-xs">
+                              +{tour.highlights.length - 3} more
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between pt-4 border-t border-neutral-200">
+                      <div>
+                        <span className="text-2xl font-bold text-primary-600">£{tour.price}</span>
+                        <span className="text-neutral-500 text-sm ml-1">per person</span>
+                      </div>
+                      <button
+                        onClick={() => user ? navigate('/browse-guides') : navigate('/register')}
+                        className="btn-primary btn-sm"
+                      >
+                        {user ? 'Book Now' : 'Sign Up'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="text-center mt-12">
+            <button
+              onClick={() => user ? navigate('/browse-guides') : navigate('/register')}
+              className="btn-secondary btn-lg"
+            >
+              View All Tours
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="section">
         <div className="container-custom">
           <div className="text-center mb-16">
             <h2 className="font-display font-bold text-4xl lg:text-5xl text-neutral-900 mb-4">
