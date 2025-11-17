@@ -35,7 +35,7 @@ export function ChatBox({ bookingId, otherUser }: ChatBoxProps) {
     try {
       // Use demo service if in demo mode
       if (demoService.isDemoMode()) {
-        const response = await demoService.messages.getByBookingId(bookingId)
+        const response = await demoService.messages.getByBooking(bookingId)
         if (response.success && response.data) {
           setMessages(response.data)
         }
