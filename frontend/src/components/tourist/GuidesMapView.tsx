@@ -64,7 +64,7 @@ export function GuidesMapView({ guides, onGuideClick }: GuidesMapViewProps) {
 
   // Generate location for guides based on their availability
   // Scatter them around Cambridge tourist spots
-  const getGuideLocation = (guide: Guide, index: number) => {
+  const getGuideLocation = (_guide: Guide, index: number) => {
     // Create a circle of guides around Cambridge center
     const radius = 0.008; // approximately 800 meters
     const angle = (index * 2 * Math.PI) / guides.length;
