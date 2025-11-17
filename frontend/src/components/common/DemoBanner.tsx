@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { useDemo } from '@/context/DemoContext';
-import { X, RotateCcw, LogOut, Users } from 'lucide-react';
+import { RotateCcw, LogOut, Users } from 'lucide-react';
 
 const DemoBanner: React.FC = () => {
   const { isDemoMode, resetDemo, exitDemoMode, currentUser } = useDemo();

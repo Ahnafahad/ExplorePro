@@ -28,7 +28,7 @@ export default function AdminDashboard() {
         : await api.get('/api/admin/stats')
 
       if (response.success && response.data) {
-        setStats(response.data.platform)
+        setStats((response.data as any).platform)
       }
     } catch (error) {
       console.error('Error fetching stats:', error)

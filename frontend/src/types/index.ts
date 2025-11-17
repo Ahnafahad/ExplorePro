@@ -34,6 +34,10 @@ export interface User {
   photo?: string
   createdAt: string
   updatedAt: string
+  // Optional nested data for demo mode
+  guide?: any
+  tourist?: any
+  admin?: any
 }
 
 export interface Tourist {

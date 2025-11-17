@@ -56,6 +56,35 @@ const transformBooking = (bookingData: any): any => {
   };
 };
 
+// Transform message JSON to use isRead instead of read
+const transformMessage = (messageData: any): any => {
+  const { read, ...rest } = messageData;
+  return {
+    ...rest,
+    isRead: read !== undefined ? read : false,
+  };
+};
+
+// Transform pending guide to full guide structure
+const transformPendingGuide = (pendingGuide: any): any => {
+  const { name, email, photo, ...rest } = pendingGuide;
+  return {
+    ...rest,
+    user: {
+      id: pendingGuide.userId,
+      email: email || '',
+      role: 'GUIDE' as const,
+      name: name || '',
+      photo: photo || '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    isAvailable: false,
+    status: pendingGuide.status || 'PENDING',
+    totalReviews: 0,
+  };
+};
+
 // Storage keys
 const STORAGE_KEYS = {
   CURRENT_USER: 'demo_current_user',
@@ -204,7 +233,7 @@ export const demoGuidesService = {
       }
       if (filters.minRating) {
         const rating = filters.minRating;
-        guides = guides.filter(g => (g.rating || g.averageRating || 0) >= rating);
+        guides = guides.filter(g => ((g as any).rating || (g as any).averageRating || 0) >= rating);
       }
     }
 
@@ -452,7 +481,9 @@ export const demoMessagesService = {
     const messages = getStoredData(STORAGE_KEYS.MESSAGES, messagesData);
     const bookingMessages = messages.filter(m => m.bookingId === bookingId);
 
-    return { success: true, data: bookingMessages };
+    // Transform messages to match TypeScript interface
+    const transformedMessages = bookingMessages.map(transformMessage);
+    return { success: true, data: transformedMessages };
   },
 
   send: async (bookingId: string, content: string) => {
@@ -464,11 +495,9 @@ export const demoMessagesService = {
       id: `msg-${Date.now()}`,
       bookingId,
       senderId: user.id,
-      senderName: user.name,
-      senderRole: user.role,
       content,
+      isRead: false,
       createdAt: new Date().toISOString(),
-      read: false,
     };
 
     messages.push(newMessage);
@@ -539,7 +568,8 @@ export const demoAdminService = {
   getPendingGuides: async () => {
     await delay();
     const pendingGuides = getStoredData(STORAGE_KEYS.PENDING_GUIDES, pendingGuidesData);
-    return { success: true, data: pendingGuides };
+    const transformedGuides = pendingGuides.map(transformPendingGuide);
+    return { success: true, data: transformedGuides };
   },
 
   approveGuide: async (id: string) => {
@@ -570,6 +600,9 @@ export const demoAdminService = {
       joinedDate: new Date().toISOString(),
       funFacts: [],
       askMeAbout: [],
+      videoIntro: '',
+      totalEarnings: 0,
+      repeatCustomerRate: 0,
     };
 
     guides.push(approvedGuide);
