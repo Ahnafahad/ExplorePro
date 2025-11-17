@@ -1,8 +1,4 @@
-/**
- * Vercel Serverless Function Entry Point
- * This file exports the Express app for Vercel serverless deployment
- */
-
+// Vercel Serverless Function Entry Point
 import app from '../backend/src/server.js'
 
 export default app
