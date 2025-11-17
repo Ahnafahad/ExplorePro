@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Search, MapPin, Sparkles, SlidersHorizontal, X } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { Search, MapPin, Sparkles, SlidersHorizontal, X, Map, List } from 'lucide-react'
 import { api } from '../../services/api'
 import demoService from '../../services/demoService'
 import { GuideCard } from '../../components/tourist/GuideCard'
+import { GuidesMapView } from '../../components/tourist/GuidesMapView'
 import { Input } from '../../components/common/Input'
 import { Select } from '../../components/common/Select'
 import { Button } from '../../components/common/Button'
@@ -11,9 +13,11 @@ import { LANGUAGES, SPECIALTIES } from '../../constants'
 import type { Guide } from '../../types'
 
 export default function BrowseGuides() {
+  const navigate = useNavigate()
   const [guides, setGuides] = useState<Guide[]>([])
   const [loading, setLoading] = useState(true)
   const [showFilters, setShowFilters] = useState(true)
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('map')
   const [filters, setFilters] = useState({
     language: '',
     specialty: '',
@@ -239,23 +243,62 @@ export default function BrowseGuides() {
           </div>
         ) : guides.length > 0 ? (
           <div className="space-y-6 animate-fade-in">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-wrap gap-4">
               <p className="text-neutral-600 font-medium">
                 Found <span className="text-primary-600 font-bold">{guides.length}</span> guide{guides.length !== 1 ? 's' : ''}
               </p>
+
+              {/* View Mode Toggle */}
+              <div className="flex items-center gap-2 p-1 bg-neutral-100 rounded-lg">
+                <button
+                  onClick={() => setViewMode('map')}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium text-sm transition-all ${
+                    viewMode === 'map'
+                      ? 'bg-white text-primary-600 shadow-sm'
+                      : 'text-neutral-600 hover:text-neutral-900'
+                  }`}
+                >
+                  <Map className="w-4 h-4" />
+                  Map View
+                </button>
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium text-sm transition-all ${
+                    viewMode === 'list'
+                      ? 'bg-white text-primary-600 shadow-sm'
+                      : 'text-neutral-600 hover:text-neutral-900'
+                  }`}
+                >
+                  <List className="w-4 h-4" />
+                  List View
+                </button>
+              </div>
             </div>
 
-            <div className="grid gap-6">
-              {guides.map((guide, index) => (
-                <div
-                  key={guide.id}
-                  className="animate-fade-in-up"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <GuideCard guide={guide} />
-                </div>
-              ))}
-            </div>
+            {/* Map View */}
+            {viewMode === 'map' && (
+              <div className="animate-fade-in">
+                <GuidesMapView
+                  guides={guides}
+                  onGuideClick={(guide) => navigate(`/guides/${guide.id}`)}
+                />
+              </div>
+            )}
+
+            {/* List View */}
+            {viewMode === 'list' && (
+              <div className="grid gap-6 animate-fade-in">
+                {guides.map((guide, index) => (
+                  <div
+                    key={guide.id}
+                    className="animate-fade-in-up"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <GuideCard guide={guide} />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ) : (
           <div className="text-center py-16 animate-fade-in">

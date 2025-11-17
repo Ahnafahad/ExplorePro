@@ -1,0 +1,158 @@
+[
+  {
+    "id": "spot-1",
+    "name": "King's College Chapel",
+    "description": "Iconic Gothic chapel, one of Cambridge's most famous landmarks",
+    "category": "Historic Building",
+    "location": {
+      "lat": 52.2047,
+      "lng": 0.1163
+    },
+    "city": "Cambridge",
+    "rating": 4.8,
+    "visitDuration": "30-60 min"
+  },
+  {
+    "id": "spot-2",
+    "name": "Trinity College",
+    "description": "The largest and wealthiest college, founded by Henry VIII",
+    "category": "Historic Building",
+    "location": {
+      "lat": 52.2068,
+      "lng": 0.1167
+    },
+    "city": "Cambridge",
+    "rating": 4.7,
+    "visitDuration": "45-90 min"
+  },
+  {
+    "id": "spot-3",
+    "name": "The Backs",
+    "description": "Scenic area along the River Cam behind the colleges",
+    "category": "Nature & Parks",
+    "location": {
+      "lat": 52.2045,
+      "lng": 0.1145
+    },
+    "city": "Cambridge",
+    "rating": 4.9,
+    "visitDuration": "60-120 min"
+  },
+  {
+    "id": "spot-4",
+    "name": "Mathematical Bridge",
+    "description": "Wooden footbridge at Queens' College with fascinating engineering",
+    "category": "Landmark",
+    "location": {
+      "lat": 52.2019,
+      "lng": 0.1148
+    },
+    "city": "Cambridge",
+    "rating": 4.6,
+    "visitDuration": "15-30 min"
+  },
+  {
+    "id": "spot-5",
+    "name": "Fitzwilliam Museum",
+    "description": "Art and antiquities museum with world-class collections",
+    "category": "Museum",
+    "location": {
+      "lat": 52.1993,
+      "lng": 0.1198
+    },
+    "city": "Cambridge",
+    "rating": 4.7,
+    "visitDuration": "90-180 min"
+  },
+  {
+    "id": "spot-6",
+    "name": "Cambridge University Botanic Garden",
+    "description": "Beautiful 40-acre garden with diverse plant collections",
+    "category": "Nature & Parks",
+    "location": {
+      "lat": 52.1965,
+      "lng": 0.1275
+    },
+    "city": "Cambridge",
+    "rating": 4.8,
+    "visitDuration": "60-120 min"
+  },
+  {
+    "id": "spot-7",
+    "name": "Market Square",
+    "description": "Historic marketplace with daily stalls selling food and crafts",
+    "category": "Shopping",
+    "location": {
+      "lat": 52.2053,
+      "lng": 0.1192
+    },
+    "city": "Cambridge",
+    "rating": 4.5,
+    "visitDuration": "30-60 min"
+  },
+  {
+    "id": "spot-8",
+    "name": "Round Church",
+    "description": "One of England's four round medieval churches",
+    "category": "Historic Building",
+    "location": {
+      "lat": 52.2087,
+      "lng": 0.1185
+    },
+    "city": "Cambridge",
+    "rating": 4.6,
+    "visitDuration": "20-40 min"
+  },
+  {
+    "id": "spot-9",
+    "name": "Punting on the Cam",
+    "description": "Traditional flat-bottomed boat tours along the River Cam",
+    "category": "Activity",
+    "location": {
+      "lat": 52.2035,
+      "lng": 0.1165
+    },
+    "city": "Cambridge",
+    "rating": 4.8,
+    "visitDuration": "45-60 min"
+  },
+  {
+    "id": "spot-10",
+    "name": "St John's College",
+    "description": "Historic college famous for the Bridge of Sighs",
+    "category": "Historic Building",
+    "location": {
+      "lat": 52.2083,
+      "lng": 0.1172
+    },
+    "city": "Cambridge",
+    "rating": 4.7,
+    "visitDuration": "45-90 min"
+  },
+  {
+    "id": "spot-11",
+    "name": "Great St Mary's Church",
+    "description": "University church with tower offering panoramic city views",
+    "category": "Historic Building",
+    "location": {
+      "lat": 52.2054,
+      "lng": 0.1182
+    },
+    "city": "Cambridge",
+    "rating": 4.6,
+    "visitDuration": "30-60 min"
+  },
+  {
+    "id": "spot-12",
+    "name": "Corpus Clock",
+    "description": "Unique mechanical clock with the 'Chronophage' creature",
+    "category": "Landmark",
+    "location": {
+      "lat": 52.2034,
+      "lng": 0.1177
+    },
+    "city": "Cambridge",
+    "rating": 4.5,
+    "visitDuration": "10-15 min"
+  }
+]
