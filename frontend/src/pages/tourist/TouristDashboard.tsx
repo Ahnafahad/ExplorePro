@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Calendar, MapPin, Clock, Star, Search, LogOut, TrendingUp, CheckCircle, X, ArrowRight, Sparkles } from 'lucide-react'
 import { api } from '../../services/api'
+import demoService from '../../services/demoService'
 import { useAuth } from '../../context/AuthContext'
 import { Avatar } from '../../components/common/Avatar'
 import { Badge } from '../../components/common/Badge'
@@ -33,7 +34,11 @@ export default function TouristDashboard() {
 
   const fetchBookings = async () => {
     try {
-      const response = await api.get<Booking[]>('/api/bookings')
+      // Use demo service if in demo mode
+      const response = demoService.isDemoMode()
+        ? await demoService.bookings.getAll({ touristId: user?.id })
+        : await api.get<Booking[]>('/api/bookings')
+
       if (response.success && response.data) {
         setBookings(response.data)
       }
@@ -58,7 +63,12 @@ export default function TouristDashboard() {
     if (!confirm('Are you sure you want to cancel this booking?')) return
 
     try {
-      await api.delete(`/api/bookings/${bookingId}`)
+      // Use demo service if in demo mode
+      if (demoService.isDemoMode()) {
+        await demoService.bookings.cancel(bookingId, 'Cancelled by tourist')
+      } else {
+        await api.delete(`/api/bookings/${bookingId}`)
+      }
       fetchBookings()
     } catch (error: any) {
       alert(error.message || 'Failed to cancel booking')

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Users, DollarSign, Calendar, CheckCircle, XCircle } from 'lucide-react'
 import { api } from '../../services/api'
+import demoService from '../../services/demoService'
 import { Avatar } from '../../components/common/Avatar'
 import { Badge } from '../../components/common/Badge'
 import { Button } from '../../components/common/Button'
@@ -21,9 +22,13 @@ export default function AdminDashboard() {
 
   const fetchStats = async () => {
     try {
-      const response = await api.get('/api/admin/stats')
+      // Use demo service if in demo mode
+      const response = demoService.isDemoMode()
+        ? await demoService.analytics.getPlatformStats()
+        : await api.get('/api/admin/stats')
+
       if (response.success && response.data) {
-        setStats(response.data)
+        setStats(response.data.platform)
       }
     } catch (error) {
       console.error('Error fetching stats:', error)
@@ -34,7 +39,11 @@ export default function AdminDashboard() {
 
   const fetchPendingGuides = async () => {
     try {
-      const response = await api.get<Guide[]>('/api/admin/guides/pending')
+      // Use demo service if in demo mode
+      const response = demoService.isDemoMode()
+        ? await demoService.admin.getPendingGuides()
+        : await api.get<Guide[]>('/api/admin/guides/pending')
+
       if (response.success && response.data) {
         setPendingGuides(response.data)
       }
@@ -45,7 +54,12 @@ export default function AdminDashboard() {
 
   const handleApprove = async (guideId: string) => {
     try {
-      await api.put(`/api/admin/guides/${guideId}/approve`)
+      // Use demo service if in demo mode
+      if (demoService.isDemoMode()) {
+        await demoService.admin.approveGuide(guideId)
+      } else {
+        await api.put(`/api/admin/guides/${guideId}/approve`)
+      }
       fetchPendingGuides()
       fetchStats()
     } catch (error: any) {
@@ -56,7 +70,12 @@ export default function AdminDashboard() {
   const handleReject = async (guideId: string) => {
     const reason = prompt('Rejection reason (optional):')
     try {
-      await api.put(`/api/admin/guides/${guideId}/reject`, { reason })
+      // Use demo service if in demo mode
+      if (demoService.isDemoMode()) {
+        await demoService.admin.rejectGuide(guideId, reason || 'No reason provided')
+      } else {
+        await api.put(`/api/admin/guides/${guideId}/reject`, { reason })
+      }
       fetchPendingGuides()
       fetchStats()
     } catch (error: any) {

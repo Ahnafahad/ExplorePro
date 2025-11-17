@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { DollarSign, Calendar, Star, TrendingUp, Users, Settings, Briefcase, LogOut, Sparkles, Power, Check, Play, CheckCircle2, ArrowRight } from 'lucide-react'
 import { api } from '../../services/api'
+import demoService from '../../services/demoService'
 import { useAuth } from '../../context/AuthContext'
 import { Avatar } from '../../components/common/Avatar'
 import { Badge } from '../../components/common/Badge'
@@ -34,6 +35,14 @@ export default function GuideDashboard() {
 
   const fetchGuideData = async () => {
     try {
+      // In demo mode, guide data is in user object
+      if (demoService.isDemoMode() && user?.guide) {
+        setGuide(user.guide as any)
+        setLoading(false)
+        return
+      }
+
+      // Regular API call
       const response = await api.get<Guide[]>(`/api/guides?userId=${user?.id}`)
       if (response.success && response.data && response.data.length > 0) {
         setGuide(response.data[0])
@@ -47,7 +56,11 @@ export default function GuideDashboard() {
 
   const fetchBookings = async () => {
     try {
-      const response = await api.get<Booking[]>('/api/bookings')
+      // Use demo service if in demo mode
+      const response = demoService.isDemoMode()
+        ? await demoService.bookings.getAll({ guideId: user?.id })
+        : await api.get<Booking[]>('/api/bookings')
+
       if (response.success && response.data) {
         setBookings(response.data)
       }
@@ -60,7 +73,12 @@ export default function GuideDashboard() {
     if (!guide) return
 
     try {
-      await api.put(`/api/guides/${guide.id}/availability`)
+      // Use demo service if in demo mode
+      if (demoService.isDemoMode()) {
+        await demoService.guides.toggleAvailability(guide.id)
+      } else {
+        await api.put(`/api/guides/${guide.id}/availability`)
+      }
       fetchGuideData()
     } catch (error: any) {
       alert(error.message || 'Failed to update availability')
@@ -69,7 +87,12 @@ export default function GuideDashboard() {
 
   const handleStartTour = async (bookingId: string) => {
     try {
-      await api.put(`/api/bookings/${bookingId}/start`)
+      // Use demo service if in demo mode
+      if (demoService.isDemoMode()) {
+        await demoService.bookings.start(bookingId)
+      } else {
+        await api.put(`/api/bookings/${bookingId}/start`)
+      }
       fetchBookings()
     } catch (error: any) {
       alert(error.message || 'Failed to start tour')
@@ -78,7 +101,12 @@ export default function GuideDashboard() {
 
   const handleCompleteTour = async (bookingId: string) => {
     try {
-      await api.put(`/api/bookings/${bookingId}/complete`)
+      // Use demo service if in demo mode
+      if (demoService.isDemoMode()) {
+        await demoService.bookings.complete(bookingId)
+      } else {
+        await api.put(`/api/bookings/${bookingId}/complete`)
+      }
       fetchBookings()
     } catch (error: any) {
       alert(error.message || 'Failed to complete tour')
