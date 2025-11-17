@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { MapPin, Star, Clock, Calendar, Languages, Award, ChevronLeft, Sparkles, Check, Zap } from 'lucide-react'
 import { api } from '../../services/api'
+import demoService from '../../services/demoService'
 import { Avatar } from '../../components/common/Avatar'
 import { Badge } from '../../components/common/Badge'
 import { Button } from '../../components/common/Button'
@@ -22,9 +23,17 @@ export default function GuideDetail() {
   useEffect(() => {
     const fetchGuide = async () => {
       try {
-        const response = await api.get<Guide>(`/api/guides/${id}`)
-        if (response.success && response.data) {
-          setGuide(response.data)
+        // Use demo service if in demo mode
+        if (demoService.isDemoMode()) {
+          const response = await demoService.guides.getById(id!)
+          if (response.success && response.data) {
+            setGuide(response.data)
+          }
+        } else {
+          const response = await api.get<Guide>(`/api/guides/${id}`)
+          if (response.success && response.data) {
+            setGuide(response.data)
+          }
         }
       } catch (error) {
         console.error('Error fetching guide:', error)

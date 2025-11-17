@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { ChevronLeft, MapPin, Calendar, Clock } from 'lucide-react'
 import { api } from '../services/api'
+import demoService from '../services/demoService'
 import { useAuth } from '../context/AuthContext'
 import { Avatar } from '../components/common/Avatar'
 import { Badge } from '../components/common/Badge'
@@ -34,9 +35,17 @@ export default function BookingDetail() {
 
   const fetchBooking = async () => {
     try {
-      const response = await api.get<Booking>(`/api/bookings/${id}`)
-      if (response.success && response.data) {
-        setBooking(response.data)
+      // Use demo service if in demo mode
+      if (demoService.isDemoMode()) {
+        const response = await demoService.bookings.getById(id!)
+        if (response.success && response.data) {
+          setBooking(response.data)
+        }
+      } else {
+        const response = await api.get<Booking>(`/api/bookings/${id}`)
+        if (response.success && response.data) {
+          setBooking(response.data)
+        }
       }
     } catch (error) {
       console.error('Error fetching booking:', error)

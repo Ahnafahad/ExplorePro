@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Send } from 'lucide-react'
 import { api } from '../../services/api'
+import demoService from '../../services/demoService'
 import { useAuth } from '../../context/AuthContext'
 import { Avatar } from '../common/Avatar'
 import { Button } from '../common/Button'
@@ -32,9 +33,17 @@ export function ChatBox({ bookingId, otherUser }: ChatBoxProps) {
 
   const fetchMessages = async () => {
     try {
-      const response = await api.get<Message[]>(`/api/bookings/${bookingId}/messages`)
-      if (response.success && response.data) {
-        setMessages(response.data)
+      // Use demo service if in demo mode
+      if (demoService.isDemoMode()) {
+        const response = await demoService.messages.getByBookingId(bookingId)
+        if (response.success && response.data) {
+          setMessages(response.data)
+        }
+      } else {
+        const response = await api.get<Message[]>(`/api/bookings/${bookingId}/messages`)
+        if (response.success && response.data) {
+          setMessages(response.data)
+        }
       }
     } catch (error) {
       console.error('Error fetching messages:', error)
@@ -47,9 +56,17 @@ export function ChatBox({ bookingId, otherUser }: ChatBoxProps) {
 
     try {
       setSending(true)
-      await api.post(`/api/bookings/${bookingId}/messages`, { content: newMessage })
-      setNewMessage('')
-      fetchMessages()
+
+      // Use demo service if in demo mode
+      if (demoService.isDemoMode()) {
+        await demoService.messages.send(bookingId, newMessage)
+        setNewMessage('')
+        fetchMessages()
+      } else {
+        await api.post(`/api/bookings/${bookingId}/messages`, { content: newMessage })
+        setNewMessage('')
+        fetchMessages()
+      }
     } catch (error: any) {
       alert(error.message || 'Failed to send message')
     } finally {

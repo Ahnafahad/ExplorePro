@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Search, MapPin, Sparkles, SlidersHorizontal, X } from 'lucide-react'
 import { api } from '../../services/api'
+import demoService from '../../services/demoService'
 import { GuideCard } from '../../components/tourist/GuideCard'
 import { Input } from '../../components/common/Input'
 import { Select } from '../../components/common/Select'
@@ -24,17 +25,64 @@ export default function BrowseGuides() {
   const fetchGuides = async () => {
     try {
       setLoading(true)
-      const params = new URLSearchParams()
 
-      if (filters.language) params.append('language', filters.language)
-      if (filters.specialty) params.append('specialty', filters.specialty)
-      if (filters.isAvailable) params.append('isAvailable', filters.isAvailable)
-      if (filters.minRate) params.append('minRate', filters.minRate)
-      if (filters.maxRate) params.append('maxRate', filters.maxRate)
+      // Use demo service if in demo mode
+      if (demoService.isDemoMode()) {
+        const response = await demoService.guides.getAll()
 
-      const response = await api.get<Guide[]>(`/api/guides?${params.toString()}`)
-      if (response.success && response.data) {
-        setGuides(response.data)
+        if (response.success && response.data) {
+          // Client-side filtering for demo data
+          let filteredGuides = response.data
+
+          // Filter by language
+          if (filters.language) {
+            filteredGuides = filteredGuides.filter((guide) =>
+              guide.languages?.includes(filters.language)
+            )
+          }
+
+          // Filter by specialty
+          if (filters.specialty) {
+            filteredGuides = filteredGuides.filter((guide) =>
+              guide.specialties?.includes(filters.specialty)
+            )
+          }
+
+          // Filter by availability
+          if (filters.isAvailable) {
+            const isAvailable = filters.isAvailable === 'true'
+            filteredGuides = filteredGuides.filter((guide) => guide.isAvailable === isAvailable)
+          }
+
+          // Filter by hourly rate range
+          if (filters.minRate) {
+            filteredGuides = filteredGuides.filter(
+              (guide) => guide.hourlyRate >= parseFloat(filters.minRate)
+            )
+          }
+
+          if (filters.maxRate) {
+            filteredGuides = filteredGuides.filter(
+              (guide) => guide.hourlyRate <= parseFloat(filters.maxRate)
+            )
+          }
+
+          setGuides(filteredGuides)
+        }
+      } else {
+        // Use real API
+        const params = new URLSearchParams()
+
+        if (filters.language) params.append('language', filters.language)
+        if (filters.specialty) params.append('specialty', filters.specialty)
+        if (filters.isAvailable) params.append('isAvailable', filters.isAvailable)
+        if (filters.minRate) params.append('minRate', filters.minRate)
+        if (filters.maxRate) params.append('maxRate', filters.maxRate)
+
+        const response = await api.get<Guide[]>(`/api/guides?${params.toString()}`)
+        if (response.success && response.data) {
+          setGuides(response.data)
+        }
       }
     } catch (error) {
       console.error('Error fetching guides:', error)

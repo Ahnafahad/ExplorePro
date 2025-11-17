@@ -7,6 +7,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { Calendar, Clock, MapPin, ChevronLeft, CreditCard, Check, Sparkles, Shield } from 'lucide-react'
 import { api } from '../../services/api'
+import demoService from '../../services/demoService'
 import { Avatar } from '../../components/common/Avatar'
 import { Button } from '../../components/common/Button'
 import { Input } from '../../components/common/Input'
@@ -118,9 +119,17 @@ export default function BookTour() {
   useEffect(() => {
     const fetchGuide = async () => {
       try {
-        const response = await api.get<Guide>(`/api/guides/${guideId}`)
-        if (response.success && response.data) {
-          setGuide(response.data)
+        // Use demo service if in demo mode
+        if (demoService.isDemoMode()) {
+          const response = await demoService.guides.getById(guideId!)
+          if (response.success && response.data) {
+            setGuide(response.data)
+          }
+        } else {
+          const response = await api.get<Guide>(`/api/guides/${guideId}`)
+          if (response.success && response.data) {
+            setGuide(response.data)
+          }
         }
       } catch (error) {
         console.error('Error fetching guide:', error)
@@ -141,23 +150,45 @@ export default function BookTour() {
     try {
       setLoading(true)
 
-      const bookingPayload = {
-        guideId: guide.id,
-        type: data.type,
-        scheduledDate: data.scheduledDate || undefined,
-        duration: data.duration,
-        meetingPoint: data.meetingPoint,
-        totalPrice,
-      }
+      // Use demo service if in demo mode
+      if (demoService.isDemoMode()) {
+        // For demo mode, create booking immediately with mock payment
+        const bookingPayload = {
+          guideId: guide.id,
+          type: data.type,
+          scheduledDate: data.scheduledDate || undefined,
+          duration: data.duration,
+          meetingPoint: data.meetingPoint,
+          totalPrice,
+        }
 
-      const response = await api.post<{
-        booking: any
-        paymentIntent: { clientSecret: string }
-      }>('/api/bookings', bookingPayload)
+        const response = await demoService.bookings.create(bookingPayload)
 
-      if (response.success && response.data) {
-        setClientSecret(response.data.paymentIntent.clientSecret)
-        setStep('payment')
+        if (response.success) {
+          // Simulate payment processing delay
+          await new Promise((resolve) => setTimeout(resolve, 1500))
+          navigate('/dashboard')
+        }
+      } else {
+        // Use real API
+        const bookingPayload = {
+          guideId: guide.id,
+          type: data.type,
+          scheduledDate: data.scheduledDate || undefined,
+          duration: data.duration,
+          meetingPoint: data.meetingPoint,
+          totalPrice,
+        }
+
+        const response = await api.post<{
+          booking: any
+          paymentIntent: { clientSecret: string }
+        }>('/api/bookings', bookingPayload)
+
+        if (response.success && response.data) {
+          setClientSecret(response.data.paymentIntent.clientSecret)
+          setStep('payment')
+        }
       }
     } catch (error: any) {
       alert(error.message || 'Failed to create booking')
@@ -327,7 +358,7 @@ export default function BookTour() {
                   <Button type="submit" fullWidth size="lg" loading={loading}>
                     {!loading && (
                       <>
-                        Continue to Payment
+                        {demoService.isDemoMode() ? 'Confirm Booking (Mock Payment)' : 'Continue to Payment'}
                         <Check className="w-5 h-5" />
                       </>
                     )}
