@@ -191,7 +191,7 @@ export const demoAuthService = {
     return {
       success: true,
       data: {
-        user: userWithoutPassword,
+        user: userWithoutPassword as any,  // Type assertion needed for demo JSON data
         token: `demo_token_${Date.now()}`,
       },
     };
@@ -495,15 +495,18 @@ export const demoMessagesService = {
       id: `msg-${Date.now()}`,
       bookingId,
       senderId: user.id,
+      senderName: user.name,
+      senderRole: user.role,
       content,
-      isRead: false,
+      read: false,
       createdAt: new Date().toISOString(),
     };
 
     messages.push(newMessage);
     saveStoredData(STORAGE_KEYS.MESSAGES, messages);
 
-    return { success: true, data: newMessage };
+    // Transform to match Message interface when returning
+    return { success: true, data: transformMessage(newMessage) };
   },
 };
 
