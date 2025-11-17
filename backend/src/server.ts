@@ -84,13 +84,5 @@ app.use((_req: Request, res: Response) => {
   })
 })
 
-// For local development
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`)
-    console.log(`📝 Environment: ${process.env.NODE_ENV}`)
-  })
-}
-
-// Export for Vercel serverless
+// Export for Vercel serverless (no app.listen - handled by dev.ts for local)
 export default app
