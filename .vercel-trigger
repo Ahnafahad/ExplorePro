@@ -1,4 +1,4 @@
 # Dummy file to trigger Vercel rebuild
 # This file forces a fresh deployment
-Timestamp: 2025-11-17T01:28:00Z
-# Force cache clear
+Timestamp: 2025-11-17T07:42:00Z
+# Redeployment with corrected DATABASE_URL (transaction pooler)
