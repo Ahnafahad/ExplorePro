@@ -90,7 +90,7 @@ async function main() {
     },
   })
 
-  const tour3 = await prisma.tour.create({
+  await prisma.tour.create({
     data: {
       guideId: demoGuide.id,
       title: 'Hidden Oxford: Secret Gardens & Local Spots',
