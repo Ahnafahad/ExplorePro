@@ -21,9 +21,12 @@ export function ChatBox({ bookingId, otherUser }: ChatBoxProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    fetchMessages()
-    const interval = setInterval(fetchMessages, 5000) // Poll every 5 seconds
-    return () => clearInterval(interval)
+    // Don't fetch messages for demo bookings (they start with 'booking-')
+    if (!bookingId.startsWith('booking-')) {
+      fetchMessages()
+      const interval = setInterval(fetchMessages, 5000) // Poll every 5 seconds
+      return () => clearInterval(interval)
+    }
   }, [bookingId])
 
   useEffect(() => {

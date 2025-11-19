@@ -7,6 +7,7 @@ import { ProtectedRoute } from './components/common/ProtectedRoute'
 import Home from './pages/Home'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
+import DemoGuideSignup from './pages/DemoGuideSignup'
 
 // Tourist pages
 import BrowseGuides from './pages/tourist/BrowseGuides'
@@ -51,6 +52,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/demo-guide-signup" element={<DemoGuideSignup />} />
 
           {/* Dynamic dashboard route */}
           <Route
