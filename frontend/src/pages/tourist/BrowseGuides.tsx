@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Search, MapPin, Sparkles, SlidersHorizontal, X } from 'lucide-react'
 import { api } from '../../services/api'
 import { GuideCard } from '../../components/tourist/GuideCard'
+import { GuidesMap } from '../../components/tourist/GuidesMap'
 import { Input } from '../../components/common/Input'
 import { Select } from '../../components/common/Select'
 import { Button } from '../../components/common/Button'
@@ -10,6 +12,7 @@ import { LANGUAGES, SPECIALTIES } from '../../constants'
 import type { Guide } from '../../types'
 
 export default function BrowseGuides() {
+  const navigate = useNavigate()
   const [guides, setGuides] = useState<Guide[]>([])
   const [loading, setLoading] = useState(true)
   const [showFilters, setShowFilters] = useState(true)
@@ -20,6 +23,10 @@ export default function BrowseGuides() {
     minRate: '',
     maxRate: '',
   })
+
+  const handleGuideClick = (guideId: string) => {
+    navigate(`/guides/${guideId}`)
+  }
 
   const fetchGuides = async () => {
     try {
@@ -93,6 +100,13 @@ export default function BrowseGuides() {
       </div>
 
       <div className="container-custom py-8">
+        {/* Map */}
+        {!loading && guides.length > 0 && (
+          <div className="mb-8 animate-fade-in-up">
+            <GuidesMap guides={guides} onGuideClick={handleGuideClick} />
+          </div>
+        )}
+
         {/* Filters */}
         <div className="mb-8 animate-fade-in-up">
           <div className="card p-6">
