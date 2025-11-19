@@ -59,7 +59,7 @@ function Home() {
 
   const handleFindGuide = () => {
     if (user) {
-      navigate('/tourist/browse-guides')
+      navigate('/browse-guides')
     } else {
       navigate('/login')
     }
@@ -153,7 +153,7 @@ function Home() {
         <section className="px-4 py-6 bg-white">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-xl font-bold text-neutral-900">Featured Tours</h3>
-            <Link to={user ? "/tourist/browse-guides" : "/login"} className="text-sm text-primary-600 font-semibold flex items-center gap-1">
+            <Link to={user ? "/browse-guides" : "/login"} className="text-sm text-primary-600 font-semibold flex items-center gap-1">
               See All
               <ArrowRight className="w-4 h-4" />
             </Link>
@@ -170,7 +170,7 @@ function Home() {
               {featuredTours.map((tour) => (
                 <Link
                   key={tour.id}
-                  to={user ? `/tourist/guides/${tour.guide.id}` : "/login"}
+                  to={user ? `/guides/${tour.guide.id}` : "/login"}
                   className="block bg-white border-2 border-neutral-100 rounded-xl overflow-hidden hover:border-primary-300 hover:shadow-lg active:scale-98 transition-all"
                 >
                   {/* Tour Image */}
@@ -231,7 +231,7 @@ function Home() {
         <section className="px-4 py-6 bg-gradient-to-b from-neutral-50 to-white">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-xl font-bold text-neutral-900">Top Rated Guides</h3>
-            <Link to={user ? "/tourist/browse-guides" : "/login"} className="text-sm text-primary-600 font-semibold flex items-center gap-1">
+            <Link to={user ? "/browse-guides" : "/login"} className="text-sm text-primary-600 font-semibold flex items-center gap-1">
               View All
               <ArrowRight className="w-4 h-4" />
             </Link>
@@ -248,7 +248,7 @@ function Home() {
               {topGuides.map((guide) => (
                 <Link
                   key={guide.id}
-                  to={user ? `/tourist/guides/${guide.id}` : "/login"}
+                  to={user ? `/guides/${guide.id}` : "/login"}
                   className="bg-white border-2 border-neutral-100 rounded-xl p-3 hover:border-primary-300 hover:shadow-md active:scale-95 transition-all"
                 >
                   <div className="text-center">

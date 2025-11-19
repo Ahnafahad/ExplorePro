@@ -2,7 +2,7 @@ import { BookingType, BookingStatus } from '@prisma/client'
 import { pollingService } from '../polling/pollingService.js'
 import { differenceInHours } from 'date-fns'
 import prisma from '../utils/prisma.js'
-import { isDemoUser, getDemoBookingsForGuide, getDemoBookingsForTourist } from '../data/demoData.js'
+import { isDemoUser, getDemoBookingsForGuide, getDemoBookingsForTourist, getDemoBookingById } from '../data/demoData.js'
 
 const COMMISSION_RATE = 0.15
 
@@ -83,6 +83,16 @@ export class BookingService {
    * Get booking by ID
    */
   async getBookingById(bookingId: string) {
+    // Check if this is a demo booking
+    if (bookingId.startsWith('demo-')) {
+      const demoBooking = getDemoBookingById(bookingId)
+      if (!demoBooking) {
+        throw new Error('Booking not found')
+      }
+      return demoBooking as any
+    }
+
+    // Regular database query
     const booking = await prisma.booking.findUnique({
       where: { id: bookingId },
       include: {

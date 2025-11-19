@@ -328,6 +328,11 @@ export const getDemoGuideByUserId = (userId: string) => {
   return demoGuides.find(guide => guide.userId === userId) || null
 }
 
+// Get demo guide by guide ID
+export const getDemoGuideById = (guideId: string) => {
+  return demoGuides.find(guide => guide.id === guideId) || null
+}
+
 // Get demo bookings for guide
 export const getDemoBookingsForGuide = (guideId: string) => {
   return demoBookings.filter(booking => booking.guideId === guideId)
@@ -336,4 +341,9 @@ export const getDemoBookingsForGuide = (guideId: string) => {
 // Get demo bookings for tourist
 export const getDemoBookingsForTourist = (touristId: string) => {
   return demoBookings.filter(booking => booking.touristId === touristId)
+}
+
+// Get demo booking by ID
+export const getDemoBookingById = (bookingId: string) => {
+  return demoBookings.find(booking => booking.id === bookingId) || null
 }
