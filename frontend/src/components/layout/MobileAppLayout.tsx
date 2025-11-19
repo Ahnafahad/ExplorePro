@@ -46,16 +46,18 @@ export default function MobileAppLayout({ children, showBottomNav = true, showLo
         {/* Demo Banner */}
         <DemoBanner />
 
-        {/* Logout Button - Floating */}
+        {/* Logout Button - Fixed within container */}
         {showLogout && (
-          <button
-            onClick={handleLogout}
-            className="fixed top-14 right-4 z-50 w-10 h-10 bg-danger-500 hover:bg-danger-600 text-white rounded-full shadow-lg flex items-center justify-center transition-all active:scale-95"
-            aria-label="Logout"
-            title="Logout"
-          >
-            <LogOut className="w-5 h-5" />
-          </button>
+          <div className="sticky top-0 z-50 pointer-events-none">
+            <button
+              onClick={handleLogout}
+              className="absolute top-2 right-3 w-10 h-10 bg-danger-500 hover:bg-danger-600 text-white rounded-full shadow-lg flex items-center justify-center transition-all active:scale-95 pointer-events-auto"
+              aria-label="Logout"
+              title="Logout"
+            >
+              <LogOut className="w-5 h-5" />
+            </button>
+          </div>
         )}
 
         {/* Main Content - Scrollable */}
