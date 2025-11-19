@@ -37,7 +37,7 @@ async function main() {
       role: 'ADMIN',
       name: 'Admin User',
       phone: '+447700900000',
-      photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=admin&backgroundColor=b6e3f4',
+      photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop',
     },
   })
   console.log('✅ Admin created\n')
@@ -52,7 +52,7 @@ async function main() {
       email: 'demo.guide@explorepro.com',
       name: 'Sarah Thompson',
       phone: '+447700900001',
-      seed: 'sarah',
+      photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop',
       bio: 'Welcome to Oxford! I\'m Sarah, a passionate local historian and certified tour guide with over 12 years of experience. I hold a degree in History from Oxford University and have been sharing the magic of this city with visitors from around the world. My tours blend academic knowledge with entertaining stories about famous scholars, hidden gems, and local traditions. Whether you\'re interested in medieval architecture, literary history, or just want to explore the beautiful colleges, I can create a personalized experience for you!',
       languages: ['English', 'French', 'Spanish'],
       specialties: ['History', 'Architecture', 'Literature', 'University Tours', 'Harry Potter Locations'],
@@ -64,7 +64,7 @@ async function main() {
       email: 'michael.chen@explorepro.com',
       name: 'Michael Chen',
       phone: '+447700900002',
-      seed: 'michael',
+      photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
       bio: 'Hi! I\'m Michael, an Oxford local and professional photographer. I love showing visitors the photogenic spots of Oxford and teaching them about composition and lighting. My tours combine sightseeing with photography tips, perfect for Instagram enthusiasts! I\'ve lived in Oxford for 15 years and know all the best viewpoints, hidden photo spots, and the golden hour locations that will make your feed shine.',
       languages: ['English', 'Mandarin'],
       specialties: ['Photography', 'Instagram Tours', 'Modern Oxford', 'Food & Markets'],
@@ -76,7 +76,7 @@ async function main() {
       email: 'emma.rodriguez@explorepro.com',
       name: 'Emma Rodriguez',
       phone: '+447700900003',
-      seed: 'emma',
+      photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
       bio: 'Hola! I\'m Emma, a literary enthusiast and bookworm who fell in love with Oxford\'s rich literary heritage. My tours explore the footsteps of famous authors like Tolkien, Lewis, and Philip Pullman. We\'ll visit their favorite pubs, writing spots, and the locations that inspired their masterpieces. Perfect for book lovers and aspiring writers!',
       languages: ['English', 'Spanish', 'Portuguese'],
       specialties: ['Literature', 'Creative Writing', 'Book Clubs', 'CS Lewis', 'JRR Tolkien'],
@@ -88,7 +88,7 @@ async function main() {
       email: 'james.obrien@explorepro.com',
       name: 'James O\'Brien',
       phone: '+447700900004',
-      seed: 'james',
+      photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop',
       bio: 'Cheers! I\'m James, your friendly local pub expert and food tour guide. I\'ve spent 20 years exploring Oxford\'s culinary scene, from historic taverns to modern street food. My tours are a delicious journey through Oxford\'s food culture, with tastings at hidden gems and stories about the city\'s gastronomic evolution. Come hungry!',
       languages: ['English', 'Irish Gaelic'],
       specialties: ['Food Tours', 'Pub Crawls', 'Local Cuisine', 'Craft Beer', 'Markets'],
@@ -100,7 +100,7 @@ async function main() {
       email: 'aisha.patel@explorepro.com',
       name: 'Aisha Patel',
       phone: '+447700900005',
-      seed: 'aisha',
+      photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop',
       bio: 'Hello! I\'m Aisha, an architect specializing in Gothic and Victorian design. My tours dive deep into Oxford\'s architectural wonders - from medieval colleges to modern masterpieces. I\'ll teach you to read buildings like books and spot details most visitors miss. Perfect for architecture students, professionals, or anyone who appreciates beautiful buildings!',
       languages: ['English', 'Hindi', 'Gujarati'],
       specialties: ['Architecture', 'Design', 'Gothic Revival', 'Building Conservation', 'Sketching Tours'],
@@ -112,7 +112,7 @@ async function main() {
       email: 'thomas.wright@explorepro.com',
       name: 'Thomas Wright',
       phone: '+447700900006',
-      seed: 'thomas',
+      photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop',
       bio: 'Good evening... I\'m Thomas, Oxford\'s premier ghost tour guide. For 10 years, I\'ve been sharing the city\'s darker history - haunted colleges, mysterious legends, and unexplained phenomena. My tours blend historical facts with spine-tingling stories. Not for the faint of heart! Best experienced after dark.',
       languages: ['English'],
       specialties: ['Ghost Tours', 'Dark History', 'Medieval Crime', 'Legends & Folklore', 'Night Tours'],
@@ -124,7 +124,7 @@ async function main() {
       email: 'sophie.laurent@explorepro.com',
       name: 'Sophie Laurent',
       phone: '+447700900007',
-      seed: 'sophie',
+      photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop',
       bio: 'Bonjour! I\'m Sophie from Paris, now living in Oxford for 8 years. I offer a unique French perspective on Oxford, comparing it to Paris\'s academic traditions. My tours are perfect for francophone visitors or anyone interested in international perspectives on British culture. I also specialize in romantic walking tours!',
       languages: ['French', 'English', 'Italian'],
       specialties: ['Romantic Tours', 'Couple Experiences', 'Gardens', 'French Quarter', 'Cultural Comparison'],
@@ -136,7 +136,7 @@ async function main() {
       email: 'david.kim@explorepro.com',
       name: 'David Kim',
       phone: '+447700900008',
-      seed: 'david',
+      photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop',
       bio: 'Hey! I\'m David, a tech entrepreneur and startup advisor. My unique tours explore Oxford\'s modern innovation ecosystem - from university spin-outs to tech incubators. Perfect for entrepreneurs, investors, and anyone interested in how ancient Oxford is becoming a tech hub. I\'ll show you where the future is being built!',
       languages: ['English', 'Korean'],
       specialties: ['Tech & Innovation', 'Startup Tours', 'Business Networking', 'Science Parks', 'Future of Oxford'],
@@ -148,7 +148,7 @@ async function main() {
       email: 'lisa.anderson@explorepro.com',
       name: 'Lisa Anderson',
       phone: '+447700900009',
-      seed: 'lisa',
+      photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop',
       bio: 'Hello! I\'m Lisa, a botanist and garden designer. My tours explore Oxford\'s stunning gardens - from the University Botanic Garden to hidden college gardens rarely open to the public. Learn about plant history, seasonal highlights, and garden design principles. Perfect for nature lovers and green thumbs!',
       languages: ['English'],
       specialties: ['Botanical Gardens', 'Nature Walks', 'Plant History', 'Seasonal Tours', 'Wildlife Spotting'],
@@ -160,7 +160,7 @@ async function main() {
       email: 'marco.rossi@explorepro.com',
       name: 'Marco Rossi',
       phone: '+447700900010',
-      seed: 'marco',
+      photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop',
       bio: 'Ciao! I\'m Marco from Florence, now calling Oxford home. I guide tours exploring the surprising Italian connections to Oxford - from Renaissance influences on architecture to the Italian Quarter\'s history. I also offer pasta-making classes combined with walking tours. Delizioso!',
       languages: ['Italian', 'English', 'Latin'],
       specialties: ['Italian Heritage', 'Renaissance Art', 'Cooking Classes', 'Classical Studies', 'Opera History'],
@@ -181,7 +181,7 @@ async function main() {
         role: 'GUIDE',
         name: guideData.name,
         phone: guideData.phone,
-        photo: `https://api.dicebear.com/7.x/avataaars/svg?seed=${guideData.seed}&backgroundColor=c0aede`,
+        photo: guideData.photo,
       },
     })
 
@@ -297,11 +297,11 @@ async function main() {
   console.log('🧳 Creating 5 Tourist Personas...')
 
   const touristsData = [
-    { email: 'demo.tourist@explorepro.com', name: 'James Wilson', seed: 'james-tourist', persona: 'Active Booker' },
-    { email: 'emma.davis@explorepro.com', name: 'Emma Davis', seed: 'emma-tourist', persona: 'New User' },
-    { email: 'robert.chen@explorepro.com', name: 'Robert Chen', seed: 'robert-tourist', persona: 'Review Enthusiast' },
-    { email: 'maria.garcia@explorepro.com', name: 'Maria Garcia', seed: 'maria-tourist', persona: 'Frequent Traveler' },
-    { email: 'david.brown@explorepro.com', name: 'David Brown', seed: 'david-tourist', persona: 'Budget Conscious' },
+    { email: 'demo.tourist@explorepro.com', name: 'James Wilson', photo: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400&h=400&fit=crop', persona: 'Active Booker' },
+    { email: 'emma.davis@explorepro.com', name: 'Emma Davis', photo: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop', persona: 'New User' },
+    { email: 'robert.chen@explorepro.com', name: 'Robert Chen', photo: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=400&h=400&fit=crop', persona: 'Review Enthusiast' },
+    { email: 'maria.garcia@explorepro.com', name: 'Maria Garcia', photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop', persona: 'Frequent Traveler' },
+    { email: 'david.brown@explorepro.com', name: 'David Brown', photo: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=400&h=400&fit=crop', persona: 'Budget Conscious' },
   ]
 
   const tourists: any[] = []
@@ -315,7 +315,7 @@ async function main() {
         role: 'TOURIST',
         name: touristData.name,
         phone: `+4477009001${tourists.length}`,
-        photo: `https://api.dicebear.com/7.x/avataaars/svg?seed=${touristData.seed}&backgroundColor=ffd5dc`,
+        photo: touristData.photo,
       },
     })
 

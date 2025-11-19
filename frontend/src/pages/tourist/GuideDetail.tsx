@@ -55,18 +55,22 @@ export default function GuideDetail() {
   if (!guide) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-primary-50/20 flex items-center justify-center px-4">
-        <div className="text-center animate-fade-in">
-          <div className="inline-flex p-6 bg-neutral-100 rounded-full mb-6">
-            <MapPin className="w-12 h-12 text-neutral-400" />
+        <div className="text-center animate-fade-in max-w-lg">
+          <div className="mb-6 rounded-2xl overflow-hidden shadow-xl">
+            <img
+              src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&h=500&fit=crop"
+              alt="Empty streets in Oxford"
+              className="w-full h-64 object-cover"
+            />
           </div>
-          <h3 className="text-2xl font-display font-bold text-neutral-900 mb-3">
+          <h3 className="text-3xl font-display font-bold text-neutral-900 mb-3">
             Guide not found
           </h3>
           <p className="text-neutral-600 text-lg mb-6">
             The guide you're looking for doesn't exist or has been removed.
           </p>
           <Button onClick={() => navigate('/browse-guides')} size="lg">
-            Browse Guides
+            Browse Available Guides
           </Button>
         </div>
       </div>

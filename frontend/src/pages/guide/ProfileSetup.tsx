@@ -10,7 +10,7 @@ import { Input } from '../../components/common/Input'
 import { TextArea } from '../../components/common/TextArea'
 import { Card } from '../../components/common/Card'
 import { FileUpload } from '../../components/common/FileUpload'
-import { Sparkles, User, DollarSign, Languages, Award, FileCheck, ArrowRight, Shield, Camera } from 'lucide-react'
+import { Sparkles, User, DollarSign, Languages, Award, FileCheck, ArrowRight, Shield, Camera, Zap } from 'lucide-react'
 
 const profileSchema = z.object({
   bio: z.string().min(50, 'Bio must be at least 50 characters'),
@@ -66,6 +66,33 @@ export default function ProfileSetup() {
     }
   }
 
+  const handleDemoSetup = async () => {
+    try {
+      setLoading(true)
+      setError('')
+
+      // Create demo profile with pre-filled data
+      const demoPayload = {
+        bio: 'Welcome to Oxford! I\'m a passionate local guide with years of experience showing visitors the magic of this historic city. I specialize in university tours, literary history, and architectural highlights. Whether you\'re here for a day or a week, I can create a personalized experience that brings Oxford\'s rich heritage to life. Let me share the stories behind the stunning buildings, famous scholars, and hidden gems that make Oxford truly special!',
+        hourlyRate: 65,
+        languages: ['English', 'French', 'Spanish'],
+        specialties: ['History', 'Architecture', 'Literature', 'University Tours'],
+      }
+
+      await api.post('/api/guides', demoPayload)
+
+      // Update user profile photo with demo image
+      const demoPhoto = 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop'
+      await api.put('/api/auth/profile', { photo: demoPhoto })
+
+      navigate('/dashboard')
+    } catch (err: any) {
+      setError(err.message || 'Failed to create demo profile')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-secondary-50/20 py-12">
       <div className="max-w-2xl mx-auto px-4">
@@ -81,6 +108,33 @@ export default function ProfileSetup() {
           <p className="text-lg text-neutral-600 max-w-xl mx-auto">
             Complete your profile to start accepting bookings and earning money from tourists
           </p>
+        </div>
+
+        {/* Demo Button */}
+        <div className="mb-6 animate-fade-in-up">
+          <Card variant="bordered" padding="lg" className="bg-gradient-to-br from-primary-50 to-secondary-50 border-2 border-primary-200">
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <Zap className="w-5 h-5 text-primary-600" />
+                  <h3 className="text-lg font-display font-bold text-neutral-900">Quick Demo Setup</h3>
+                </div>
+                <p className="text-sm text-neutral-600">
+                  Skip the form and instantly create a demo guide profile to explore the platform
+                </p>
+              </div>
+              <Button
+                onClick={handleDemoSetup}
+                loading={loading}
+                variant="primary"
+                size="lg"
+                className="flex-shrink-0"
+              >
+                <Zap className="w-4 h-4" />
+                Use Demo Profile
+              </Button>
+            </div>
+          </Card>
         </div>
 
         {/* Form Card */}
