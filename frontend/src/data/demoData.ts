@@ -9,7 +9,7 @@ export const demoGuides = [
       id: 'user-guide-1',
       name: 'Sarah Thompson',
       email: 'demo.guide@explorepro.com',
-      photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=sarah&backgroundColor=c0aede',
+      photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80',
       role: 'GUIDE',
     },
     bio: 'Welcome to Oxford! I\'m Sarah, a passionate local historian and certified tour guide with over 12 years of experience. I hold a degree in History from Oxford University and have been sharing the magic of this city with visitors from around the world.',
@@ -28,7 +28,7 @@ export const demoGuides = [
       id: 'user-guide-2',
       name: 'Michael Chen',
       email: 'michael.chen@explorepro.com',
-      photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=michael&backgroundColor=c0aede',
+      photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
       role: 'GUIDE',
     },
     bio: 'Hi! I\'m Michael, an Oxford local and professional photographer. I love showing visitors the photogenic spots of Oxford and teaching them about composition and lighting.',
@@ -47,7 +47,7 @@ export const demoGuides = [
       id: 'user-guide-3',
       name: 'Emma Watson',
       email: 'emma.watson@explorepro.com',
-      photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=emma&backgroundColor=c0aede',
+      photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80',
       role: 'GUIDE',
     },
     bio: 'Literary enthusiast and Oxford graduate! I specialize in tours focused on famous authors who studied or lived in Oxford, including Tolkien, Lewis, and Wilde.',
@@ -66,7 +66,7 @@ export const demoGuides = [
       id: 'user-guide-4',
       name: 'James O\'Brien',
       email: 'james.obrien@explorepro.com',
-      photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=james&backgroundColor=c0aede',
+      photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80',
       role: 'GUIDE',
     },
     bio: 'Third-generation Oxford local with deep family roots in the city. I offer authentic local experiences including hidden pubs, secret gardens, and off-the-beaten-path locations.',
@@ -91,6 +91,7 @@ export const demoTours = [
     price: 130,
     isActive: true,
     createdAt: new Date('2024-01-15'),
+    image: 'https://images.unsplash.com/photo-1611424226484-f282b6fe4cac?w=800&q=80', // Radcliffe Camera Oxford
   },
   {
     id: 'tour-2',
@@ -102,6 +103,7 @@ export const demoTours = [
     price: 97.5,
     isActive: true,
     createdAt: new Date('2024-01-20'),
+    image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80', // Christ Church Oxford
   },
   {
     id: 'tour-3',
@@ -113,6 +115,7 @@ export const demoTours = [
     price: 82.5,
     isActive: true,
     createdAt: new Date('2024-02-01'),
+    image: 'https://images.unsplash.com/photo-1567696153798-96c39359fd4f?w=800&q=80', // Oxford University scenic
   },
   {
     id: 'tour-4',
@@ -124,6 +127,7 @@ export const demoTours = [
     price: 110,
     isActive: true,
     createdAt: new Date('2024-02-10'),
+    image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80', // Food market
   },
   {
     id: 'tour-5',
@@ -135,6 +139,7 @@ export const demoTours = [
     price: 150,
     isActive: true,
     createdAt: new Date('2024-02-15'),
+    image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&q=80', // Books and library
   },
   {
     id: 'tour-6',
@@ -146,6 +151,7 @@ export const demoTours = [
     price: 90,
     isActive: true,
     createdAt: new Date('2024-03-01'),
+    image: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=800&q=80', // Historic library interior
   },
 ]
 
@@ -258,7 +264,7 @@ export const demoPendingGuides = [
       id: 'user-pending-1',
       name: 'Oliver Smith',
       email: 'oliver.smith@explorepro.com',
-      photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=oliver&backgroundColor=c0aede',
+      photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80',
       role: 'GUIDE',
     },
     bio: 'Cambridge graduate with passion for medieval history. Looking to share my knowledge of Oxford\'s architectural heritage.',
@@ -276,7 +282,7 @@ export const demoPendingGuides = [
       id: 'user-pending-2',
       name: 'Sophie Martin',
       email: 'sophie.martin@explorepro.com',
-      photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=sophie&backgroundColor=c0aede',
+      photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80',
       role: 'GUIDE',
     },
     bio: 'Professional sommelier and food critic. I want to create food and wine tours showcasing Oxford\'s culinary scene.',
@@ -294,7 +300,7 @@ export const demoPendingGuides = [
       id: 'user-pending-3',
       name: 'Lucas Brown',
       email: 'lucas.brown@explorepro.com',
-      photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=lucas&backgroundColor=c0aede',
+      photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80',
       role: 'GUIDE',
     },
     bio: 'Former Oxford rowing coach. Offering unique rowing experiences on the Thames and Cherwell rivers.',

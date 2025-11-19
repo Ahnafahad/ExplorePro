@@ -10,6 +10,7 @@ import { StarRating } from '../../components/common/StarRating'
 import { Loading } from '../../components/common/Loading'
 import { formatCurrency, formatRelativeTime } from '../../utils/helpers'
 import { useAuth } from '../../context/AuthContext'
+import { demoGuides, demoTours, isDemoMode } from '../../data/demoData'
 import type { Guide, Tour, Review } from '../../types'
 
 export default function GuideDetail() {
@@ -22,9 +23,20 @@ export default function GuideDetail() {
   useEffect(() => {
     const fetchGuide = async () => {
       try {
-        const response = await api.get<Guide>(`/api/guides/${id}`)
-        if (response.success && response.data) {
-          setGuide(response.data)
+        // Use demo data for demo accounts (no API calls!)
+        if (isDemoMode(user?.email)) {
+          const demoGuide = demoGuides.find((g) => g.id === id)
+          if (demoGuide) {
+            // Add tours for this guide
+            const guideTours = demoTours.filter((t) => t.guideId === id)
+            setGuide({ ...demoGuide, tours: guideTours } as any)
+          }
+        } else {
+          // For real accounts, call API
+          const response = await api.get<Guide>(`/api/guides/${id}`)
+          if (response.success && response.data) {
+            setGuide(response.data)
+          }
         }
       } catch (error) {
         console.error('Error fetching guide:', error)
@@ -34,7 +46,7 @@ export default function GuideDetail() {
     }
 
     if (id) fetchGuide()
-  }, [id])
+  }, [id, user?.email])
 
   const handleBookNow = () => {
     if (!user) {

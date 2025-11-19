@@ -11,6 +11,7 @@ import { ChatBox } from '../components/chat/ChatBox'
 import MockMap from '../components/common/MockMap'
 import MobileAppLayout from '../components/layout/MobileAppLayout'
 import { formatCurrency, formatDate } from '../utils/helpers'
+import { demoBookings, isDemoMode } from '../data/demoData'
 import type { Booking, BookingStatus } from '../types'
 
 const statusVariants: Record<BookingStatus, 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'gray'> = {
@@ -35,9 +36,18 @@ export default function BookingDetail() {
 
   const fetchBooking = async () => {
     try {
-      const response = await api.get<Booking>(`/api/bookings/${id}`)
-      if (response.success && response.data) {
-        setBooking(response.data)
+      // Use demo data for demo accounts (no API calls!)
+      if (isDemoMode(user?.email)) {
+        const demoBooking = demoBookings.find((b) => b.id === id)
+        if (demoBooking) {
+          setBooking(demoBooking as any)
+        }
+      } else {
+        // For real accounts, call API
+        const response = await api.get<Booking>(`/api/bookings/${id}`)
+        if (response.success && response.data) {
+          setBooking(response.data)
+        }
       }
     } catch (error) {
       console.error('Error fetching booking:', error)
