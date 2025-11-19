@@ -25,6 +25,7 @@ interface Tour {
   duration: number
   price: number
   guide: Guide
+  image?: string
 }
 
 function Home() {
@@ -165,42 +166,53 @@ function Home() {
               ))}
             </div>
           ) : featuredTours.length > 0 ? (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {featuredTours.map((tour) => (
                 <Link
                   key={tour.id}
                   to={user ? `/tourist/guides/${tour.guide.id}` : "/login"}
-                  className="block bg-white border-2 border-neutral-100 rounded-xl p-4 hover:border-primary-300 hover:shadow-md active:scale-98 transition-all"
+                  className="block bg-white border-2 border-neutral-100 rounded-xl overflow-hidden hover:border-primary-300 hover:shadow-lg active:scale-98 transition-all"
                 >
-                  <div className="flex gap-3">
-                    {/* Guide Avatar */}
-                    <div className="flex-shrink-0">
+                  {/* Tour Image */}
+                  {tour.image && (
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={tour.image}
+                        alt={tour.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute top-3 right-3 bg-primary-600 text-white px-3 py-1.5 rounded-lg shadow-lg">
+                        <span className="text-lg font-bold">£{tour.price}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Tour Info */}
+                  <div className="p-4">
+                    <h4 className="font-bold text-neutral-900 mb-2 text-base">{tour.title}</h4>
+                    <p className="text-xs text-neutral-600 mb-3 line-clamp-2">{tour.description}</p>
+
+                    {/* Guide Info */}
+                    <div className="flex items-center gap-2 mb-3 pb-3 border-b border-neutral-100">
                       <img
                         src={tour.guide.user.photo || 'https://api.dicebear.com/7.x/avataaars/svg?seed=default'}
                         alt={tour.guide.user.name}
-                        className="w-16 h-16 rounded-xl object-cover"
+                        className="w-8 h-8 rounded-full object-cover border-2 border-white shadow-sm"
                       />
+                      <span className="text-sm text-neutral-700 font-medium">{tour.guide.user.name}</span>
                     </div>
 
-                    {/* Tour Info */}
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-bold text-neutral-900 mb-1 truncate">{tour.title}</h4>
-                      <p className="text-xs text-neutral-600 mb-2 line-clamp-2">{tour.description}</p>
-
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 text-xs text-neutral-500">
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-3.5 h-3.5" />
-                            {tour.duration}min
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
-                            {tour.guide.averageRating?.toFixed(1) || 'New'}
-                          </span>
-                        </div>
-                        <div className="text-lg font-bold text-primary-600">
-                          £{tour.price}
-                        </div>
+                    {/* Meta Info */}
+                    <div className="flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-3 text-neutral-500">
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3.5 h-3.5" />
+                          {tour.duration}min
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
+                          {tour.guide.averageRating?.toFixed(1) || 'New'}
+                        </span>
                       </div>
                     </div>
                   </div>
