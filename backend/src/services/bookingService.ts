@@ -2,6 +2,7 @@ import { BookingType, BookingStatus } from '@prisma/client'
 import { pollingService } from '../polling/pollingService.js'
 import { differenceInHours } from 'date-fns'
 import prisma from '../utils/prisma.js'
+import { isDemoUser, getDemoBookingsForGuide, getDemoBookingsForTourist } from '../data/demoData.js'
 
 const COMMISSION_RATE = 0.15
 
@@ -115,6 +116,19 @@ export class BookingService {
    * Get bookings for a user
    */
   async getBookingsForUser(userId: string, role: string) {
+    // Check if this is a demo user
+    if (isDemoUser(userId)) {
+      if (role === 'GUIDE') {
+        // For demo guide, return demo bookings
+        return getDemoBookingsForGuide('demo-guide-profile-001') as any[]
+      } else if (role === 'TOURIST') {
+        // For demo tourist, return demo bookings
+        return getDemoBookingsForTourist('demo-tourist-profile-001') as any[]
+      }
+      return []
+    }
+
+    // Regular database query
     const where: any = {}
 
     if (role === 'TOURIST') {

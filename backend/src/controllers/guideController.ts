@@ -92,6 +92,7 @@ export class GuideController {
   async listGuides(req: Request, res: Response) {
     try {
       const {
+        userId,
         language,
         specialty,
         isAvailable,
@@ -100,6 +101,27 @@ export class GuideController {
         page = '1',
         limit = '20',
       } = req.query
+
+      // If userId is provided, get guide by userId
+      if (userId) {
+        try {
+          const guide = await guideService.getGuideByUserId(userId as string)
+          res.json({
+            success: true,
+            data: [guide],
+          })
+          return
+        } catch (error: any) {
+          res.status(404).json({
+            success: false,
+            error: {
+              code: 'NOT_FOUND',
+              message: error.message,
+            },
+          })
+          return
+        }
+      }
 
       const filters = {
         language: language as string | undefined,

@@ -1,5 +1,6 @@
 import { GuideStatus } from '@prisma/client'
 import prisma from '../utils/prisma.js'
+import { getDemoGuideByUserId, isDemoUser } from '../data/demoData.js'
 
 interface CreateGuideData {
   userId: string
@@ -140,6 +141,16 @@ export class GuideService {
    * Get guide by user ID
    */
   async getGuideByUserId(userId: string) {
+    // Check if this is a demo user
+    if (isDemoUser(userId)) {
+      const demoGuide = getDemoGuideByUserId(userId)
+      if (!demoGuide) {
+        throw new Error('Guide profile not found')
+      }
+      return demoGuide as any
+    }
+
+    // Regular database query
     const guide = await prisma.guide.findUnique({
       where: { userId },
       include: {
