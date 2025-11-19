@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react'
 import { Users, DollarSign, Calendar, CheckCircle, XCircle, LogOut } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { api } from '../../services/api'
 import { useAuth } from '../../context/AuthContext'
 import { Avatar } from '../../components/common/Avatar'
 import { Badge } from '../../components/common/Badge'
 import { Loading } from '../../components/common/Loading'
 import MobileAppLayout from '../../components/layout/MobileAppLayout'
 import { formatCurrency } from '../../utils/helpers'
+import { demoStats, demoPendingGuides, isDemoMode } from '../../data/demoData'
 import type { Guide } from '../../types'
 
 export default function AdminDashboard() {
   const navigate = useNavigate()
-  const { logout } = useAuth()
+  const { user, logout } = useAuth()
   const [stats, setStats] = useState<any>(null)
   const [pendingGuides, setPendingGuides] = useState<Guide[]>([])
   const [loading, setLoading] = useState(true)
@@ -24,9 +24,12 @@ export default function AdminDashboard() {
 
   const fetchStats = async () => {
     try {
-      const response = await api.get('/api/admin/stats')
-      if (response.success && response.data) {
-        setStats(response.data)
+      // Use demo data for demo accounts (no API calls!)
+      if (isDemoMode(user?.email)) {
+        setStats(demoStats)
+      } else {
+        // For real accounts, would call API here
+        setStats(null)
       }
     } catch (error) {
       console.error('Error fetching stats:', error)
@@ -37,9 +40,12 @@ export default function AdminDashboard() {
 
   const fetchPendingGuides = async () => {
     try {
-      const response = await api.get<Guide[]>('/api/admin/guides/pending')
-      if (response.success && response.data) {
-        setPendingGuides(response.data)
+      // Use demo data for demo accounts (no API calls!)
+      if (isDemoMode(user?.email)) {
+        setPendingGuides(demoPendingGuides as any[])
+      } else {
+        // For real accounts, would call API here
+        setPendingGuides([])
       }
     } catch (error) {
       console.error('Error fetching pending guides:', error)
@@ -48,9 +54,24 @@ export default function AdminDashboard() {
 
   const handleApprove = async (guideId: string) => {
     try {
-      await api.put(`/api/admin/guides/${guideId}/approve`)
-      fetchPendingGuides()
-      fetchStats()
+      // Demo mode - simulate approval
+      if (isDemoMode(user?.email)) {
+        // Remove from pending list
+        setPendingGuides(prev => prev.filter(g => g.id !== guideId))
+        // Update stats
+        setStats((prev: any) => ({
+          ...prev,
+          users: {
+            ...prev.users,
+            pendingGuides: Math.max(0, prev.users.pendingGuides - 1),
+            guides: prev.users.guides + 1,
+          },
+        }))
+        alert('Guide approved successfully! (Demo Mode)')
+      } else {
+        // For real accounts, would call API here
+        alert('API integration needed for production')
+      }
     } catch (error: any) {
       alert(error.message || 'Failed to approve guide')
     }
@@ -59,9 +80,23 @@ export default function AdminDashboard() {
   const handleReject = async (guideId: string) => {
     const reason = prompt('Rejection reason (optional):')
     try {
-      await api.put(`/api/admin/guides/${guideId}/reject`, { reason })
-      fetchPendingGuides()
-      fetchStats()
+      // Demo mode - simulate rejection
+      if (isDemoMode(user?.email)) {
+        // Remove from pending list
+        setPendingGuides(prev => prev.filter(g => g.id !== guideId))
+        // Update stats
+        setStats((prev: any) => ({
+          ...prev,
+          users: {
+            ...prev.users,
+            pendingGuides: Math.max(0, prev.users.pendingGuides - 1),
+          },
+        }))
+        alert(`Guide rejected${reason ? `: ${reason}` : ''} (Demo Mode)`)
+      } else {
+        // For real accounts, would call API here
+        alert('API integration needed for production')
+      }
     } catch (error: any) {
       alert(error.message || 'Failed to reject guide')
     }

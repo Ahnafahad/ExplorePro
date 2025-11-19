@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Calendar, MapPin, Star, Search, TrendingUp, CheckCircle, Radio, Navigation, Sparkles, ArrowRight } from 'lucide-react'
-import { api } from '../../services/api'
 import { useAuth } from '../../context/AuthContext'
 import { Avatar } from '../../components/common/Avatar'
 import { Badge } from '../../components/common/Badge'
@@ -9,6 +8,7 @@ import { Loading } from '../../components/common/Loading'
 import MockMap from '../../components/common/MockMap'
 import MobileAppLayout from '../../components/layout/MobileAppLayout'
 import { formatCurrency, formatDate } from '../../utils/helpers'
+import { demoBookings, isDemoMode } from '../../data/demoData'
 import type { Booking, BookingStatus } from '../../types'
 
 const statusVariants: Record<BookingStatus, 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'gray'> = {
@@ -33,9 +33,12 @@ export default function TouristDashboard() {
 
   const fetchBookings = async () => {
     try {
-      const response = await api.get<Booking[]>('/api/bookings')
-      if (response.success && response.data) {
-        setBookings(response.data)
+      // Use demo data for demo accounts (no API calls!)
+      if (isDemoMode(user?.email)) {
+        setBookings(demoBookings as any[])
+      } else {
+        // For real accounts, would call API here
+        setBookings([])
       }
     } catch (error) {
       console.error('Error fetching bookings:', error)

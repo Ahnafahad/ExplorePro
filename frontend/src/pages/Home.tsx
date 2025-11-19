@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { MapPin, Clock, Shield, Star, Users, TrendingUp, Check, Sparkles, Globe, ArrowRight, Search } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import axios from 'axios'
+import { demoTours, demoGuides } from '../data/demoData'
 
 interface Guide {
   id: string
@@ -40,17 +40,11 @@ function Home() {
 
   const loadFeaturedContent = async () => {
     try {
-      // Load tours and guides
-      const [toursRes, guidesRes] = await Promise.all([
-        axios.get(`${import.meta.env.VITE_API_URL}/api/tours`),
-        axios.get(`${import.meta.env.VITE_API_URL}/api/guides`)
-      ])
-
-      // Get first 6 tours for featured section
-      setFeaturedTours(toursRes.data.data?.slice(0, 6) || [])
+      // Use demo data directly (no API calls needed!)
+      setFeaturedTours(demoTours.slice(0, 6))
 
       // Get top-rated guides
-      const sortedGuides = (guidesRes.data.data || [])
+      const sortedGuides = [...demoGuides]
         .filter((g: Guide) => g.averageRating && g.averageRating > 0)
         .sort((a: Guide, b: Guide) => (b.averageRating || 0) - (a.averageRating || 0))
         .slice(0, 4)
