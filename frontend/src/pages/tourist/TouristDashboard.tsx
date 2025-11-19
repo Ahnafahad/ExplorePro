@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Calendar, MapPin, Clock, Star, Search, LogOut, TrendingUp, CheckCircle, X, ArrowRight, Sparkles } from 'lucide-react'
+import { Calendar, MapPin, Clock, Star, Search, TrendingUp, CheckCircle, Radio, Navigation, Sparkles, ArrowRight } from 'lucide-react'
 import { api } from '../../services/api'
 import { useAuth } from '../../context/AuthContext'
 import { Avatar } from '../../components/common/Avatar'
 import { Badge } from '../../components/common/Badge'
-import { Button } from '../../components/common/Button'
-import { Card } from '../../components/common/Card'
 import { Loading } from '../../components/common/Loading'
+import MockMap from '../../components/common/MockMap'
+import MobileAppLayout from '../../components/layout/MobileAppLayout'
 import { formatCurrency, formatDate, formatRelativeTime } from '../../utils/helpers'
 import type { Booking, BookingStatus } from '../../types'
 
@@ -22,7 +22,7 @@ const statusVariants: Record<BookingStatus, 'primary' | 'success' | 'warning' | 
 
 export default function TouristDashboard() {
   const navigate = useNavigate()
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<'all' | 'upcoming' | 'past'>('all')
@@ -54,267 +54,241 @@ export default function TouristDashboard() {
     return true
   })
 
-  const handleCancelBooking = async (bookingId: string) => {
-    if (!confirm('Are you sure you want to cancel this booking?')) return
-
-    try {
-      await api.delete(`/api/bookings/${bookingId}`)
-      fetchBookings()
-    } catch (error: any) {
-      alert(error.message || 'Failed to cancel booking')
-    }
-  }
-
-  const handleLogout = async () => {
-    await logout()
-    navigate('/')
-  }
-
   const upcomingCount = bookings.filter((b) => ['PENDING', 'CONFIRMED', 'STARTED'].includes(b.status)).length
   const completedCount = bookings.filter((b) => b.status === 'COMPLETED').length
+  const activeTour = bookings.find((b) => b.status === 'STARTED')
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-primary-50/20 flex items-center justify-center">
+      <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
         <Loading size="lg" text="Loading your dashboard..." variant="dots" fullScreen />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-primary-50/20">
+    <MobileAppLayout>
       {/* Header */}
-      <div className="relative bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-600 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9Ii4xIi8+PC9nPjwvc3ZnPg==')] opacity-10" />
-
-        <div className="relative container-custom py-8">
-          <div className="flex items-center justify-between">
-            <div className="animate-fade-in-up">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-3">
-                <Sparkles className="w-3 h-3" />
-                <span className="text-xs font-semibold">Tourist Dashboard</span>
-              </div>
-              <h1 className="text-4xl lg:text-5xl font-display font-bold mb-2">
-                Welcome back, {user?.name}!
-              </h1>
-              <p className="text-lg text-white/90">
-                Manage your bookings and explore new tours
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <Button onClick={() => navigate('/browse-guides')} variant="secondary" size="lg">
-                <Search className="w-4 h-4" />
-                Find Guides
-              </Button>
-              <Button onClick={handleLogout} variant="outline" size="lg">
-                <LogOut className="w-4 h-4" />
-                Logout
-              </Button>
-            </div>
-          </div>
+      <div className="bg-gradient-to-br from-primary-600 to-secondary-600 text-white px-4 py-6">
+        <div className="flex items-center gap-2 mb-3">
+          <Sparkles className="w-4 h-4" />
+          <span className="text-xs font-semibold opacity-90">Tourist Dashboard</span>
         </div>
+        <h1 className="text-2xl font-bold mb-1">
+          Welcome back, {user?.name?.split(' ')[0]}!
+        </h1>
+        <p className="text-sm opacity-90">
+          Manage your bookings and explore new tours
+        </p>
       </div>
 
-      <div className="container-custom py-8">
-        {/* Quick Stats */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8 animate-fade-in-up">
-          <Card variant="elevated" padding="lg">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm font-semibold text-neutral-600 mb-2">Upcoming Tours</p>
-                <div className="text-4xl font-display font-bold text-primary-600 mb-1">
-                  {upcomingCount}
-                </div>
-                <p className="text-xs text-neutral-500">Active bookings</p>
+      {/* Active Tour - Live Tracking */}
+      {activeTour && (
+        <div className="px-4 pt-4 animate-fade-in-up">
+          <div className="bg-gradient-to-r from-success-600 to-primary-600 text-white p-4 rounded-t-xl">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Radio className="w-5 h-5 animate-pulse" />
+                <span className="font-bold text-sm">Tour In Progress</span>
               </div>
-              <div className="p-3 bg-primary-100 rounded-xl">
-                <Calendar className="w-6 h-6 text-primary-600" />
+              <div className="flex items-center gap-1 text-xs bg-white/20 px-2 py-1 rounded-full">
+                <Navigation className="w-3 h-3" />
+                Live Tracking
               </div>
             </div>
-          </Card>
+            <p className="text-sm opacity-90">Following {activeTour.guide?.user?.name}</p>
+          </div>
+          <MockMap
+            center={{ lat: 51.752, lng: -1.2577 }}
+            markers={[
+              {
+                lat: 51.752,
+                lng: -1.2577,
+                label: 'Meeting',
+                icon: 'pin',
+                color: '#ef4444',
+              },
+            ]}
+            showControls={true}
+            showUserLocation={true}
+            animateGuide={true}
+            className="h-48 rounded-b-xl"
+          />
+          <div className="mt-3 mb-4">
+            <button
+              onClick={() => navigate(`/bookings/${activeTour.id}`)}
+              className="w-full bg-white text-primary-700 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2"
+            >
+              View Tour Details
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
 
-          <Card variant="elevated" padding="lg">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm font-semibold text-neutral-600 mb-2">Completed</p>
-                <div className="text-4xl font-display font-bold text-success-600 mb-1">
-                  {completedCount}
-                </div>
-                <p className="text-xs text-neutral-500">Tours enjoyed</p>
-              </div>
-              <div className="p-3 bg-success-100 rounded-xl">
-                <CheckCircle className="w-6 h-6 text-success-600" />
-              </div>
+      {/* Quick Stats */}
+      <div className="px-4 py-4">
+        <div className="grid grid-cols-3 gap-3 mb-4">
+          <div className="bg-white rounded-xl p-3 shadow-sm">
+            <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mb-2 mx-auto">
+              <Calendar className="w-5 h-5 text-primary-600" />
             </div>
-          </Card>
+            <div className="text-2xl font-bold text-center text-primary-600">{upcomingCount}</div>
+            <div className="text-[10px] text-neutral-500 text-center">Upcoming</div>
+          </div>
 
-          <Card variant="elevated" padding="lg">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm font-semibold text-neutral-600 mb-2">Total Bookings</p>
-                <div className="text-4xl font-display font-bold text-neutral-900 mb-1">
-                  {bookings.length}
-                </div>
-                <p className="text-xs text-neutral-500">All time</p>
-              </div>
-              <div className="p-3 bg-neutral-100 rounded-xl">
-                <TrendingUp className="w-6 h-6 text-neutral-600" />
-              </div>
+          <div className="bg-white rounded-xl p-3 shadow-sm">
+            <div className="w-10 h-10 bg-success-100 rounded-lg flex items-center justify-center mb-2 mx-auto">
+              <CheckCircle className="w-5 h-5 text-success-600" />
             </div>
-          </Card>
+            <div className="text-2xl font-bold text-center text-success-600">{completedCount}</div>
+            <div className="text-[10px] text-neutral-500 text-center">Completed</div>
+          </div>
+
+          <div className="bg-white rounded-xl p-3 shadow-sm">
+            <div className="w-10 h-10 bg-neutral-100 rounded-lg flex items-center justify-center mb-2 mx-auto">
+              <TrendingUp className="w-5 h-5 text-neutral-600" />
+            </div>
+            <div className="text-2xl font-bold text-center text-neutral-900">{bookings.length}</div>
+            <div className="text-[10px] text-neutral-500 text-center">Total</div>
+          </div>
         </div>
 
+        {/* Quick Action */}
+        <button
+          onClick={() => navigate('/tourist/browse-guides')}
+          className="w-full bg-gradient-to-r from-primary-600 to-secondary-600 text-white py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 mb-4"
+        >
+          <Search className="w-5 h-5" />
+          Find New Guides
+        </button>
+
         {/* Filters */}
-        <div className="flex flex-wrap gap-3 mb-6">
-          <Button
-            variant={filter === 'all' ? 'primary' : 'outline'}
+        <div className="flex gap-2 mb-4">
+          <button
             onClick={() => setFilter('all')}
-            size="md"
+            className={`flex-1 py-2 px-3 rounded-lg text-sm font-semibold transition-all ${
+              filter === 'all'
+                ? 'bg-primary-600 text-white shadow-md'
+                : 'bg-white text-neutral-600 border-2 border-neutral-200'
+            }`}
           >
-            All Bookings
-            {filter === 'all' && <span className="ml-2 px-2 py-0.5 bg-white/20 rounded-full text-xs">{bookings.length}</span>}
-          </Button>
-          <Button
-            variant={filter === 'upcoming' ? 'primary' : 'outline'}
+            All
+          </button>
+          <button
             onClick={() => setFilter('upcoming')}
-            size="md"
+            className={`flex-1 py-2 px-3 rounded-lg text-sm font-semibold transition-all ${
+              filter === 'upcoming'
+                ? 'bg-primary-600 text-white shadow-md'
+                : 'bg-white text-neutral-600 border-2 border-neutral-200'
+            }`}
           >
             Upcoming
-            {filter === 'upcoming' && <span className="ml-2 px-2 py-0.5 bg-white/20 rounded-full text-xs">{upcomingCount}</span>}
-          </Button>
-          <Button
-            variant={filter === 'past' ? 'primary' : 'outline'}
+          </button>
+          <button
             onClick={() => setFilter('past')}
-            size="md"
+            className={`flex-1 py-2 px-3 rounded-lg text-sm font-semibold transition-all ${
+              filter === 'past'
+                ? 'bg-primary-600 text-white shadow-md'
+                : 'bg-white text-neutral-600 border-2 border-neutral-200'
+            }`}
           >
             Past
-            {filter === 'past' && <span className="ml-2 px-2 py-0.5 bg-white/20 rounded-full text-xs">{bookings.length - upcomingCount}</span>}
-          </Button>
+          </button>
         </div>
 
         {/* Bookings List */}
-        {filteredBookings.length > 0 ? (
-          <div className="space-y-6">
-            {filteredBookings.map((booking, index) => (
+        <div className="space-y-3">
+          {filteredBookings.length > 0 ? (
+            filteredBookings.map((booking, index) => (
               <div
                 key={booking.id}
-                className="animate-fade-in-up"
+                className="bg-white rounded-xl shadow-sm p-4 animate-fade-in-up active:scale-98 transition-all cursor-pointer"
                 style={{ animationDelay: `${index * 50}ms` }}
+                onClick={() => navigate(`/bookings/${booking.id}`)}
               >
-                <Card variant="bordered" padding="lg" className="group">
-                  <div className="flex flex-col lg:flex-row gap-6">
-                    <div className="flex gap-4 flex-1">
-                      <Avatar
-                        src={booking.guide?.user?.photo}
-                        name={booking.guide?.user?.name}
-                        size="xl"
-                      />
+                <div className="flex gap-3 mb-3">
+                  <Avatar
+                    src={booking.guide?.user?.photo}
+                    name={booking.guide?.user?.name}
+                    size="lg"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-neutral-900 truncate">
+                      {booking.guide?.user?.name}
+                    </h3>
+                    <Badge variant={statusVariants[booking.status as BookingStatus]} size="sm">
+                      {booking.status}
+                    </Badge>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-lg font-bold text-primary-600">
+                      {formatCurrency(booking.totalPrice)}
+                    </div>
+                    <div className="text-xs text-neutral-500">{booking.duration}min</div>
+                  </div>
+                </div>
 
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-4 mb-3">
-                          <div className="flex-1 min-w-0">
-                            <h3 className="text-xl font-display font-bold text-neutral-900 mb-2">
-                              {booking.guide?.user?.name}
-                            </h3>
-                            <Badge variant={statusVariants[booking.status as BookingStatus]} size="md" dot>
-                              {booking.status}
-                            </Badge>
-                          </div>
+                <div className="space-y-2 text-xs text-neutral-600">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-3.5 h-3.5 text-primary-600 flex-shrink-0" />
+                    <span className="truncate">
+                      {booking.scheduledDate
+                        ? formatDate(booking.scheduledDate, 'PPp')
+                        : 'Instant booking'}
+                    </span>
+                  </div>
 
-                          <div className="text-right">
-                            <div className="text-3xl font-display font-bold text-primary-600">
-                              {formatCurrency(booking.totalPrice)}
-                            </div>
-                            <div className="text-sm text-neutral-500">{booking.duration} minutes</div>
-                          </div>
-                        </div>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-3.5 h-3.5 text-primary-600 flex-shrink-0" />
+                    <span className="truncate">{booking.meetingPoint}</span>
+                  </div>
+                </div>
 
-                        <div className="space-y-2 text-sm text-neutral-600 mb-4">
-                          <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 flex-shrink-0" />
-                            <span>
-                              {booking.scheduledDate
-                                ? formatDate(booking.scheduledDate, 'PPpp')
-                                : 'Instant booking'}
-                            </span>
-                          </div>
-
-                          <div className="flex items-center gap-2">
-                            <MapPin className="w-4 h-4 flex-shrink-0" />
-                            <span className="truncate">{booking.meetingPoint}</span>
-                          </div>
-
-                          <div className="flex items-center gap-2">
-                            <Clock className="w-4 h-4 flex-shrink-0" />
-                            <span>Booked {formatRelativeTime(booking.createdAt)}</span>
-                          </div>
-                        </div>
-
-                        <div className="flex flex-wrap gap-2 pt-4 border-t border-neutral-200">
-                          <Button
-                            onClick={() => navigate(`/bookings/${booking.id}`)}
-                            size="sm"
-                            variant="secondary"
-                          >
-                            View Details
-                            <ArrowRight className="w-4 h-4" />
-                          </Button>
-
-                          {['PENDING', 'CONFIRMED'].includes(booking.status) && (
-                            <Button
-                              onClick={() => handleCancelBooking(booking.id)}
-                              size="sm"
-                              variant="outline"
-                            >
-                              <X className="w-4 h-4" />
-                              Cancel
-                            </Button>
-                          )}
-
-                          {booking.status === 'COMPLETED' && !booking.review && (
-                            <Button
-                              onClick={() => navigate(`/bookings/${booking.id}/review`)}
-                              size="sm"
-                              variant="primary"
-                            >
-                              <Star className="w-4 h-4" />
-                              Leave Review
-                            </Button>
-                          )}
-                        </div>
-                      </div>
+                {/* Action Buttons */}
+                {booking.status === 'STARTED' && (
+                  <div className="mt-3 pt-3 border-t border-neutral-100">
+                    <div className="flex items-center gap-2 text-xs text-success-700 bg-success-50 px-3 py-2 rounded-lg">
+                      <Radio className="w-3.5 h-3.5 animate-pulse" />
+                      <span className="font-semibold">Tour is active • Click to track</span>
                     </div>
                   </div>
-                </Card>
+                )}
+
+                {booking.status === 'COMPLETED' && !booking.review && (
+                  <div className="mt-3 pt-3 border-t border-neutral-100">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        navigate(`/bookings/${booking.id}/review`)
+                      }}
+                      className="w-full bg-primary-50 text-primary-700 py-2 rounded-lg text-sm font-semibold hover:bg-primary-100 active:scale-95 transition-all flex items-center justify-center gap-1"
+                    >
+                      <Star className="w-4 h-4" />
+                      Leave Review
+                    </button>
+                  </div>
+                )}
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-16 animate-fade-in">
-            <div className="inline-flex p-6 bg-neutral-100 rounded-full mb-6">
-              <Calendar className="w-12 h-12 text-neutral-400" />
+            ))
+          ) : (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Calendar className="w-8 h-8 text-neutral-400" />
+              </div>
+              <h3 className="font-bold text-neutral-900 mb-1">No bookings yet</h3>
+              <p className="text-sm text-neutral-500 mb-4">Start exploring and book your first tour!</p>
+              <button
+                onClick={() => navigate('/tourist/browse-guides')}
+                className="inline-flex items-center gap-2 bg-primary-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl active:scale-95 transition-all"
+              >
+                <Search className="w-4 h-4" />
+                Browse Guides
+              </button>
             </div>
-            <h3 className="text-2xl font-display font-bold text-neutral-900 mb-3">
-              {filter === 'all'
-                ? 'No bookings yet'
-                : filter === 'upcoming'
-                ? 'No upcoming tours'
-                : 'No past tours'}
-            </h3>
-            <p className="text-neutral-600 text-lg mb-6 max-w-md mx-auto">
-              {filter === 'all'
-                ? 'Start exploring and book your first tour with a local guide'
-                : filter === 'upcoming'
-                ? 'Browse our guides to book your next adventure'
-                : 'Your completed tours will appear here'}
-            </p>
-            <Button onClick={() => navigate('/browse-guides')} size="lg">
-              <Search className="w-5 h-5" />
-              Browse Guides
-            </Button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </MobileAppLayout>
   )
 }
