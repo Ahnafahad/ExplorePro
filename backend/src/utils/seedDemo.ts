@@ -28,7 +28,7 @@ async function main() {
   // ADMIN USER
   // =============================================================================
   console.log('👑 Creating Admin...')
-  const adminUser = await prisma.user.upsert({
+  await prisma.user.upsert({
     where: { email: 'demo.admin@explorepro.com' },
     update: {},
     create: {
@@ -170,7 +170,7 @@ async function main() {
     },
   ]
 
-  const guides = []
+  const guides: any[] = []
   for (const guideData of guidesData) {
     const user = await prisma.user.upsert({
       where: { email: guideData.email },
@@ -275,7 +275,7 @@ async function main() {
     { guideIdx: 9, title: 'Wine & Architecture Tour', description: 'Combine wine tasting with architectural appreciation. Visit 3 wine bars while discussing building design!', duration: 120, price: 95, category: 'Wine' },
   ]
 
-  const tours = []
+  const tours: any[] = []
   for (const tourData of toursData) {
     const tour = await prisma.tour.create({
       data: {
@@ -304,7 +304,7 @@ async function main() {
     { email: 'david.brown@explorepro.com', name: 'David Brown', seed: 'david-tourist', persona: 'Budget Conscious' },
   ]
 
-  const tourists = []
+  const tourists: any[] = []
   for (const touristData of touristsData) {
     const user = await prisma.user.upsert({
       where: { email: touristData.email },
@@ -439,7 +439,7 @@ async function main() {
     { touristIdx: 4, guideIdx: 8, tourIdx: 37, status: 'CONFIRMED', days: 10, rating: null, comment: null },
   ]
 
-  const bookings = []
+  const bookings: any[] = []
   for (const bookingData of bookingsData) {
     const tourist = tourists[bookingData.touristIdx]
     const guide = guides[bookingData.guideIdx]
