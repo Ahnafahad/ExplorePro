@@ -42,8 +42,8 @@ function Home() {
     try {
       // Load tours and guides
       const [toursRes, guidesRes] = await Promise.all([
-        axios.get(`${import.meta.env.VITE_API_URL}/tours`),
-        axios.get(`${import.meta.env.VITE_API_URL}/guides`)
+        axios.get(`${import.meta.env.VITE_API_URL}/api/tours`),
+        axios.get(`${import.meta.env.VITE_API_URL}/api/guides`)
       ])
 
       // Get first 6 tours for featured section
