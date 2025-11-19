@@ -127,7 +127,7 @@ export const demoTours = [
     price: 110,
     isActive: true,
     createdAt: new Date('2024-02-10'),
-    image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80', // Food market
+    image: 'https://images.unsplash.com/photo-1578474846511-04ba529f0b88?w=800&q=80', // Fresh market produce and food
   },
   {
     id: 'tour-5',
@@ -139,7 +139,7 @@ export const demoTours = [
     price: 150,
     isActive: true,
     createdAt: new Date('2024-02-15'),
-    image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&q=80', // Books and library
+    image: 'https://images.unsplash.com/photo-1568667256549-094345857637?w=800&q=80', // Historic Oxford pub/building exterior
   },
   {
     id: 'tour-6',
@@ -151,7 +151,7 @@ export const demoTours = [
     price: 90,
     isActive: true,
     createdAt: new Date('2024-03-01'),
-    image: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=800&q=80', // Historic library interior
+    image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80', // Ancient library with books - classic scholarly atmosphere
   },
 ]
 
