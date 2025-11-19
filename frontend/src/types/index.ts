@@ -51,6 +51,7 @@ export interface Guide {
   languages: string[]
   specialties: string[]
   hourlyRate: number
+  location?: { lat: number; lng: number }
   isAvailable: boolean
   status: GuideStatus
   verificationDoc?: string
@@ -68,6 +69,8 @@ export interface Tour {
   description: string
   duration: number
   price: number
+  image?: string
+  location?: { lat: number; lng: number }
   isActive: boolean
   createdAt: string
   updatedAt: string
