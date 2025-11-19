@@ -1,17 +1,26 @@
 import { ReactNode } from 'react'
-import { Home, Compass, User, Calendar } from 'lucide-react'
-import { Link, useLocation } from 'react-router-dom'
+import { Home, Compass, User, Calendar, LogOut } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import DemoBanner from '../common/DemoBanner'
 
 interface MobileAppLayoutProps {
   children: ReactNode
   showBottomNav?: boolean
+  showLogout?: boolean
 }
 
-export default function MobileAppLayout({ children, showBottomNav = true }: MobileAppLayoutProps) {
+export default function MobileAppLayout({ children, showBottomNav = true, showLogout = true }: MobileAppLayoutProps) {
   const location = useLocation()
-  const { user } = useAuth()
+  const navigate = useNavigate()
+  const { user, logout } = useAuth()
+
+  const handleLogout = async () => {
+    if (confirm('Are you sure you want to logout?')) {
+      await logout()
+      navigate('/')
+    }
+  }
 
   const navItems = user?.role === 'TOURIST' ? [
     { icon: Home, label: 'Home', path: '/tourist/dashboard' },
@@ -36,6 +45,18 @@ export default function MobileAppLayout({ children, showBottomNav = true }: Mobi
       <div className="max-w-md mx-auto bg-white min-h-screen shadow-2xl relative flex flex-col">
         {/* Demo Banner */}
         <DemoBanner />
+
+        {/* Logout Button - Floating */}
+        {showLogout && (
+          <button
+            onClick={handleLogout}
+            className="fixed top-14 right-4 z-50 w-10 h-10 bg-danger-500 hover:bg-danger-600 text-white rounded-full shadow-lg flex items-center justify-center transition-all active:scale-95"
+            aria-label="Logout"
+            title="Logout"
+          >
+            <LogOut className="w-5 h-5" />
+          </button>
+        )}
 
         {/* Main Content - Scrollable */}
         <div className="flex-1 overflow-y-auto pb-20">

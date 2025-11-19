@@ -5,6 +5,12 @@ import { tourController } from '../controllers/tourController.js'
 const router = express.Router()
 
 /**
+ * GET /api/tours
+ * Get all tours
+ */
+router.get('/', (req, res) => tourController.getAllTours(req, res))
+
+/**
  * GET /api/tours/:id
  * Get tour details
  */

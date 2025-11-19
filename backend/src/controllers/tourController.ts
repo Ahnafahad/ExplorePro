@@ -20,6 +20,45 @@ const updateTourSchema = z.object({
 
 export class TourController {
   /**
+   * Get all tours with their guides
+   */
+  async getAllTours(_req: Request, res: Response): Promise<void> {
+    try {
+      const tours = await prisma.tour.findMany({
+        where: { isActive: true },
+        include: {
+          guide: {
+            include: {
+              user: {
+                select: {
+                  name: true,
+                  photo: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 50, // Limit to 50 tours
+      })
+
+      res.json({
+        success: true,
+        data: tours,
+      })
+    } catch (error) {
+      console.error('Error fetching tours:', error)
+      res.status(500).json({
+        success: false,
+        error: {
+          code: 'SERVER_ERROR',
+          message: 'Failed to fetch tours',
+        },
+      })
+    }
+  }
+
+  /**
    * Create a new tour
    */
   async createTour(req: Request, res: Response): Promise<void> {
