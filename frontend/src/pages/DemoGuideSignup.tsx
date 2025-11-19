@@ -37,12 +37,6 @@ export default function DemoGuideSignup() {
     // Show success message and redirect to demo guide dashboard
     alert('🎉 Welcome to ExplorePro! Logging you in as a demo guide...')
 
-    // Auto-login as demo guide
-    const demoCredentials = {
-      email: 'demo.guide@explorepro.com',
-      password: 'demo123'
-    }
-
     // Navigate to login with demo credentials
     navigate('/login', { state: { demoGuide: true } })
   }
