@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react'
-import { Users, DollarSign, Calendar, CheckCircle, XCircle } from 'lucide-react'
+import { Users, DollarSign, Calendar, CheckCircle, XCircle, LogOut } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { api } from '../../services/api'
+import { useAuth } from '../../context/AuthContext'
 import { Avatar } from '../../components/common/Avatar'
 import { Badge } from '../../components/common/Badge'
-import { Button } from '../../components/common/Button'
-import { Card } from '../../components/common/Card'
 import { Loading } from '../../components/common/Loading'
+import MobileAppLayout from '../../components/layout/MobileAppLayout'
 import { formatCurrency } from '../../utils/helpers'
 import type { Guide } from '../../types'
 
 export default function AdminDashboard() {
+  const navigate = useNavigate()
+  const { logout } = useAuth()
   const [stats, setStats] = useState<any>(null)
   const [pendingGuides, setPendingGuides] = useState<Guide[]>([])
   const [loading, setLoading] = useState(true)
@@ -64,162 +67,177 @@ export default function AdminDashboard() {
     }
   }
 
+  const handleLogout = async () => {
+    if (confirm('Are you sure you want to logout?')) {
+      await logout()
+      navigate('/')
+    }
+  }
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Loading size="lg" text="Loading admin dashboard..." />
-      </div>
+      <MobileAppLayout showBottomNav={false}>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <Loading size="lg" text="Loading admin dashboard..." />
+        </div>
+      </MobileAppLayout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+    <MobileAppLayout>
+      <div className="bg-gradient-to-br from-warning-600 to-warning-700 text-white px-4 py-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 rounded-full mb-2">
+              <Users className="w-3 h-3" />
+              <span className="text-xs font-semibold">Admin Panel</span>
+            </div>
+            <h1 className="text-2xl font-bold">Dashboard</h1>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="p-3 bg-white/20 hover:bg-white/30 rounded-full transition-all active:scale-95"
+            aria-label="Logout"
+          >
+            <LogOut className="w-5 h-5" />
+          </button>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="px-4 py-6 bg-neutral-50">
         {/* Stats */}
         {stats && (
-          <div className="grid md:grid-cols-4 gap-6 mb-8">
-            <Card>
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-blue-100 rounded-lg">
-                  <Users className="w-6 h-6 text-blue-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Total Users</p>
-                  <p className="text-2xl font-bold text-gray-900">{stats.users?.total || 0}</p>
-                </div>
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            <div className="bg-white rounded-xl shadow-sm p-4">
+              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-2 mx-auto">
+                <Users className="w-5 h-5 text-blue-600" />
               </div>
-            </Card>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-gray-900">{stats.users?.total || 0}</p>
+                <p className="text-xs text-gray-600">Total Users</p>
+              </div>
+            </div>
 
-            <Card>
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-green-100 rounded-lg">
-                  <DollarSign className="w-6 h-6 text-green-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Platform Revenue</p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {formatCurrency(stats.revenue?.commission || 0)}
-                  </p>
-                </div>
+            <div className="bg-white rounded-xl shadow-sm p-4">
+              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-2 mx-auto">
+                <DollarSign className="w-5 h-5 text-green-600" />
               </div>
-            </Card>
+              <div className="text-center">
+                <p className="text-lg font-bold text-gray-900">
+                  {formatCurrency(stats.revenue?.commission || 0)}
+                </p>
+                <p className="text-xs text-gray-600">Revenue</p>
+              </div>
+            </div>
 
-            <Card>
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-purple-100 rounded-lg">
-                  <Calendar className="w-6 h-6 text-purple-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Total Bookings</p>
-                  <p className="text-2xl font-bold text-gray-900">{stats.bookings?.total || 0}</p>
-                </div>
+            <div className="bg-white rounded-xl shadow-sm p-4">
+              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-2 mx-auto">
+                <Calendar className="w-5 h-5 text-purple-600" />
               </div>
-            </Card>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-gray-900">{stats.bookings?.total || 0}</p>
+                <p className="text-xs text-gray-600">Bookings</p>
+              </div>
+            </div>
 
-            <Card>
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-yellow-100 rounded-lg">
-                  <Users className="w-6 h-6 text-yellow-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Pending Approvals</p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {stats.users?.pendingGuides || 0}
-                  </p>
-                </div>
+            <div className="bg-white rounded-xl shadow-sm p-4">
+              <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center mb-2 mx-auto">
+                <Users className="w-5 h-5 text-yellow-600" />
               </div>
-            </Card>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-gray-900">
+                  {stats.users?.pendingGuides || 0}
+                </p>
+                <p className="text-xs text-gray-600">Pending</p>
+              </div>
+            </div>
           </div>
         )}
 
         {/* Pending Guide Approvals */}
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Pending Guide Approvals</h2>
+        <h2 className="text-lg font-bold text-gray-900 mb-4">Pending Approvals</h2>
 
         {pendingGuides.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {pendingGuides.map((guide) => (
-              <Card key={guide.id}>
+              <div key={guide.id} className="bg-white rounded-xl shadow-sm p-4">
                 <div className="flex items-start gap-4">
                   <Avatar src={guide.user?.photo} name={guide.user?.name} size="lg" />
 
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-base font-bold text-gray-900 truncate">
                           {guide.user?.name}
                         </h3>
-                        <p className="text-sm text-gray-600">{guide.user?.email}</p>
+                        <p className="text-xs text-gray-500 truncate">{guide.user?.email}</p>
                       </div>
-
-                      <div className="text-right">
-                        <p className="text-sm text-gray-600">Hourly Rate</p>
-                        <p className="text-xl font-bold text-primary-600">
+                      <div className="text-right ml-2">
+                        <p className="text-sm font-bold text-primary-600">
                           {formatCurrency(guide.hourlyRate)}
                         </p>
+                        <p className="text-[10px] text-gray-500">per hour</p>
                       </div>
                     </div>
 
-                    <p className="text-gray-700 mb-3 line-clamp-2">{guide.bio}</p>
+                    <p className="text-xs text-gray-700 mb-3 line-clamp-2">{guide.bio}</p>
 
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {guide.languages?.map((lang) => (
+                    <div className="flex flex-wrap gap-1 mb-3">
+                      {guide.languages?.slice(0, 2).map((lang) => (
                         <Badge key={lang} variant="info" size="sm">
                           {lang}
                         </Badge>
                       ))}
-                      {guide.specialties?.map((spec) => (
+                      {guide.specialties?.slice(0, 2).map((spec) => (
                         <Badge key={spec} variant="primary" size="sm">
                           {spec}
                         </Badge>
                       ))}
                     </div>
 
-                    <div className="flex gap-3">
-                      <Button
+                    <div className="flex gap-2">
+                      <button
                         onClick={() => handleApprove(guide.id)}
-                        variant="primary"
-                        size="sm"
+                        className="flex-1 bg-success-500 hover:bg-success-600 text-white py-2 px-3 rounded-lg text-sm font-semibold transition-all active:scale-95 flex items-center justify-center gap-1"
                       >
-                        <CheckCircle className="w-4 h-4 mr-1" />
+                        <CheckCircle className="w-4 h-4" />
                         Approve
-                      </Button>
+                      </button>
 
-                      <Button onClick={() => handleReject(guide.id)} variant="danger" size="sm">
-                        <XCircle className="w-4 h-4 mr-1" />
+                      <button
+                        onClick={() => handleReject(guide.id)}
+                        className="flex-1 bg-danger-500 hover:bg-danger-600 text-white py-2 px-3 rounded-lg text-sm font-semibold transition-all active:scale-95 flex items-center justify-center gap-1"
+                      >
+                        <XCircle className="w-4 h-4" />
                         Reject
-                      </Button>
-
-                      {guide.verificationDoc && (
-                        <a
-                          href={guide.verificationDoc}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-primary-600 hover:underline self-center"
-                        >
-                          View Verification Doc
-                        </a>
-                      )}
+                      </button>
                     </div>
+
+                    {guide.verificationDoc && (
+                      <a
+                        href={guide.verificationDoc}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block text-center text-xs text-primary-600 hover:underline mt-2"
+                      >
+                        View Docs →
+                      </a>
+                    )}
                   </div>
                 </div>
-              </Card>
+              </div>
             ))}
           </div>
         ) : (
-          <Card>
-            <div className="text-center py-8 text-gray-600">
-              No pending guide approvals
+          <div className="bg-white rounded-xl shadow-sm p-6 text-center">
+            <div className="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <CheckCircle className="w-8 h-8 text-neutral-400" />
             </div>
-          </Card>
+            <p className="text-sm text-gray-600">No pending approvals</p>
+          </div>
         )}
       </div>
-    </div>
+    </MobileAppLayout>
   )
 }
