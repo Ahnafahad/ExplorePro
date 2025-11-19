@@ -5,11 +5,14 @@ import { api } from '../services/api'
 import { ReviewForm } from '../components/review/ReviewForm'
 import { Loading } from '../components/common/Loading'
 import { Button } from '../components/common/Button'
+import { useAuth } from '../context/AuthContext'
+import { demoBookings, isDemoMode } from '../data/demoData'
 import type { Booking } from '../types'
 
 export default function ReviewPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { user } = useAuth()
   const [booking, setBooking] = useState<Booking | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -19,9 +22,17 @@ export default function ReviewPage() {
 
   const fetchBooking = async () => {
     try {
-      const response = await api.get<Booking>(`/api/bookings/${id}`)
-      if (response.success && response.data) {
-        setBooking(response.data)
+      // Use demo data for demo accounts (no API calls!)
+      if (isDemoMode(user?.email)) {
+        const demoBooking = demoBookings.find((b) => b.id === id)
+        if (demoBooking) {
+          setBooking(demoBooking as any)
+        }
+      } else {
+        const response = await api.get<Booking>(`/api/bookings/${id}`)
+        if (response.success && response.data) {
+          setBooking(response.data)
+        }
       }
     } catch (error) {
       console.error('Error fetching booking:', error)

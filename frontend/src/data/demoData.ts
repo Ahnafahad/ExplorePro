@@ -90,6 +90,7 @@ export const demoTours = [
     duration: 120,
     price: 130,
     isActive: true,
+    image: 'https://images.unsplash.com/photo-1588783344629-54d58106d6ec?w=800&h=600&fit=crop',
     createdAt: new Date('2024-01-15'),
   },
   {
@@ -101,6 +102,7 @@ export const demoTours = [
     duration: 90,
     price: 97.5,
     isActive: true,
+    image: 'https://images.unsplash.com/photo-1604580864964-0f31e4e2e74f?w=800&h=600&fit=crop',
     createdAt: new Date('2024-01-20'),
   },
   {
@@ -112,6 +114,7 @@ export const demoTours = [
     duration: 90,
     price: 82.5,
     isActive: true,
+    image: 'https://images.unsplash.com/photo-1565515636369-3e0ba4e7096e?w=800&h=600&fit=crop',
     createdAt: new Date('2024-02-01'),
   },
   {
@@ -123,6 +126,7 @@ export const demoTours = [
     duration: 120,
     price: 110,
     isActive: true,
+    image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=600&fit=crop',
     createdAt: new Date('2024-02-10'),
   },
   {
@@ -134,6 +138,7 @@ export const demoTours = [
     duration: 150,
     price: 150,
     isActive: true,
+    image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=600&fit=crop',
     createdAt: new Date('2024-02-15'),
   },
   {
@@ -145,6 +150,7 @@ export const demoTours = [
     duration: 90,
     price: 90,
     isActive: true,
+    image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&h=600&fit=crop',
     createdAt: new Date('2024-03-01'),
   },
 ]

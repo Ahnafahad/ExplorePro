@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../../services/api'
+import { useAuth } from '../../context/AuthContext'
+import { isDemoMode } from '../../data/demoData'
 import { Button } from '../common/Button'
 import { TextArea } from '../common/TextArea'
 import { StarRating } from '../common/StarRating'
@@ -13,6 +15,7 @@ interface ReviewFormProps {
 
 export function ReviewForm({ bookingId, guideName }: ReviewFormProps) {
   const navigate = useNavigate()
+  const { user } = useAuth()
   const [rating, setRating] = useState(5)
   const [comment, setComment] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -22,6 +25,16 @@ export function ReviewForm({ bookingId, guideName }: ReviewFormProps) {
 
     try {
       setSubmitting(true)
+
+      // For demo mode, just show success message
+      if (isDemoMode(user?.email)) {
+        setTimeout(() => {
+          alert('✨ Review submitted successfully! (Demo Mode)')
+          navigate('/dashboard')
+        }, 500)
+        return
+      }
+
       await api.post('/api/reviews', {
         bookingId,
         rating,

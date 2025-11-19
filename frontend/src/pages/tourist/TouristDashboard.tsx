@@ -159,7 +159,7 @@ export default function TouristDashboard() {
 
         {/* Quick Action */}
         <button
-          onClick={() => navigate('/tourist/browse-guides')}
+          onClick={() => navigate('/browse-guides')}
           className="w-full bg-gradient-to-r from-primary-600 to-secondary-600 text-white py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 mb-4"
         >
           <Search className="w-5 h-5" />
@@ -282,7 +282,7 @@ export default function TouristDashboard() {
               <h3 className="font-bold text-neutral-900 mb-1">No bookings yet</h3>
               <p className="text-sm text-neutral-500 mb-4">Start exploring and book your first tour!</p>
               <button
-                onClick={() => navigate('/tourist/browse-guides')}
+                onClick={() => navigate('/browse-guides')}
                 className="inline-flex items-center gap-2 bg-primary-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl active:scale-95 transition-all"
               >
                 <Search className="w-4 h-4" />
