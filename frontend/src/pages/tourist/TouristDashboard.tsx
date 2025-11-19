@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Calendar, MapPin, Clock, Star, Search, TrendingUp, CheckCircle, Radio, Navigation, Sparkles, ArrowRight } from 'lucide-react'
+import { Calendar, MapPin, Star, Search, TrendingUp, CheckCircle, Radio, Navigation, Sparkles, ArrowRight } from 'lucide-react'
 import { api } from '../../services/api'
 import { useAuth } from '../../context/AuthContext'
 import { Avatar } from '../../components/common/Avatar'
@@ -8,7 +8,7 @@ import { Badge } from '../../components/common/Badge'
 import { Loading } from '../../components/common/Loading'
 import MockMap from '../../components/common/MockMap'
 import MobileAppLayout from '../../components/layout/MobileAppLayout'
-import { formatCurrency, formatDate, formatRelativeTime } from '../../utils/helpers'
+import { formatCurrency, formatDate } from '../../utils/helpers'
 import type { Booking, BookingStatus } from '../../types'
 
 const statusVariants: Record<BookingStatus, 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'gray'> = {

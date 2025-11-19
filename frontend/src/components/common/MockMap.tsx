@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { MapPin, Navigation, ZoomIn, ZoomOut, Locate } from 'lucide-react'
+import { ZoomIn, ZoomOut, Locate } from 'lucide-react'
 
 interface MockMapProps {
   center?: { lat: number; lng: number }

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { Home, Compass, MessageCircle, User, Calendar } from 'lucide-react'
+import { Home, Compass, User, Calendar } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import DemoBanner from '../common/DemoBanner'
