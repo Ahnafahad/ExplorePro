@@ -233,7 +233,7 @@ export default function BrowseGuides() {
               <div className="card p-4">
                 <MockMap
                   className="h-[600px]"
-                  markers={guides.map((guide, index) => ({
+                  markers={guides.map((guide) => ({
                     lat: 51.752 + (Math.random() - 0.5) * 0.02, // Random positions around Oxford
                     lng: -1.2577 + (Math.random() - 0.5) * 0.02,
                     label: guide.user?.name || 'Guide',
