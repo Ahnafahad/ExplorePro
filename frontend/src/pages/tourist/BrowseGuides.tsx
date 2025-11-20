@@ -1,18 +1,22 @@
 import { useState, useEffect } from 'react'
-import { Search, MapPin, Sparkles, SlidersHorizontal, X } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { Search, MapPin, Sparkles, SlidersHorizontal, X, List, Map } from 'lucide-react'
 import { api } from '../../services/api'
 import { GuideCard } from '../../components/tourist/GuideCard'
 import { Input } from '../../components/common/Input'
 import { Select } from '../../components/common/Select'
 import { Button } from '../../components/common/Button'
 import { Loading } from '../../components/common/Loading'
+import MockMap from '../../components/common/MockMap'
 import { LANGUAGES, SPECIALTIES } from '../../constants'
 import type { Guide } from '../../types'
 
 export default function BrowseGuides() {
+  const navigate = useNavigate()
   const [guides, setGuides] = useState<Guide[]>([])
   const [loading, setLoading] = useState(true)
   const [showFilters, setShowFilters] = useState(true)
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('map') // Default to map view
   const [filters, setFilters] = useState({
     language: '',
     specialty: '',
@@ -184,31 +188,120 @@ export default function BrowseGuides() {
           </div>
         </div>
 
+        {/* View Toggle */}
+        <div className="mb-6 flex items-center justify-between animate-fade-in-up">
+          <p className="text-neutral-600 font-medium">
+            {guides.length > 0 && (
+              <>Found <span className="text-primary-600 font-bold">{guides.length}</span> guide{guides.length !== 1 ? 's' : ''}</>
+            )}
+          </p>
+          <div className="flex gap-2 bg-white rounded-xl p-1 shadow-sm border border-neutral-200">
+            <button
+              onClick={() => setViewMode('map')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
+                viewMode === 'map'
+                  ? 'bg-primary-600 text-white shadow-sm'
+                  : 'text-neutral-600 hover:bg-neutral-50'
+              }`}
+            >
+              <Map className="w-4 h-4" />
+              Map
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
+                viewMode === 'list'
+                  ? 'bg-primary-600 text-white shadow-sm'
+                  : 'text-neutral-600 hover:bg-neutral-50'
+              }`}
+            >
+              <List className="w-4 h-4" />
+              List
+            </button>
+          </div>
+        </div>
+
         {/* Results */}
         {loading ? (
           <div className="flex justify-center py-16">
             <Loading size="lg" text="Finding the best guides for you..." variant="dots" />
           </div>
         ) : guides.length > 0 ? (
-          <div className="space-y-6 animate-fade-in">
-            <div className="flex items-center justify-between">
-              <p className="text-neutral-600 font-medium">
-                Found <span className="text-primary-600 font-bold">{guides.length}</span> guide{guides.length !== 1 ? 's' : ''}
-              </p>
-            </div>
+          viewMode === 'map' ? (
+            <div className="space-y-6 animate-fade-in">
+              {/* Map View */}
+              <div className="card p-4">
+                <MockMap
+                  className="h-[600px]"
+                  markers={guides.map((guide, index) => ({
+                    lat: 51.752 + (Math.random() - 0.5) * 0.02, // Random positions around Oxford
+                    lng: -1.2577 + (Math.random() - 0.5) * 0.02,
+                    label: guide.user?.name || 'Guide',
+                    color: guide.isAvailable ? '#10b981' : '#ef4444',
+                  }))}
+                  showControls={true}
+                  showUserLocation={true}
+                />
+              </div>
 
-            <div className="grid gap-6">
-              {guides.map((guide, index) => (
-                <div
-                  key={guide.id}
-                  className="animate-fade-in-up"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <GuideCard guide={guide} />
-                </div>
-              ))}
+              {/* Guide List Below Map */}
+              <div className="grid gap-4">
+                <h3 className="text-lg font-bold text-neutral-900">Available Guides</h3>
+                {guides.map((guide, index) => (
+                  <div
+                    key={guide.id}
+                    className="card p-4 hover:shadow-lg transition-shadow cursor-pointer"
+                    onClick={() => navigate(`/guides/${guide.id}`)}
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <div className="flex items-center gap-4">
+                      <img
+                        src={guide.user?.photo || 'https://api.dicebear.com/7.x/avataaars/svg?seed=default'}
+                        alt={guide.user?.name}
+                        className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md"
+                      />
+                      <div className="flex-1">
+                        <h4 className="font-bold text-neutral-900">{guide.user?.name}</h4>
+                        <div className="flex items-center gap-2 text-sm text-neutral-600">
+                          <span>£{guide.hourlyRate}/hr</span>
+                          {guide.averageRating && (
+                            <>
+                              <span>•</span>
+                              <span className="flex items-center gap-1">
+                                <span className="text-yellow-500">★</span>
+                                {guide.averageRating.toFixed(1)}
+                              </span>
+                            </>
+                          )}
+                          {guide.isAvailable && (
+                            <>
+                              <span>•</span>
+                              <span className="text-green-600 font-semibold">Available Now</span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="space-y-6 animate-fade-in">
+              {/* List View */}
+              <div className="grid gap-6">
+                {guides.map((guide, index) => (
+                  <div
+                    key={guide.id}
+                    className="animate-fade-in-up"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <GuideCard guide={guide} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
         ) : (
           <div className="text-center py-16 animate-fade-in">
             <div className="inline-flex p-6 bg-neutral-100 rounded-full mb-6">
