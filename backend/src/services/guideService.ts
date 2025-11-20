@@ -1,6 +1,7 @@
 import { GuideStatus } from '@prisma/client'
 import prisma from '../utils/prisma.js'
 import { getDemoGuideByUserId, getDemoGuideById, isDemoUser } from '../data/demoData.js'
+import { demoGuides } from '../data/demoData.js'
 
 interface CreateGuideData {
   userId: string
@@ -191,67 +192,136 @@ export class GuideService {
    * List guides with filters and pagination
    */
   async listGuides(filters: GuideFilters = {}, page: number = 1, limit: number = 20) {
-    const skip = (page - 1) * limit
+    try {
+      const skip = (page - 1) * limit
 
-    const where: any = {
-      status: GuideStatus.APPROVED,
+      const where: any = {
+        status: GuideStatus.APPROVED,
+      }
+
+      if (filters.isAvailable !== undefined) {
+        where.isAvailable = filters.isAvailable
+      }
+
+      if (filters.language) {
+        where.languages = {
+          has: filters.language,
+        }
+      }
+
+      if (filters.specialty) {
+        where.specialties = {
+          has: filters.specialty,
+        }
+      }
+
+      if (filters.minRate !== undefined || filters.maxRate !== undefined) {
+        where.hourlyRate = {}
+        if (filters.minRate !== undefined) {
+          where.hourlyRate.gte = filters.minRate
+        }
+        if (filters.maxRate !== undefined) {
+          where.hourlyRate.lte = filters.maxRate
+        }
+      }
+
+      const [guides, total] = await Promise.all([
+        prisma.guide.findMany({
+          where,
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                photo: true,
+              },
+            },
+          },
+          skip,
+          take: limit,
+          orderBy: [
+            { isAvailable: 'desc' },
+            { averageRating: 'desc' },
+          ],
+        }),
+        prisma.guide.count({ where }),
+      ])
+
+      // If no guides found in database, return demo guides
+      if (guides.length === 0 && total === 0) {
+        return this.getFilteredDemoGuides(filters, page, limit)
+      }
+
+      return {
+        guides,
+        pagination: {
+          page,
+          limit,
+          total,
+          totalPages: Math.ceil(total / limit),
+        },
+      }
+    } catch (error) {
+      // If database query fails, return demo guides as fallback
+      console.log('Database query failed, using demo guides:', error)
+      return this.getFilteredDemoGuides(filters, page, limit)
     }
+  }
 
+  /**
+   * Get filtered demo guides
+   */
+  private getFilteredDemoGuides(filters: GuideFilters, page: number, limit: number) {
+    let filteredGuides = demoGuides.filter((guide: any) => guide.status === 'APPROVED')
+
+    // Apply filters
     if (filters.isAvailable !== undefined) {
-      where.isAvailable = filters.isAvailable
+      filteredGuides = filteredGuides.filter((guide: any) => guide.isAvailable === filters.isAvailable)
     }
 
     if (filters.language) {
-      where.languages = {
-        has: filters.language,
-      }
+      filteredGuides = filteredGuides.filter((guide: any) =>
+        guide.languages.includes(filters.language!)
+      )
     }
 
     if (filters.specialty) {
-      where.specialties = {
-        has: filters.specialty,
-      }
+      filteredGuides = filteredGuides.filter((guide: any) =>
+        guide.specialties.includes(filters.specialty!)
+      )
     }
 
-    if (filters.minRate !== undefined || filters.maxRate !== undefined) {
-      where.hourlyRate = {}
-      if (filters.minRate !== undefined) {
-        where.hourlyRate.gte = filters.minRate
-      }
-      if (filters.maxRate !== undefined) {
-        where.hourlyRate.lte = filters.maxRate
-      }
+    if (filters.minRate !== undefined) {
+      filteredGuides = filteredGuides.filter((guide: any) =>
+        guide.hourlyRate >= filters.minRate!
+      )
     }
 
-    const [guides, total] = await Promise.all([
-      prisma.guide.findMany({
-        where,
-        include: {
-          user: {
-            select: {
-              id: true,
-              name: true,
-              photo: true,
-            },
-          },
-        },
-        skip,
-        take: limit,
-        orderBy: [
-          { isAvailable: 'desc' },
-          { averageRating: 'desc' },
-        ],
-      }),
-      prisma.guide.count({ where }),
-    ])
+    if (filters.maxRate !== undefined) {
+      filteredGuides = filteredGuides.filter((guide: any) =>
+        guide.hourlyRate <= filters.maxRate!
+      )
+    }
+
+    // Sort by availability and rating
+    filteredGuides.sort((a: any, b: any) => {
+      if (a.isAvailable !== b.isAvailable) {
+        return b.isAvailable ? 1 : -1
+      }
+      return (b.averageRating || 0) - (a.averageRating || 0)
+    })
+
+    // Paginate
+    const skip = (page - 1) * limit
+    const paginatedGuides = filteredGuides.slice(skip, skip + limit)
 
     return {
-      guides,
+      guides: paginatedGuides as any[],
       pagination: {
         page,
         limit,
-        total,
-        totalPages: Math.ceil(total / limit),
+        total: filteredGuides.length,
+        totalPages: Math.ceil(filteredGuides.length / limit),
       },
     }
   }
